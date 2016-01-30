@@ -60,7 +60,7 @@ void NavdataReader::run()
 
   db.open();
 
-  atools::fs::Navdatabase nd(opts, &db);
+  atools::fs::Navdatabase nd(&opts, &db);
   nd.create();
 
   db.close();
@@ -108,46 +108,40 @@ void NavdataReader::parseArgs()
   // Process the actual command line arguments given by the user
   parser.process(*QCoreApplication::instance());
 
-  bool verbose = parser.isSet(verboseOpt);
-  QString sceneryFile = parser.value(sceneryOpt);
-  QString basepath = parser.value(basepathOpt);
-
-  QString configFile = parser.value(cfgOpt);
-  qInfo() << "Configuration file" << configFile;
-
-  QString databaseName = parser.value(databaseOpt);
-  qInfo() << "Database" << databaseName;
-
   atools::fs::fstype::SimulatorType type = atools::fs::fstype::FSX;
   if(parser.isSet(fstypeOpt))
     type = atools::fs::FsPaths::stringToType(parser.value(fstypeOpt));
 
   qInfo() << "Using simulator type" << atools::fs::FsPaths::typeToString(type);
 
-  if(sceneryFile.isEmpty())
-    sceneryFile = atools::fs::FsPaths::getSceneryLibraryPath(type);
-
+  QString basepath = parser.value(basepathOpt);
   if(basepath.isEmpty())
     basepath = atools::fs::FsPaths::getBasePath(type);
 
   if(!checkDir(basepath, "Base path: "))
     exit(1);
 
+  QString sceneryFile = parser.value(sceneryOpt);
+  if(sceneryFile.isEmpty())
+    sceneryFile = atools::fs::FsPaths::getSceneryLibraryPath(type);
   if(!checkFile(sceneryFile, "Scenery file: "))
     exit(1);
 
+  QString configFile = parser.value(cfgOpt);
+  qInfo() << "Configuration file" << configFile;
   if(!(configFile.isEmpty() || checkFile(configFile, "Config file: ")))
     exit(1);
 
   opts.setSceneryFile(sceneryFile);
   opts.setBasepath(basepath);
-  opts.setVerbose(verbose);
+  opts.setVerbose(parser.isSet(verboseOpt));
 
   QSettings settings(configFile, QSettings::IniFormat);
 
   opts.loadFiltersFromSettings(settings);
 
   db = SqlDatabase(settings, "Database");
+  QString databaseName = parser.value(databaseOpt);
   if(!databaseName.isEmpty())
     db.setDatabaseName(databaseName);
 }
