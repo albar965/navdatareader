@@ -7,13 +7,21 @@
 #include "fs/writer/routeresolver.h"
 #include "fs/scenery/sceneryarea.h"
 #include "sql/sqlutil.h"
+#include "fs/fspaths.h"
+#include "logging/loggingdefs.h"
+#include "logging/logginghandler.h"
+#include "settings/settings.h"
+#include "fs/navdatabase.h"
 
 #include <QCommandLineParser>
 #include <QCoreApplication>
-#include <QDateTime>
-#include "logging/loggingdefs.h"
+#include <QElapsedTimer>
+#include <QFileInfo>
+#include <QSettings>
 
 void parseArgs(atools::fs::BglReaderOptions& opts, QString& databaseName);
+bool checkDir(const QString& path, const QString& msg);
+bool checkFile(const QString& path, const QString& msg);
 
 int main(int argc, char *argv[])
 {
@@ -22,10 +30,14 @@ int main(int argc, char *argv[])
 
   int retval = 0;
   QCoreApplication app(argc, argv);
+  Q_UNUSED(app);
   QCoreApplication::setApplicationName("Navdata Reader");
   QCoreApplication::setOrganizationName("ABarthel");
   QCoreApplication::setOrganizationDomain("abarthel.org");
   QCoreApplication::setApplicationVersion("0.5.0");
+
+  atools::logging::LoggingHandler::initialize(atools::settings::Settings::getOverloadedLocalPath(
+                                                ":/navdatareader/resources/config/logging.cfg"));
 
   QString databaseName;
   atools::fs::BglReaderOptions options;
@@ -43,47 +55,15 @@ int main(int argc, char *argv[])
 
     qInfo() << options;
 
-    QTime timer;
-    timer.start();
-
-    SceneryCfg cfg;
-    cfg.read(options.getSceneryFile());
-
     SqlDatabase db = SqlDatabase::addDatabase("QSQLITE");
     db.setDatabaseName(databaseName);
     db.open();
 
-    SqlScript script(&db);
-    script.executeScript(":/atools/resources/sql/writer/create_nav_schema.sql");
-    script.executeScript(":/atools/resources/sql/writer/create_ap_schema.sql");
-    script.executeScript(":/atools/resources/sql/writer/create_meta_schema.sql");
-    script.executeScript(":/atools/resources/sql/writer/create_views.sql");
-    db.commit();
-
-    SqlQuery(db).exec("PRAGMA foreign_keys = ON");
-    db.commit();
-
-    atools::fs::writer::DataWriter dataWriter(db, options);
-
-    for(const atools::fs::scenery::SceneryArea& area : cfg.getAreas())
-      if(area.isActive())
-        dataWriter.writeSceneryArea(area);
-    db.commit();
-
-    // atools::fs::writer::RouteResolver resolver(db);
-    // resolver.run();
-    // db.commit();
-
-    script.executeScript(":/atools/resources/sql/writer/finish_schema.sql");
-    db.commit();
-
-    dataWriter.logResults();
-    QDebug info(QtInfoMsg);
-    atools::sql::SqlUtil(&db).printTableStats(info, true);
+    atools::fs::Navdatabase nd(options, &db);
+    nd.create();
 
     db.close();
 
-    qInfo() << "Time" << timer.elapsed() / 1000 << "seconds";
   }
   catch(const atools::Exception& e)
   {
@@ -102,6 +82,7 @@ int main(int argc, char *argv[])
   }
 
   qInfo() << "done.";
+  atools::logging::LoggingHandler::shutdown();
   return retval;
 }
 
@@ -121,6 +102,12 @@ void parseArgs(atools::fs::BglReaderOptions& opts, QString& databaseName)
                                 QObject::tr("scenery"));
   parser.addOption(sceneryOpt);
 
+  QCommandLineOption fstypeOpt({"f", "flight-simulator"},
+                               QObject::tr("Flight simulator type <simulator>. "
+                                           "Either FSX, FSXSE, P3DV2 or P3DV3."),
+                               QObject::tr("simulator"));
+  parser.addOption(fstypeOpt);
+
   QCommandLineOption basepathOpt({"b", "basepath"},
                                  QObject::tr("Flight simulator basepath for BGL files <basepath>"),
                                  QObject::tr("basepath"));
@@ -137,38 +124,109 @@ void parseArgs(atools::fs::BglReaderOptions& opts, QString& databaseName)
                             QObject::tr("scenery"));
   parser.addOption(cfgOpt);
 
-  // addOption("no-delete", 'd', "Do not process airport deletes", noDeletes);
-  // addOption("no-filter-runways", 'f', "Do not filter out dummy runways", noFilterRunways);
-  // addOption("no-incomplete", 'i', "Do not write incomplete objects", noIncomplete);
-  // addOption("file-filter", 0, "Filter files by regular expression", fileFilterRegexpStr);
-  // addOption("airport-icao-filter", 0, "Filter airports by regular expression for ICAO",
-
   // Process the actual command line arguments given by the user
   parser.process(*QCoreApplication::instance());
 
   bool verbose = parser.isSet(verboseOpt);
-  qInfo() << "Verbose" << verbose;
   QString sceneryFile = parser.value(sceneryOpt);
-  qInfo() << "Scenery.cfg file" << sceneryFile;
+  QString basepath = parser.value(basepathOpt);
+
   QString configFile = parser.value(cfgOpt);
   qInfo() << "Configuration file" << configFile;
-  QString basepath = parser.value(basepathOpt);
-  qInfo() << "Basepath" << basepath;
+
   databaseName = parser.value(databaseOpt);
   qInfo() << "Database" << databaseName;
 
+  atools::fs::fstype::SimulatorType type = atools::fs::fstype::FSX;
+  if(parser.isSet(fstypeOpt))
+    type = atools::fs::FsPaths::stringToType(parser.value(fstypeOpt));
+
+  qInfo() << "Using simulator type" << atools::fs::FsPaths::typeToString(type);
+
   if(sceneryFile.isEmpty())
-  {
-    qCritical() << "Scenery path not set";
-    exit(1);
-  }
+    sceneryFile = atools::fs::FsPaths::getSceneryLibraryPath(type);
 
   if(basepath.isEmpty())
-  {
-    qCritical() << "Base path not set";
+    basepath = atools::fs::FsPaths::getBasePath(type);
+
+  if(!checkDir(basepath, "Base path: "))
     exit(1);
-  }
+
+  if(!checkFile(sceneryFile, "Scenery file: "))
+    exit(1);
+
+  if(!(configFile.isEmpty() || checkFile(configFile, "Config file: ")))
+    exit(1);
+
   opts.setSceneryFile(sceneryFile);
   opts.setBasepath(basepath);
   opts.setVerbose(verbose);
+
+  QSettings settings(configFile, QSettings::IniFormat);
+
+  settings.beginGroup("Options");
+  opts.setDeletes(settings.value("ProcessDelete", true).toBool());
+  opts.setFilterRunways(settings.value("FilterRunways", true).toBool());
+  opts.setIncomplete(settings.value("SaveIncomplete", true).toBool());
+  settings.endGroup();
+
+  settings.beginGroup("Filter");
+
+  opts.setFilenameFilterInc(settings.value("IncludeFilenames").toStringList());
+  opts.setFilenameFilterExcl(settings.value("ExcludeFilenames").toStringList());
+  opts.setPathFilterInc(settings.value("IncludePathFilter").toStringList());
+  opts.setPathFilterExcl(settings.value("ExcludePathFilter").toStringList());
+  opts.setAirportIcaoFilterInc(settings.value("IncludeAirportIcaoFilter").toStringList());
+  opts.setAirportIcaoFilterExcl(settings.value("ExcludeAirportIcaoFilter").toStringList());
+  opts.setBglObjectFilterInc(settings.value("IncludeBglObjectFilter").toStringList());
+  opts.setBglObjectFilterExcl(settings.value("ExcludeBglObjectFilter").toStringList());
+  settings.endGroup();
+}
+
+bool checkFile(const QString& path, const QString& msg)
+{
+  if(path.isEmpty())
+  {
+    qCritical().noquote().nospace() << msg << " is empty";
+    return false;
+  }
+  else
+  {
+    QFileInfo fi(path);
+    if(!fi.exists())
+    {
+      qCritical().noquote().nospace() << msg << " file does not exist";
+      return false;
+    }
+    else if(!fi.isFile())
+    {
+      qCritical().noquote().nospace() << msg << " is not a file";
+      return false;
+    }
+  }
+  return true;
+}
+
+bool checkDir(const QString& path, const QString& msg)
+{
+  if(path.isEmpty())
+  {
+    qCritical().noquote().nospace() << msg << " is empty";
+    return false;
+  }
+  else
+  {
+    QFileInfo fi(path);
+    if(!fi.exists())
+    {
+      qCritical().noquote().nospace() << msg << " directory does not exist";
+      return false;
+    }
+    else if(!fi.isDir())
+    {
+      qCritical().noquote().nospace() << msg << " is not a directory";
+      return false;
+    }
+  }
+  return true;
 }

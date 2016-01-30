@@ -12,7 +12,8 @@ TEMPLATE = app
 SOURCES += main.cpp
 
 DISTFILES += \
-    uncrustify.cfg
+    uncrustify.cfg \
+    navdatareader.cfg
 
 
 # Add dependencies to atools project and its static library to ensure relinking on changes
@@ -27,3 +28,6 @@ CONFIG(release, debug|release) {
   LIBS += -L $$PWD/../atools/release -l atools
   PRE_TARGETDEPS += $$PWD/../atools/release/libatools.a
 }
+
+RESOURCES += \
+    navdatareader.qrc
