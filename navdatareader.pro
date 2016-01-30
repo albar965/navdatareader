@@ -9,7 +9,8 @@ CONFIG -= app_bundle
 
 TEMPLATE = app
 
-SOURCES += main.cpp
+SOURCES += main.cpp \
+    navdatareader.cpp
 
 DISTFILES += \
     uncrustify.cfg \
@@ -31,3 +32,6 @@ CONFIG(release, debug|release) {
 
 RESOURCES += \
     navdatareader.qrc
+
+HEADERS += \
+    navdatareader.h
