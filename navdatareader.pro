@@ -61,3 +61,27 @@ RESOURCES += \
 
 HEADERS += \
     navdatareader.h
+
+# Windows specific deploy target only for release builds
+win32 {
+#  RC_ICONS = resources/icons/littlelogbook.ico
+
+  # Create backslashed path
+  WINPWD=$${PWD}
+  WINPWD ~= s,/,\\,g
+  WINOUT_PWD=$${OUT_PWD}
+  WINOUT_PWD ~= s,/,\\,g
+  DEPLOY_DIR_NAME=navdatareader
+  DEPLOY_DIR=\"$${WINPWD}\\deploy\\$${DEPLOY_DIR_NAME}\"
+
+  deploy.commands = rmdir /s /q $${DEPLOY_DIR} &
+  deploy.commands += mkdir $${DEPLOY_DIR} &
+  deploy.commands += copy $${WINOUT_PWD}\\navdatareader.exe $${DEPLOY_DIR} &&
+  deploy.commands += copy $${QT_BIN}\\libgcc*.dll $${DEPLOY_DIR} &&
+  deploy.commands += copy $${QT_BIN}\\libstdc*.dll $${DEPLOY_DIR} &&
+  deploy.commands += copy $${QT_BIN}\\libwinpthread*.dll $${DEPLOY_DIR} &&
+  deploy.commands += $${QT_BIN}\\windeployqt --compiler-runtime $${DEPLOY_DIR}
+}
+
+QMAKE_EXTRA_TARGETS += deploy
+
