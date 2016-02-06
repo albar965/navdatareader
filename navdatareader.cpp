@@ -31,16 +31,17 @@
 #include "fs/navdatabase.h"
 #include "navdatareader.h"
 #include "exception.h"
+#include "navdatareader.h"
+#include "atools.h"
+#include "sql/sqldatabase.h"
+#include "logging/loggingutil.h"
 
 #include <QCommandLineParser>
 #include <QCoreApplication>
 #include <QElapsedTimer>
 #include <QFileInfo>
 #include <QSettings>
-
-#include "navdatareader.h"
-
-#include "sql/sqldatabase.h"
+#include <QCoreApplication>
 
 using atools::fs::scenery::SceneryCfg;
 using atools::sql::SqlDatabase;
@@ -56,9 +57,23 @@ void NavdataReader::run()
 {
   parseArgs();
 
+  qInfo() << "This software is licensed under the GPL3 or any later version.";
+  qInfo() << "See http://www.gnu.org/licenses/gpl-3.0 for more information.";
+  qInfo() << "The source code for this application is available at https://github.com/albar965";
+  qInfo() << "Copyright 2015-2016 Alexander Barthel (albar965@mailbox.org).";
+  qInfo().nospace().noquote() << "Version " << QCoreApplication::applicationVersion()
+                              << " (revision " << GIT_REVISION << ")";
+  qInfo().nospace().noquote() << "atools Version " << atools::version()
+                              << " (revision " << atools::gitRevision() << ")";
+
+  // Print some information which can be useful for debugging
+  using atools::logging::LoggingUtil;
+  LoggingUtil::logSystemInformation();
+  LoggingUtil::logStandardPaths();
+
   qInfo() << opts;
 
-  db.open();
+  db.open({"PRAGMA foreign_keys = ON"});
 
   atools::fs::Navdatabase nd(&opts, &db);
   nd.create();
@@ -134,11 +149,13 @@ void NavdataReader::parseArgs()
 
   opts.setSceneryFile(sceneryFile);
   opts.setBasepath(basepath);
-  opts.setVerbose(parser.isSet(verboseOpt));
 
   QSettings settings(configFile, QSettings::IniFormat);
 
   opts.loadFiltersFromSettings(settings);
+  if(parser.isSet(verboseOpt))
+    // Let command line override settings file
+    opts.setVerbose(parser.isSet(verboseOpt));
 
   db = SqlDatabase(settings, "Database");
   QString databaseName = parser.value(databaseOpt);

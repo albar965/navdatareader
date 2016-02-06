@@ -34,10 +34,11 @@ int main(int argc, char *argv[])
   QCoreApplication::setApplicationName("Navdata Reader");
   QCoreApplication::setOrganizationName("ABarthel");
   QCoreApplication::setOrganizationDomain("abarthel.org");
-  QCoreApplication::setApplicationVersion("0.5.0");
+  QCoreApplication::setApplicationVersion("0.5.0.develop");
 
-  atools::logging::LoggingHandler::initialize(atools::settings::Settings::getOverloadedLocalPath(
-                                                ":/navdatareader/resources/config/logging.cfg"));
+  using atools::logging::LoggingHandler;
+  LoggingHandler::initialize(atools::settings::Settings::getOverloadedLocalPath(
+                               ":/navdatareader/resources/config/logging.cfg"));
 
   // -------------------------------------------------------------------------------
   // -------------------------------------------------------------------------------
@@ -50,7 +51,7 @@ int main(int argc, char *argv[])
   }
   catch(const atools::Exception& e)
   {
-    qCritical() << "Caught db::DatabaseException " << e.what();
+    qCritical() << "Caught atools::Exception " << e.what();
     retval = 1;
   }
   catch(const std::exception& e)
