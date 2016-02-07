@@ -1,0 +1,41 @@
+Build Instructions
+------------------------------------------------------
+
+Qt development packages of Core, Widgets, XML and SQL are needed with minimum version 5.4.
+Additionally my atools static library is needed.
+
+- Clone atools GIT repository
+- Clone navdatareader GIT repository into the same directory
+
+Windows
+------------------------------------------------------
+
+- Get and install Qt Creator from http://www.qt.io.
+- Import atools and navdatareader into the workspace.
+- Configure the projects and enable shadow build for release or debug versions.
+-- For atools use the build directory of e.g.: "C:\Projects\atools\release"
+-- For navdatareader use the build directory of e.g.: "C:\Projects\navdatareader\release"
+- Adapt the QT_BIN and GIT_BIN variables in "navdatareader.pro".
+- Run qmake from Qt Creator
+- Build and run.
+
+It is important that the shadow build directories reside within the project directories and are
+named "release" and "debug" depending on desired build. Do not use the default shadow names, this will
+break project dependencies.
+
+Linux
+------------------------------------------------------
+
+Build atools according to instructions in BUILD.txt.
+
+To build release
+- mkdir navdatareader/release
+- cd navdatareader/release
+- qmake ../navdatareader.pro
+- make
+
+To build debug
+- mkdir navdatareader/debug
+- cd navdatareader/debug
+- qmake ../navdatareader.pro CONFIG+=debug
+- make
