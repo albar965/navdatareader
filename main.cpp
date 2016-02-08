@@ -40,9 +40,6 @@ int main(int argc, char *argv[])
   LoggingHandler::initialize(atools::settings::Settings::getOverloadedLocalPath(
                                ":/navdatareader/resources/config/logging.cfg"));
 
-  // -------------------------------------------------------------------------------
-  // -------------------------------------------------------------------------------
-  // -------------------------------------------------------------------------------
   qInfo() << "Starting ...";
   try
   {
