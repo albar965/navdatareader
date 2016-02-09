@@ -40,7 +40,11 @@ SOURCES += main.cpp \
 
 DISTFILES += \
     uncrustify.cfg \
-    navdatareader.cfg
+    navdatareader.cfg \
+    BUILD.txt \
+    CHANGELOG.txt \
+    LICENSE.txt \
+    README.txt
 
 
 # Add dependencies to atools project and its static library to ensure relinking on changes
