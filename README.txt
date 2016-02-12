@@ -9,6 +9,7 @@ All BGL features except scenery objects are supported.
 * VOR, NDB, ILS, DME, markers and waypoints
 * Metadata like BGL files and scenery areas.
 * Routes and route waypoints.
+* Airspace boundaries including com frequencies.
 * The delete airport records are handled for addon airports.
 
 ------------------------------------------------------------------------------
