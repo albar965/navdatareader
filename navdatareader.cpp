@@ -143,8 +143,9 @@ void NavdataReader::parseArgs()
     exit(1);
 
   QString configFile = parser.value(cfgOpt);
-  qInfo() << "Configuration file" << configFile;
-  if(!(configFile.isEmpty() || checkFile(configFile, "Config file: ")))
+  if(configFile.isEmpty())
+    configFile = ":/navdatareader/resources/config/navdatareader.cfg";
+  if(!checkFile(configFile, "Config file: "))
     exit(1);
 
   opts.setSceneryFile(sceneryFile);

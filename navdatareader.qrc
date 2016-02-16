@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/navdatareader">
         <file>resources/config/logging.cfg</file>
+        <file>resources/config/navdatareader.cfg</file>
     </qresource>
 </RCC>

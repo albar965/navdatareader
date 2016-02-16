@@ -40,7 +40,6 @@ SOURCES += main.cpp \
 
 DISTFILES += \
     uncrustify.cfg \
-    navdatareader.cfg \
     BUILD.txt \
     CHANGELOG.txt \
     LICENSE.txt \
