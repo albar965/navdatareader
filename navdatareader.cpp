@@ -153,7 +153,7 @@ void NavdataReader::parseArgs()
 
   QSettings settings(configFile, QSettings::IniFormat);
 
-  opts.loadFiltersFromSettings(settings);
+  opts.loadFromSettings(settings);
   if(parser.isSet(verboseOpt))
     // Let command line override settings file
     opts.setVerbose(parser.isSet(verboseOpt));
