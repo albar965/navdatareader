@@ -42,6 +42,7 @@
 #include <QFileInfo>
 #include <QSettings>
 #include <QCoreApplication>
+#include <QDir>
 
 using atools::fs::scenery::SceneryCfg;
 using atools::sql::SqlDatabase;
@@ -78,8 +79,10 @@ void NavdataReader::run()
   atools::fs::Navdatabase nd(&opts, &db);
   nd.create();
 
-  db.close();
+  if(!copyFilePath.isEmpty())
+    copyFiles();
 
+  db.close();
 }
 
 void NavdataReader::parseArgs()
@@ -120,6 +123,12 @@ void NavdataReader::parseArgs()
                             QObject::tr("scenery"));
   parser.addOption(cfgOpt);
 
+  QCommandLineOption copyOpt({QString(), "copy-files"},
+                             QObject::tr(
+                               "Copy all airport files to the given <filepath> (keeping path structure)"),
+                             QObject::tr("filepath"));
+  parser.addOption(copyOpt);
+
   // Process the actual command line arguments given by the user
   parser.process(*QCoreApplication::instance());
 
@@ -141,6 +150,8 @@ void NavdataReader::parseArgs()
     sceneryFile = atools::fs::FsPaths::getSceneryLibraryPath(type);
   if(!checkFile(sceneryFile, "Scenery file: "))
     exit(1);
+
+  copyFilePath = parser.value(copyOpt);
 
   QString configFile = parser.value(cfgOpt);
   if(configFile.isEmpty())
@@ -210,4 +221,33 @@ bool NavdataReader::checkDir(const QString& path, const QString& msg)
     }
   }
   return true;
+}
+
+void NavdataReader::copyFiles()
+{
+  atools::sql::SqlQuery query(&db);
+
+  query.exec("select filepath from bgl_file");
+  while(query.next())
+  {
+    QString filepath = query.value("filepath").toString();
+
+    if(!filepath.isEmpty())
+    {
+#if defined(Q_OS_WIN32)
+      if(filepath.at(1) == ':')
+        filepath.remove(1, 1);
+#endif
+
+      QString destFilename = copyFilePath + QDir::separator() + filepath;
+      QString destDir = QFileInfo(destFilename).absolutePath();
+      if(!QDir(destDir).mkpath(destDir))
+        qWarning() << "Error creating directory" << destDir;
+
+      QFile file(filepath);
+      qInfo() << "Copying file" << file.fileName() << "to" << destFilename;
+      if(!file.copy(destFilename))
+        qWarning() << "Error copying file" << file.fileName() << "to" << destFilename;
+    }
+  }
 }

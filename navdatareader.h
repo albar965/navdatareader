@@ -34,6 +34,8 @@ private:
 
   atools::sql::SqlDatabase db;
   atools::fs::BglReaderOptions opts;
+  QString copyFilePath;
+  void copyFiles();
 };
 
 #endif // NAVDATAREADER_H

@@ -17,6 +17,7 @@
 
 #include "logging/loggingdefs.h"
 #include "logging/logginghandler.h"
+#include "logging/loggingutil.h"
 #include "settings/settings.h"
 #include "navdatareader.h"
 #include "exception.h"
@@ -34,11 +35,16 @@ int main(int argc, char *argv[])
   QCoreApplication::setApplicationName("Navdata Reader");
   QCoreApplication::setOrganizationName("ABarthel");
   QCoreApplication::setOrganizationDomain("abarthel.org");
-  QCoreApplication::setApplicationVersion("0.5.0.develop");
+  QCoreApplication::setApplicationVersion("0.6.0.develop");
 
   using atools::logging::LoggingHandler;
   LoggingHandler::initialize(atools::settings::Settings::getOverloadedLocalPath(
                                ":/navdatareader/resources/config/logging.cfg"));
+
+  using atools::logging::LoggingUtil;
+  // Print some information which can be useful for debugging
+  LoggingUtil::logSystemInformation();
+  LoggingUtil::logStandardPaths();
 
   qInfo() << "Starting ...";
   try

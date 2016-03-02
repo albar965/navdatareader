@@ -67,9 +67,7 @@ HEADERS += \
 
 # Windows specific deploy target only for release builds
 win32 {
-#  RC_ICONS = resources/icons/littlelogbook.ico
-
-  # Create backslashed path
+  # Create backslashed paths
   WINPWD=$${PWD}
   WINPWD ~= s,/,\\,g
   WINOUT_PWD=$${OUT_PWD}
