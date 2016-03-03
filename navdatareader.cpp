@@ -234,12 +234,13 @@ void NavdataReader::copyFiles()
 
     if(!filepath.isEmpty())
     {
+        QString destPath(filepath);
 #if defined(Q_OS_WIN32)
-      if(filepath.at(1) == ':')
-        filepath.remove(1, 1);
+      if(destPath.at(1) == ':')
+        destPath.remove(1, 1);
 #endif
 
-      QString destFilename = copyFilePath + QDir::separator() + filepath;
+      QString destFilename = copyFilePath + QDir::separator() + destPath;
       QString destDir = QFileInfo(destFilename).absolutePath();
       if(!QDir(destDir).mkpath(destDir))
         qWarning() << "Error creating directory" << destDir;
