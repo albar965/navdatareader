@@ -15,25 +15,14 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *****************************************************************************/
 
-#include "fs/bglreaderoptions.h"
+#include "navdatareader.h"
+
 #include "fs/scenery/scenerycfg.h"
 #include "sql/sqldatabase.h"
-#include "sql/sqlscript.h"
-#include "sql/sqlquery.h"
-#include "fs/db/datawriter.h"
-#include "fs/db/routeresolver.h"
-#include "fs/scenery/sceneryarea.h"
-#include "sql/sqlutil.h"
 #include "fs/fspaths.h"
 #include "logging/loggingdefs.h"
-#include "logging/logginghandler.h"
-#include "settings/settings.h"
 #include "fs/navdatabase.h"
-#include "navdatareader.h"
-#include "exception.h"
-#include "navdatareader.h"
 #include "atools.h"
-#include "sql/sqldatabase.h"
 #include "logging/loggingutil.h"
 
 #include <QCommandLineParser>
@@ -46,8 +35,6 @@
 
 using atools::fs::scenery::SceneryCfg;
 using atools::sql::SqlDatabase;
-using atools::sql::SqlScript;
-using atools::sql::SqlQuery;
 
 NavdataReader::NavdataReader()
 {
@@ -234,7 +221,7 @@ void NavdataReader::copyFiles()
 
     if(!filepath.isEmpty())
     {
-        QString destPath(filepath);
+      QString destPath(filepath);
 #if defined(Q_OS_WIN32)
       if(destPath.at(1) == ':')
         destPath.remove(1, 1);
