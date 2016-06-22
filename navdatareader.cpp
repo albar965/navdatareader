@@ -119,11 +119,11 @@ void NavdataReader::parseArgs()
   // Process the actual command line arguments given by the user
   parser.process(*QCoreApplication::instance());
 
-  atools::fs::fstype::SimulatorType type = atools::fs::fstype::FSX;
+  atools::fs::FsPaths::SimulatorType type = atools::fs::FsPaths::FSX;
   if(parser.isSet(fstypeOpt))
     type = atools::fs::FsPaths::stringToType(parser.value(fstypeOpt));
 
-  qInfo() << "Using simulator type" << atools::fs::FsPaths::typeToString(type);
+  qInfo() << "Using simulator type" << atools::fs::FsPaths::typeToShortName(type);
 
   QString basepath = parser.value(basepathOpt);
   if(basepath.isEmpty())
