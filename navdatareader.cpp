@@ -24,6 +24,7 @@
 #include "fs/navdatabase.h"
 #include "atools.h"
 #include "logging/loggingutil.h"
+#include "fs/db/databasemeta.h"
 
 #include <QCommandLineParser>
 #include <QCoreApplication>
@@ -66,6 +67,11 @@ void NavdataReader::run()
   atools::fs::Navdatabase nd(&opts, &db);
   nd.create();
 
+  atools::fs::db::DatabaseMeta meta(&db);
+  meta.updateAll();
+
+  // Copy all files containing airport or navaid information to another directory
+  // Only for debugging purposes
   if(!copyFilePath.isEmpty())
     copyFiles();
 
@@ -75,7 +81,8 @@ void NavdataReader::run()
 void NavdataReader::parseArgs()
 {
   QCommandLineParser parser;
-  parser.setApplicationDescription("Flight Simulator Navdata Database Reader");
+  parser.setApplicationDescription("Flight Simulator Navdata Database Reader.\n"
+                                   "This software is licensed under the GPL3 or any later version.");
   parser.addHelpOption();
   parser.addVersionOption();
 
@@ -106,13 +113,14 @@ void NavdataReader::parseArgs()
   parser.addOption(databaseOpt);
 
   QCommandLineOption cfgOpt({"c", "config"},
-                            QObject::tr("Configuration file for %1").arg(QCoreApplication::applicationName()),
-                            QObject::tr("scenery"));
+                            QObject::tr("Configuration file <config> for %1").
+                            arg(QCoreApplication::applicationName()),
+                            QObject::tr("config"));
   parser.addOption(cfgOpt);
 
-  QCommandLineOption copyOpt({QString(), "copy-files"},
-                             QObject::tr(
-                               "Copy all airport files to the given <filepath> (keeping path structure)"),
+  QCommandLineOption copyOpt(QStringList("copy-files"),
+                             QObject::tr("Copy all airport files to the given "
+                                         "<filepath> (keeping path structure)"),
                              QObject::tr("filepath"));
   parser.addOption(copyOpt);
 
@@ -142,6 +150,7 @@ void NavdataReader::parseArgs()
 
   QString configFile = parser.value(cfgOpt);
   if(configFile.isEmpty())
+    // Command line overrides resource settings file
     configFile = ":/navdatareader/resources/config/navdatareader.cfg";
   if(!checkFile(configFile, "Config file: "))
     exit(1);

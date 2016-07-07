@@ -21,6 +21,10 @@
 #include "sql/sqldatabase.h"
 #include "fs/bglreaderoptions.h"
 
+/*
+ * Reads configuration options from the command line, the configuration file and
+ * loads all BGLs into the Sqlite database.
+ */
 class NavdataReader
 {
 public:
@@ -28,14 +32,18 @@ public:
   void run();
 
 private:
+  /* Parse command line arguments */
   void parseArgs();
   bool checkDir(const QString& path, const QString& msg);
   bool checkFile(const QString& path, const QString& msg);
 
+  /* Copy all airport files to the path given on the command line */
+  void copyFiles();
+
   atools::sql::SqlDatabase db;
   atools::fs::BglReaderOptions opts;
   QString copyFilePath;
-  void copyFiles();
+
 };
 
 #endif // NAVDATAREADER_H

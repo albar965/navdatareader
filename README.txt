@@ -1,6 +1,6 @@
 Navdatareader is a command line tool that uses the atools fs/bgl
 and fs/db modules to store a full flight simulator scenery database into
-a relational database like Sqlite or MySql.
+Sqlite, a relational database .
 
 ------------------------------------------------------------------------------
 
@@ -16,10 +16,11 @@ All BGL features except scenery objects are supported.
 
 ------------------------------------------------------------------------------
 
-A configuration file allow includes various settings and filter options to
+A configuration file includes various settings and filter options to
 exclude files, directories, facilities or airports. If the file is not given
-the simulator paths will automatically found and the conversion process will start.
-The default confgiguration file with comments can be found here:
+the simulator paths will be automatically extracted from the registry and
+the conversion process will start.
+The default configuration file with comments can be found here:
 navdatareader/resources/config/navdatareader.cfg
 
 --------------------
@@ -29,11 +30,20 @@ navdatareader/resources/config/logging.cfg
 --------------------
 The database schema is documented in the atools project which contains
 the SQL files that create all the needed tables:
-* atools/resources/sql/nd/create_ap_schema.sql: Airport, runway, com,
-    approach and other airport related tables.
-* atools/resources/sql/nd/create_boundary_schema.sql: Airspaces.
-* atools/resources/sql/nd/create_meta_schema.sql: Metadata for BGL files and scenery areas.
-* atools/resources/sql/nd/create_nav_schema.sql: VOR, NDB, ILS and waypoints.
+* atools/resources/sql/fs/db/create_ap_schema.sql:
+  Airports, runways, COM, approaches, transitions and other airport related tables.
+
+* atools/resources/sql/fs/db/create_boundary_schema.sql:
+  Airspace boundaries and related frequencies
+
+* atools/resources/sql/fs/db/create_meta_schema.sql:
+  Metadata for BGL files and scenery areas.
+
+* atools/resources/sql/fs/db/create_nav_schema.sql:
+  VOR, NDB, ILS, waypoints and airways.
+
+* atools/resources/sql/fs/db/create_route_schema.sql:
+  Tables needed to route calculation.
 
 ------------------------------------------------------------------------------
 This software is licensed under GPL3 or any later version.
