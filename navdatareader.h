@@ -19,7 +19,7 @@
 #define NAVDATAREADER_H
 
 #include "sql/sqldatabase.h"
-#include "fs/bglreaderoptions.h"
+#include "fs/navdatabaseoptions.h"
 
 /*
  * Reads configuration options from the command line, the configuration file and
@@ -41,7 +41,7 @@ private:
   void copyFiles();
 
   atools::sql::SqlDatabase db;
-  atools::fs::BglReaderOptions opts;
+  atools::fs::NavDatabaseOptions opts;
   QString copyFilePath;
 
 };

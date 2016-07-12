@@ -64,7 +64,7 @@ void NavdataReader::run()
 
   db.open({"PRAGMA foreign_keys = ON"});
 
-  atools::fs::Navdatabase nd(&opts, &db);
+  atools::fs::NavDatabase nd(&opts, &db);
   nd.create();
 
   atools::fs::db::DatabaseMeta meta(&db);
