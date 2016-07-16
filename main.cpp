@@ -15,13 +15,13 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *****************************************************************************/
 
-#include "logging/loggingdefs.h"
 #include "logging/logginghandler.h"
 #include "logging/loggingutil.h"
 #include "settings/settings.h"
 #include "navdatareader.h"
 #include "exception.h"
 
+#include <QDebug>
 #include <QCoreApplication>
 
 int main(int argc, char *argv[])

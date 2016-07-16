@@ -20,12 +20,12 @@
 #include "fs/scenery/scenerycfg.h"
 #include "sql/sqldatabase.h"
 #include "fs/fspaths.h"
-#include "logging/loggingdefs.h"
 #include "fs/navdatabase.h"
 #include "atools.h"
 #include "logging/loggingutil.h"
 #include "fs/db/databasemeta.h"
 
+#include <QDebug>
 #include <QCommandLineParser>
 #include <QCoreApplication>
 #include <QElapsedTimer>
