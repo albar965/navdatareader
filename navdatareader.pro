@@ -50,13 +50,18 @@ DISTFILES += \
 DEPENDPATH += $$PWD/../atools/src
 INCLUDEPATH += $$PWD/../atools/src $$PWD/src
 
-CONFIG(debug, debug|release) {
-  LIBS += -L $$PWD/../atools/debug -l atools
-  PRE_TARGETDEPS += $$PWD/../atools/debug/libatools.a
+CONFIG(debug, debug|release):CONF_TYPE=debug
+CONFIG(release, debug|release):CONF_TYPE=release
+
+unix {
+  LIBS += -L$$PWD/../build-atools-$${CONF_TYPE} -latools
+  PRE_TARGETDEPS += $$PWD/../build-atools-$${CONF_TYPE}/libatools.a
 }
-CONFIG(release, debug|release) {
-  LIBS += -L $$PWD/../atools/release -l atools
-  PRE_TARGETDEPS += $$PWD/../atools/release/libatools.a
+
+win32 {
+  LIBS += -L$$PWD/../build-atools-$${CONF_TYPE}/$${CONF_TYPE} -latools
+  PRE_TARGETDEPS += $$PWD/../build-atools-$${CONF_TYPE}/$${CONF_TYPE}/atools.lib
+  WINDEPLOY_FLAGS = --compiler-runtime
 }
 
 RESOURCES += \
