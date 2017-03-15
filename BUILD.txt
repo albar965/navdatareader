@@ -10,18 +10,27 @@ Additionally my atools static library is needed.
 Windows
 ------------------------------------------------------
 
-- Get and install Qt Creator from http://www.qt.io.
-- Use "../build-%{CurrentProject:Name}-%{CurrentBuild:Name}" for "Default build directory"
-     in the Qt Creator options dialog.
-- Import atools and navdatareader into the workspace.
-- Configure the projects and enable shadow build for release or debug versions.
+- Get and install Qt Creator from http://www.qt.io. Preferrably use the default installation 
+  directory "C:\Qt"
+
 - Clone atools from GIT to e.g.: "C:\Projects\atools"
--- For atools use the build directory of e.g.: "C:\Projects\build-atools-release"
--- Clone navdatareader from GIT to e.g.: "C:\Projects\navdatareader"
--- For navdatareader use the build directory of e.g.: "C:\Projects\build-navdatareader-release"
-- Set the build kit for atools and navdatareader to MinGW 32bit.
-- Run qmake from Qt Creator for all projects
-- Build all projects from Qt Creator
+- Clone navdatareader from GIT to e.g.: "C:\Projects\navdatareader"
+Both projects have to reside in the same directory.
+
+- Use "../build-%{CurrentProject:Name}-%{CurrentBuild:Name}" for "Default build directory"
+  in the Qt Creator options dialog.
+- Import atools and navdatareader into the Qt creator workspace.
+- Configure the projects and enable shadow build for release or debug versions.
+
+If the shadow build is configured properly:
+- atools uses the build directory of e.g.: "C:\Projects\build-atools-release"
+- navdatareader uses the build directory of e.g.: "C:\Projects\build-navdatareader-release"
+
+- Set the build kit for atools and navdatareader to MinGW 32bit. MSVC is untested.
+
+- Run qmake from Qt Creator for both projects
+- Build both projects from Qt Creator
+- Deploy navdatareader
 
 Do not use the default shadow build directory names, this will break project dependencies.
 
