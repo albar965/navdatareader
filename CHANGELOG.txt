@@ -1,3 +1,6 @@
-0.9.8.develop
+0.9.1.develop
 
-Initial development version.
+* Initial development version.
+* Fixed deploy for Windows
+* Fixed error opening database
+* Disable foreign keys

@@ -1,5 +1,5 @@
 #*****************************************************************************
-# Copyright 2015-2016 Alexander Barthel albar965@mailbox.org
+# Copyright 2015-2017 Alexander Barthel albar965@mailbox.org
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -20,9 +20,12 @@ QT -= gui
 
 # Adapt these variables to compile on Windows
 win32 {
-  QT_BIN=C:\\Qt\\5.5\\mingw492_32\\bin
+  QT_HOME=C:\\Qt\\5.8\\mingw53_32
+  QT_TOOL_HOME=C:\\Qt\\5.8\\mingw53_32
+  OPENSSL=C:\\OpenSSL-Win32
   GIT_BIN='C:\\Git\\bin\\git'
 }
+
 CONFIG += c++11
 
 # Get the current GIT revision to include it into the code
@@ -60,7 +63,7 @@ unix {
 
 win32 {
   LIBS += -L$$PWD/../build-atools-$${CONF_TYPE}/$${CONF_TYPE} -latools
-  PRE_TARGETDEPS += $$PWD/../build-atools-$${CONF_TYPE}/$${CONF_TYPE}/atools.lib
+  PRE_TARGETDEPS += $$PWD/../build-atools-$${CONF_TYPE}/$${CONF_TYPE}/libatools.a
   WINDEPLOY_FLAGS = --compiler-runtime
 }
 
@@ -78,15 +81,15 @@ win32 {
   WINOUT_PWD=$${OUT_PWD}
   WINOUT_PWD ~= s,/,\\,g
   DEPLOY_DIR_NAME=navdatareader
-  DEPLOY_DIR=\"$${WINPWD}\\deploy\\$${DEPLOY_DIR_NAME}\"
+  DEPLOY_DIR_WIN=\"$${WINPWD}\\..\\deploy\\$${DEPLOY_DIR_NAME}\"
 
-  deploy.commands = rmdir /s /q $${DEPLOY_DIR} &
-  deploy.commands += mkdir $${DEPLOY_DIR} &
-  deploy.commands += copy $${WINOUT_PWD}\\navdatareader.exe $${DEPLOY_DIR} &&
-  deploy.commands += copy $${QT_BIN}\\libgcc*.dll $${DEPLOY_DIR} &&
-  deploy.commands += copy $${QT_BIN}\\libstdc*.dll $${DEPLOY_DIR} &&
-  deploy.commands += copy $${QT_BIN}\\libwinpthread*.dll $${DEPLOY_DIR} &&
-  deploy.commands += $${QT_BIN}\\windeployqt --compiler-runtime $${DEPLOY_DIR}
+  deploy.commands = rmdir /s /q $${DEPLOY_DIR_WIN} &&
+  deploy.commands += mkdir $${DEPLOY_DIR_WIN} &&
+  deploy.commands += xcopy $${WINOUT_PWD}\\$${CONF_TYPE}\\navdatareader.exe $${DEPLOY_DIR_WIN} &&
+  deploy.commands += xcopy $${QT_HOME}\\bin\\libgcc*.dll $${DEPLOY_DIR_WIN} &&
+  deploy.commands += xcopy $${QT_HOME}\\bin\\libstdc*.dll $${DEPLOY_DIR_WIN} &&
+  deploy.commands += xcopy $${QT_HOME}\\bin\\libwinpthread*.dll $${DEPLOY_DIR_WIN} &&
+  deploy.commands += $${QT_HOME}\\bin\\windeployqt --compiler-runtime $${DEPLOY_DIR_WIN}
 }
 
 QMAKE_EXTRA_TARGETS += deploy

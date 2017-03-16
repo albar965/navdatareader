@@ -1,5 +1,5 @@
 /*****************************************************************************
-* Copyright 2015-2016 Alexander Barthel albar965@mailbox.org
+* Copyright 2015-2017 Alexander Barthel albar965@mailbox.org
 *
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
   QCoreApplication::setApplicationName("Navdata Reader");
   QCoreApplication::setOrganizationName("ABarthel");
   QCoreApplication::setOrganizationDomain("abarthel.org");
-  QCoreApplication::setApplicationVersion("0.9.0.develop");
+  QCoreApplication::setApplicationVersion("0.9.1.devel");
 
   using atools::logging::LoggingHandler;
   LoggingHandler::initialize(atools::settings::Settings::getOverloadedLocalPath(

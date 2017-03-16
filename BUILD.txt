@@ -10,7 +10,7 @@ Additionally my atools static library is needed.
 Windows
 ------------------------------------------------------
 
-- Get and install Qt Creator from http://www.qt.io. Preferrably use the default installation 
+- Get and install Qt Creator from http://www.qt.io. Preferrably use the default installation
   directory "C:\Qt"
 
 - Clone atools from GIT to e.g.: "C:\Projects\atools"
@@ -27,6 +27,8 @@ If the shadow build is configured properly:
 - navdatareader uses the build directory of e.g.: "C:\Projects\build-navdatareader-release"
 
 - Set the build kit for atools and navdatareader to MinGW 32bit. MSVC is untested.
+- Add "DEFINES+=SIMCONNECT_DUMMY DEFINES-=SIMCONNECT_REAL" to
+  atools and navdatareader qmake parameters if FSX/P3D SimConnect is not installed.
 
 - Run qmake from Qt Creator for both projects
 - Build both projects from Qt Creator
