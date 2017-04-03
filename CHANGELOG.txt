@@ -1,3 +1,21 @@
+0.9.3.develop
+
+* Several fixes when reading airspace boundaries.
+* Added missing indexes to boundary table.
+* Fixed reading of airspace boundaries and removed hack.
+* Reduced size of airspace enums in database.
+* Fixed old problem with empty registry entries when detecting simulator
+
+0.9.2.develop
+
+* Solved problem where airports without delete record lost approaches.
+* Cleanup in database around transitions and approaches:
+** Navaid ids have to be resolved during runtime now and not during compilation time.
+** Fix for multiple navaids with the same name and same region in the database.
+** Added more redundant information to runway end table to speed up program during runtime.
+* Now nearest VOR and NDBs are assigned to waypoint if duplicates exist.
+* Fixed reading of airspace boundary bgl files and reduced string field sizes.
+
 0.9.1.develop
 
 * Initial development version.
