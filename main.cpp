@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
   QCoreApplication::setApplicationName("Navdata Reader");
   QCoreApplication::setOrganizationName("ABarthel");
   QCoreApplication::setOrganizationDomain("abarthel.org");
-  QCoreApplication::setApplicationVersion("0.9.3.devel");
+  QCoreApplication::setApplicationVersion("0.9.4.develop");
 
   using atools::logging::LoggingHandler;
   LoggingHandler::initialize(atools::settings::Settings::getOverloadedLocalPath(

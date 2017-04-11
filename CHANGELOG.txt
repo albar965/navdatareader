@@ -1,3 +1,11 @@
+0.9.4.develop
+
+* Removed boundary_line table and pre-calculate boundary geometry now which ist stored as binary data.
+* Bumped database version up for changed schema.
+* Changed ILS to runway assignment logic to fix ILS data updates.
+* Added still unused columns in database for speed limit, airway direction and other extensions for future AIRAC support.
+* Added option for two external databases besides the real simulators.
+
 0.9.3.develop
 
 * Several fixes when reading airspace boundaries.
