@@ -66,7 +66,8 @@ void NavdataReader::run()
   db.open( /*{"PRAGMA foreign_keys = ON"}*/);
 
   atools::fs::NavDatabase nd(&opts, &db, nullptr);
-  nd.create();
+  QString sceneryCfgCodec = opts.getSimulatorType() == atools::fs::FsPaths::P3D_V4 ? "UTF-8" : QString();
+  nd.create(sceneryCfgCodec);
 
   atools::fs::db::DatabaseMeta meta(&db);
   meta.updateAll();
@@ -98,7 +99,7 @@ void NavdataReader::parseArgs()
 
   QCommandLineOption fstypeOpt({"f", "flight-simulator"},
                                QObject::tr("Flight simulator type <simulator>. "
-                                           "Either FSX, FSXSE, P3DV2 or P3DV3."),
+                                           "Either FSX, FSXSE, P3DV2, P3DV3 or P3DV4."),
                                QObject::tr("simulator"));
   parser.addOption(fstypeOpt);
 
@@ -130,7 +131,10 @@ void NavdataReader::parseArgs()
 
   atools::fs::FsPaths::SimulatorType type = atools::fs::FsPaths::FSX;
   if(parser.isSet(fstypeOpt))
+  {
     type = atools::fs::FsPaths::stringToType(parser.value(fstypeOpt));
+    opts.setSimulatorType(type);
+  }
 
   qInfo() << "Using simulator type" << atools::fs::FsPaths::typeToShortName(type);
 
