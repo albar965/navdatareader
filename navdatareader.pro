@@ -83,7 +83,7 @@ win32 {
   DEPLOY_DIR_NAME=navdatareader
   DEPLOY_DIR_WIN=\"$${WINPWD}\\..\\deploy\\$${DEPLOY_DIR_NAME}\"
 
-  deploy.commands = rmdir /s /q $${DEPLOY_DIR_WIN} &&
+  deploy.commands = rmdir /s /q $${DEPLOY_DIR_WIN} &
   deploy.commands += mkdir $${DEPLOY_DIR_WIN} &&
   deploy.commands += xcopy $${WINOUT_PWD}\\$${CONF_TYPE}\\navdatareader.exe $${DEPLOY_DIR_WIN} &&
   deploy.commands += xcopy $${WINPWD}\\CHANGELOG.txt $${DEPLOY_DIR_WIN} &&
