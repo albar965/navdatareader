@@ -82,6 +82,7 @@ void NavdataReader::run()
 
 void NavdataReader::parseArgs()
 {
+  // Build command line option parser ===================================================
   QCommandLineParser parser;
   parser.setApplicationDescription("Flight Simulator Navdata Database Reader.\n"
                                    "This software is licensed under the GPL3 or any later version.");
@@ -93,13 +94,13 @@ void NavdataReader::parseArgs()
   parser.addOption(verboseOpt);
 
   QCommandLineOption sceneryOpt({"s", "scenery"},
-                                QObject::tr("Scenery.cfg file <scenery>"),
+                                QObject::tr("Scenery.cfg file <scenery>. Not for X-Plane."),
                                 QObject::tr("scenery"));
   parser.addOption(sceneryOpt);
 
   QCommandLineOption fstypeOpt({"f", "flight-simulator"},
                                QObject::tr("Flight simulator type <simulator>. "
-                                           "Either FSX, FSXSE, P3DV2, P3DV3 or P3DV4."),
+                                           "Either FSX, FSXSE, P3DV2, P3DV3, P3DV4 or XP11."),
                                QObject::tr("simulator"));
   parser.addOption(fstypeOpt);
 
@@ -129,6 +130,7 @@ void NavdataReader::parseArgs()
   // Process the actual command line arguments given by the user
   parser.process(*QCoreApplication::instance());
 
+  // Simulator Type ===================================================
   atools::fs::FsPaths::SimulatorType type = atools::fs::FsPaths::FSX;
   if(parser.isSet(fstypeOpt))
   {
@@ -138,21 +140,30 @@ void NavdataReader::parseArgs()
 
   qInfo() << "Using simulator type" << atools::fs::FsPaths::typeToShortName(type);
 
+  // Base path ===================================================
   QString basepath = parser.value(basepathOpt);
   if(basepath.isEmpty())
     basepath = atools::fs::FsPaths::getBasePath(type);
 
   if(!checkDir(basepath, "Base path: "))
     exit(1);
+  opts.setBasepath(basepath);
 
-  QString sceneryFile = parser.value(sceneryOpt);
-  if(sceneryFile.isEmpty())
-    sceneryFile = atools::fs::FsPaths::getSceneryLibraryPath(type);
-  if(!checkFile(sceneryFile, "Scenery file: "))
-    exit(1);
+  // Scenery.cfg ===================================================
+  if(type != atools::fs::FsPaths::XPLANE11)
+  {
+    QString sceneryFile = parser.value(sceneryOpt);
+    if(sceneryFile.isEmpty())
+      sceneryFile = atools::fs::FsPaths::getSceneryLibraryPath(type);
+    if(!checkFile(sceneryFile, "Scenery file: "))
+      exit(1);
+
+    opts.setSceneryFile(sceneryFile);
+  }
 
   copyFilePath = parser.value(copyOpt);
 
+  // Configuration file ===================================================
   QString configFile = parser.value(cfgOpt);
   if(configFile.isEmpty())
     // Command line overrides resource settings file
@@ -160,8 +171,7 @@ void NavdataReader::parseArgs()
   if(!checkFile(configFile, "Config file: "))
     exit(1);
 
-  opts.setSceneryFile(sceneryFile);
-  opts.setBasepath(basepath);
+  qInfo() << "===== Configuration" << configFile << "=====";
 
   QSettings settings(configFile, QSettings::IniFormat);
 
@@ -170,10 +180,13 @@ void NavdataReader::parseArgs()
     // Let command line override settings file
     opts.setVerbose(parser.isSet(verboseOpt));
 
+  // Create database ===================================================
   db = SqlDatabase(settings, "Database");
   QString databaseName = parser.value(databaseOpt);
   if(!databaseName.isEmpty())
     db.setDatabaseName(databaseName);
+
+  qInfo() << "===== Database" << databaseName << "=====";
 }
 
 bool NavdataReader::checkFile(const QString& path, const QString& msg)
