@@ -20,6 +20,7 @@
 #include "settings/settings.h"
 #include "navdatareader.h"
 #include "exception.h"
+#include "gui/consoleapplication.h"
 
 #include <QDebug>
 #include <QCoreApplication>
@@ -30,12 +31,12 @@ int main(int argc, char *argv[])
   Q_INIT_RESOURCE(atools);
 
   int retval = 0;
-  QCoreApplication app(argc, argv);
+  atools::gui::ConsoleApplication app(argc, argv);
   Q_UNUSED(app);
   QCoreApplication::setApplicationName("Navdata Reader");
   QCoreApplication::setOrganizationName("ABarthel");
   QCoreApplication::setOrganizationDomain("abarthel.org");
-  QCoreApplication::setApplicationVersion("0.9.7.develop");
+  QCoreApplication::setApplicationVersion("0.9.8.develop");
 
   using atools::logging::LoggingHandler;
   LoggingHandler::initialize(atools::settings::Settings::getOverloadedLocalPath(

@@ -24,6 +24,7 @@
 #include "atools.h"
 #include "logging/loggingutil.h"
 #include "fs/db/databasemeta.h"
+#include "fs/navdatabaseerrors.h"
 
 #include <QDebug>
 #include <QCommandLineParser>
@@ -36,6 +37,7 @@
 
 using atools::fs::scenery::SceneryCfg;
 using atools::sql::SqlDatabase;
+using atools::fs::NavDatabaseErrors;
 
 NavdataReader::NavdataReader()
 {
@@ -55,9 +57,9 @@ void NavdataReader::run()
   qInfo().nospace().noquote() << "atools Version " << atools::version()
                               << " (revision " << atools::gitRevision() << ")";
 
-  // Print some information which can be useful for debugging
   using atools::logging::LoggingUtil;
   LoggingUtil::logSystemInformation();
+
   LoggingUtil::logStandardPaths();
 
   qInfo() << opts;
@@ -65,12 +67,10 @@ void NavdataReader::run()
   // FKs don't work currently
   db.open( /*{"PRAGMA foreign_keys = ON"}*/);
 
-  atools::fs::NavDatabase nd(&opts, &db, nullptr);
+  atools::fs::NavDatabaseErrors errors;
+  atools::fs::NavDatabase nd(&opts, &db, &errors);
   QString sceneryCfgCodec = opts.getSimulatorType() == atools::fs::FsPaths::P3D_V4 ? "UTF-8" : QString();
   nd.create(sceneryCfgCodec);
-
-  atools::fs::db::DatabaseMeta meta(&db);
-  meta.updateAll();
 
   // Copy all files containing airport or navaid information to another directory
   // Only for debugging purposes
@@ -78,6 +78,22 @@ void NavdataReader::run()
     copyFiles();
 
   db.close();
+
+  if(errors.getTotalErrors() > 0)
+  {
+    qWarning() << "==================================================================";
+    qWarning() << "== FOUND ERRORS ==================================================";
+    for(const NavDatabaseErrors::SceneryErrors& errs : errors.sceneryErrors)
+    {
+      qWarning() << "Error in scenery" << errs.scenery;
+
+      for(const NavDatabaseErrors::SceneryFileError& err : errs.fileErrors)
+        qWarning() << "Error in file" << err.filepath << "line" << err.lineNum << ":" << err.errorMessage;
+
+      for(const QString& err : errs.sceneryErrorsMessages)
+        qWarning() << "Other error:" << err;
+    }
+  }
 }
 
 void NavdataReader::parseArgs()

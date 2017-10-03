@@ -18,13 +18,29 @@
 QT += sql core
 QT -= gui
 
-# Adapt these variables to compile on Windows
+# =======================================================================
+# Adapt these paths for each operating system
+# =======================================================================
+
+# Windows ==================
 win32 {
-  QT_HOME=C:\\Qt\\5.8\\mingw53_32
-  QT_TOOL_HOME=C:\\Qt\\5.8\\mingw53_32
+  QT_HOME=C:\\Qt\\5.9.1\\mingw53_32
   OPENSSL=C:\\OpenSSL-Win32
   GIT_BIN='C:\\Git\\bin\\git'
 }
+
+# Linux ==================
+unix:!macx {
+  QT_HOME=/home/alex/Qt/5.9.1/gcc_64
+}
+
+macx {
+  # Compatibility down to OS X Mountain Lion 10.8
+  QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.8
+}
+
+# End of configuration section
+# =======================================================================
 
 CONFIG += c++11
 
@@ -73,14 +89,21 @@ RESOURCES += \
 HEADERS += \
     navdatareader.h
 
+# Linux - Copy help and Marble plugins and data
+unix:!macx {
+  copydata.commands += cp -avfu $$PWD/magdec $$OUT_PWD
+
+  cleandata.commands = rm -Rvf $$OUT_PWD/magdec
+}
+
 # Windows specific deploy target only for release builds
 win32 {
-  # Create backslashed paths
+  # Create backslashed path
   WINPWD=$${PWD}
   WINPWD ~= s,/,\\,g
   WINOUT_PWD=$${OUT_PWD}
   WINOUT_PWD ~= s,/,\\,g
-  DEPLOY_DIR_NAME=navdatareader
+  DEPLOY_DIR_NAME=Navdatareader
   DEPLOY_DIR_WIN=\"$${WINPWD}\\..\\deploy\\$${DEPLOY_DIR_NAME}\"
 
   deploy.commands = rmdir /s /q $${DEPLOY_DIR_WIN} &
@@ -92,8 +115,14 @@ win32 {
   deploy.commands += xcopy $${QT_HOME}\\bin\\libgcc*.dll $${DEPLOY_DIR_WIN} &&
   deploy.commands += xcopy $${QT_HOME}\\bin\\libstdc*.dll $${DEPLOY_DIR_WIN} &&
   deploy.commands += xcopy $${QT_HOME}\\bin\\libwinpthread*.dll $${DEPLOY_DIR_WIN} &&
-  deploy.commands += $${QT_HOME}\\bin\\windeployqt --compiler-runtime $${DEPLOY_DIR_WIN}
+  deploy.commands += $${QT_HOME}\\bin\\windeployqt $${WINDEPLOY_FLAGS} $${DEPLOY_DIR_WIN}
 }
 
 QMAKE_EXTRA_TARGETS += deploy
 
+deploy.depends = copydata
+first.depends = $(first) copydata
+QMAKE_EXTRA_TARGETS += first copydata
+
+clean.depends = $(clean) cleandata
+QMAKE_EXTRA_TARGETS += clean cleandata
