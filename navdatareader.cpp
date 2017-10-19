@@ -79,6 +79,8 @@ void NavdataReader::run()
 
   db.close();
 
+
+
   if(errors.getTotalErrors() > 0)
   {
     qWarning() << "==================================================================";
@@ -114,9 +116,14 @@ void NavdataReader::parseArgs()
                                 QObject::tr("scenery"));
   parser.addOption(sceneryOpt);
 
+  QCommandLineOption sourceDbOpt({"s", "source"},
+                                 QObject::tr("Source database <source>."),
+                                 QObject::tr("source"));
+  parser.addOption(sourceDbOpt);
+
   QCommandLineOption fstypeOpt({"f", "flight-simulator"},
-                               QObject::tr("Flight simulator type <simulator>. "
-                                           "Either FSX, FSXSE, P3DV2, P3DV3, P3DV4 or XP11."),
+                               QObject::tr("Flight simulator type <simulator> or other data source. "
+                                           "Either FSX, FSXSE, P3DV2, P3DV3, P3DV4, XP11 or NAVIGRAPH."),
                                QObject::tr("simulator"));
   parser.addOption(fstypeOpt);
 
@@ -125,9 +132,9 @@ void NavdataReader::parseArgs()
                                  QObject::tr("basepath"));
   parser.addOption(basepathOpt);
 
-  QCommandLineOption databaseOpt({"d", "database"},
-                                 QObject::tr("Sqlite database filename <database>"),
-                                 QObject::tr("database"),
+  QCommandLineOption databaseOpt({"o", "output"},
+                                 QObject::tr("Output Sqlite database filename <output>"),
+                                 QObject::tr("output"),
                                  "navdata.sqlite");
   parser.addOption(databaseOpt);
 
@@ -150,23 +157,36 @@ void NavdataReader::parseArgs()
   atools::fs::FsPaths::SimulatorType type = atools::fs::FsPaths::FSX;
   if(parser.isSet(fstypeOpt))
   {
-    type = atools::fs::FsPaths::stringToType(parser.value(fstypeOpt));
+    type = atools::fs::FsPaths::stringToType(parser.value(fstypeOpt).toUpper());
     opts.setSimulatorType(type);
   }
 
-  qInfo() << "Using simulator type" << atools::fs::FsPaths::typeToShortName(type);
+  qInfo() << "Using source data type" << atools::fs::FsPaths::typeToShortName(type);
 
   // Base path ===================================================
-  QString basepath = parser.value(basepathOpt);
-  if(basepath.isEmpty())
-    basepath = atools::fs::FsPaths::getBasePath(type);
+  if(type != atools::fs::FsPaths::NAVIGRAPH)
+  {
+    QString basepath = parser.value(basepathOpt);
+    if(basepath.isEmpty())
+      basepath = atools::fs::FsPaths::getBasePath(type);
 
-  if(!checkDir(basepath, "Base path: "))
-    exit(1);
-  opts.setBasepath(basepath);
+    if(!checkDir(basepath, "Base path: "))
+      exit(1);
+    opts.setBasepath(basepath);
+  }
+
+  // Source database ===================================================
+  if(type == atools::fs::FsPaths::NAVIGRAPH)
+  {
+    QString dbFile = parser.value(sourceDbOpt);
+
+    if(!checkFile(dbFile, "Source database: "))
+      exit(1);
+    opts.setSourceDatabase(dbFile);
+  }
 
   // Scenery.cfg ===================================================
-  if(type != atools::fs::FsPaths::XPLANE11)
+  if(type != atools::fs::FsPaths::XPLANE11 && type != atools::fs::FsPaths::NAVIGRAPH)
   {
     QString sceneryFile = parser.value(sceneryOpt);
     if(sceneryFile.isEmpty())
@@ -202,7 +222,7 @@ void NavdataReader::parseArgs()
   if(!databaseName.isEmpty())
     db.setDatabaseName(databaseName);
 
-  qInfo() << "===== Database" << databaseName << "=====";
+  qInfo() << "===== Database" << QFileInfo(databaseName).absoluteFilePath() << "=====";
 }
 
 bool NavdataReader::checkFile(const QString& path, const QString& msg)
