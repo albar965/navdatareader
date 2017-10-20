@@ -38,11 +38,6 @@ int main(int argc, char *argv[])
   QCoreApplication::setOrganizationDomain("abarthel.org");
   QCoreApplication::setApplicationVersion("0.9.8.develop");
 
-  using atools::logging::LoggingHandler;
-  LoggingHandler::initialize(atools::settings::Settings::getOverloadedLocalPath(
-                               ":/navdatareader/resources/config/logging.cfg"));
-
-  qInfo() << "Starting ...";
   try
   {
     // Read the scenery.cfg, read all scenery areas and BGL files and store them in the Sqlite database

@@ -25,6 +25,8 @@
 #include "logging/loggingutil.h"
 #include "fs/db/databasemeta.h"
 #include "fs/navdatabaseerrors.h"
+#include "logging/logginghandler.h"
+#include "settings/settings.h"
 
 #include <QDebug>
 #include <QCommandLineParser>
@@ -47,6 +49,9 @@ NavdataReader::NavdataReader()
 void NavdataReader::run()
 {
   parseArgs();
+
+  atools::logging::LoggingHandler::initialize(atools::settings::Settings::getOverloadedLocalPath(
+                                                ":/navdatareader/resources/config/logging.cfg"));
 
   qInfo() << "This software is licensed under the GPL3 or any later version.";
   qInfo() << "See http://www.gnu.org/licenses/gpl-3.0 for more information.";
@@ -105,39 +110,40 @@ void NavdataReader::parseArgs()
   parser.addHelpOption();
   parser.addVersionOption();
 
-  QCommandLineOption verboseOpt("verbose",
-                                QObject::tr("Use verbose logging"));
-  parser.addOption(verboseOpt);
-
-  QCommandLineOption sceneryOpt({"s", "scenery"},
-                                QObject::tr("Scenery.cfg file <scenery>. Not for X-Plane."),
-                                QObject::tr("scenery"));
-  parser.addOption(sceneryOpt);
-
-  QCommandLineOption sourceDbOpt({"s", "source"},
-                                 QObject::tr("Source database <source>."),
-                                 QObject::tr("source"));
-  parser.addOption(sourceDbOpt);
-
   QCommandLineOption fstypeOpt({"f", "flight-simulator"},
-                               QObject::tr("Flight simulator type <simulator> or other data source. "
+                               QObject::tr("Required option. Flight simulator type <simulator> or other data source. "
                                            "Either FSX, FSXSE, P3DV2, P3DV3, P3DV4, XP11 or DFD."),
                                QObject::tr("simulator"));
   parser.addOption(fstypeOpt);
 
+  QCommandLineOption sceneryOpt({"s", "scenery"},
+                                QObject::tr("Scenery.cfg file <scenery> for FSX and P3D. "
+                                            "Determined by registry entries if not given."),
+                                QObject::tr("scenery"));
+  parser.addOption(sceneryOpt);
+
+  QCommandLineOption sourceDbOpt({"d", "source-database"},
+                                 QObject::tr("Required option for DFD compilation. "
+                                             "Source database <source-database> for DFD based compilation."),
+                                 QObject::tr("source-database"));
+  parser.addOption(sourceDbOpt);
+
   QCommandLineOption basepathOpt({"b", "basepath"},
-                                 QObject::tr("Flight simulator basepath for BGL files <basepath>"),
+                                 QObject::tr("Flight simulator basepath for BGL files <basepath>. "
+                                             "Determined by registry entries if not given."),
                                  QObject::tr("basepath"));
   parser.addOption(basepathOpt);
 
   QCommandLineOption databaseOpt({"o", "output"},
-                                 QObject::tr("Output Sqlite database filename <output>"),
+                                 QObject::tr("Output Sqlite database filename <output> "
+                                             "Default is \"navdata.sqlite\"."),
                                  QObject::tr("output"),
                                  "navdata.sqlite");
   parser.addOption(databaseOpt);
 
   QCommandLineOption cfgOpt({"c", "config"},
-                            QObject::tr("Configuration file <config> for %1").
+                            QObject::tr("Configuration file <config> for %1. "
+                                        "Default is to use integrated \"navdatareader.cfg\".").
                             arg(QCoreApplication::applicationName()),
                             QObject::tr("config"));
   parser.addOption(cfgOpt);
@@ -159,6 +165,31 @@ void NavdataReader::parseArgs()
     opts.setSimulatorType(type);
   }
 
+  if(type == atools::fs::FsPaths::UNKNOWN)
+  {
+    qCritical().noquote().nospace() << "*** ERROR: Unknown type for option -f." << endl;
+    parser.showHelp(1);
+  }
+
+  // Check required options ===================================================
+  if(!parser.isSet(fstypeOpt))
+  {
+    qCritical().noquote().nospace() << "*** ERROR: No database type given." << endl;
+    parser.showHelp(1);
+  }
+
+  if(type == atools::fs::FsPaths::XPLANE11 && !parser.isSet(basepathOpt))
+  {
+    qCritical().noquote().nospace() << "*** ERROR: No base path for X-Plane given." << endl;
+    parser.showHelp(1);
+  }
+
+  if(type == atools::fs::FsPaths::DFD && !parser.isSet(sourceDbOpt))
+  {
+    qCritical().noquote().nospace() << "*** ERROR: No DFD database given." << endl;
+    parser.showHelp(1);
+  }
+
   qInfo() << "Using source data type" << atools::fs::FsPaths::typeToShortName(type);
 
   // Base path ===================================================
@@ -168,7 +199,7 @@ void NavdataReader::parseArgs()
     if(basepath.isEmpty())
       basepath = atools::fs::FsPaths::getBasePath(type);
 
-    if(!checkDir(basepath, "Base path: "))
+    if(!checkDir(basepath, "Base path"))
       exit(1);
     opts.setBasepath(basepath);
   }
@@ -178,7 +209,7 @@ void NavdataReader::parseArgs()
   {
     QString dbFile = parser.value(sourceDbOpt);
 
-    if(!checkFile(dbFile, "Source database: "))
+    if(!checkFile(dbFile, "Source database"))
       exit(1);
     opts.setSourceDatabase(dbFile);
   }
@@ -189,7 +220,7 @@ void NavdataReader::parseArgs()
     QString sceneryFile = parser.value(sceneryOpt);
     if(sceneryFile.isEmpty())
       sceneryFile = atools::fs::FsPaths::getSceneryLibraryPath(type);
-    if(!checkFile(sceneryFile, "Scenery file: "))
+    if(!checkFile(sceneryFile, "Scenery.cfg"))
       exit(1);
 
     opts.setSceneryFile(sceneryFile);
@@ -202,7 +233,7 @@ void NavdataReader::parseArgs()
   if(configFile.isEmpty())
     // Command line overrides resource settings file
     configFile = ":/navdatareader/resources/config/navdatareader.cfg";
-  if(!checkFile(configFile, "Config file: "))
+  if(!checkFile(configFile, "Configuration"))
     exit(1);
 
   qInfo() << "===== Configuration" << configFile << "=====";
@@ -210,9 +241,6 @@ void NavdataReader::parseArgs()
   QSettings settings(configFile, QSettings::IniFormat);
 
   opts.loadFromSettings(settings);
-  if(parser.isSet(verboseOpt))
-    // Let command line override settings file
-    opts.setVerbose(parser.isSet(verboseOpt));
 
   // Create database ===================================================
   db = SqlDatabase(settings, "Database");
@@ -230,7 +258,7 @@ bool NavdataReader::checkFile(const QString& path, const QString& msg)
 {
   if(path.isEmpty())
   {
-    qCritical().noquote().nospace() << msg << " is empty";
+    qCritical().noquote().nospace() << "*** ERROR: " << msg << ": File \"" << path << "\" is empty.";
     return false;
   }
   else
@@ -238,12 +266,12 @@ bool NavdataReader::checkFile(const QString& path, const QString& msg)
     QFileInfo fi(path);
     if(!fi.exists())
     {
-      qCritical().noquote().nospace() << msg << " file does not exist";
+      qCritical().noquote().nospace() << "*** ERROR: " << msg << ": File \"" << path << "\" does not exist.";
       return false;
     }
     else if(!fi.isFile())
     {
-      qCritical().noquote().nospace() << msg << " is not a file";
+      qCritical().noquote().nospace() << "*** ERROR: " << msg << ": File \"" << path << "\" is not a file.";
       return false;
     }
   }
@@ -254,7 +282,7 @@ bool NavdataReader::checkDir(const QString& path, const QString& msg)
 {
   if(path.isEmpty())
   {
-    qCritical().noquote().nospace() << msg << " is empty";
+    qCritical().noquote().nospace() << "*** ERROR: " << msg << ": Directory \"" << path << "\" is empty.";
     return false;
   }
   else
@@ -262,12 +290,12 @@ bool NavdataReader::checkDir(const QString& path, const QString& msg)
     QFileInfo fi(path);
     if(!fi.exists())
     {
-      qCritical().noquote().nospace() << msg << " directory does not exist";
+      qCritical().noquote().nospace() << "*** ERROR: " << msg << ": Directory  \"" << path << "\" does not exist.";
       return false;
     }
     else if(!fi.isDir())
     {
-      qCritical().noquote().nospace() << msg << " is not a directory";
+      qCritical().noquote().nospace() << "*** ERROR: " << msg << ": Directory \"" << path << "\" is not a directory.";
       return false;
     }
   }
