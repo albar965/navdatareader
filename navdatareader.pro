@@ -109,6 +109,7 @@ win32 {
   deploy.commands = rmdir /s /q $${DEPLOY_DIR_WIN} &
   deploy.commands += mkdir $${DEPLOY_DIR_WIN} &&
   deploy.commands += xcopy $${WINOUT_PWD}\\$${CONF_TYPE}\\navdatareader.exe $${DEPLOY_DIR_WIN} &&
+  deploy.commands += xcopy /i /s /e /f /y $${WINPWD}\\magdec $${DEPLOY_DIR_WIN}\\magdec &&
   deploy.commands += xcopy $${WINPWD}\\CHANGELOG.txt $${DEPLOY_DIR_WIN} &&
   deploy.commands += xcopy $${WINPWD}\\README.txt $${DEPLOY_DIR_WIN} &&
   deploy.commands += xcopy $${WINPWD}\\LICENSE.txt $${DEPLOY_DIR_WIN} &&
