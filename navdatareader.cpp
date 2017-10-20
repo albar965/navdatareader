@@ -79,8 +79,6 @@ void NavdataReader::run()
 
   db.close();
 
-
-
   if(errors.getTotalErrors() > 0)
   {
     qWarning() << "==================================================================";
@@ -123,7 +121,7 @@ void NavdataReader::parseArgs()
 
   QCommandLineOption fstypeOpt({"f", "flight-simulator"},
                                QObject::tr("Flight simulator type <simulator> or other data source. "
-                                           "Either FSX, FSXSE, P3DV2, P3DV3, P3DV4, XP11 or NAVIGRAPH."),
+                                           "Either FSX, FSXSE, P3DV2, P3DV3, P3DV4, XP11 or DFD."),
                                QObject::tr("simulator"));
   parser.addOption(fstypeOpt);
 
@@ -164,7 +162,7 @@ void NavdataReader::parseArgs()
   qInfo() << "Using source data type" << atools::fs::FsPaths::typeToShortName(type);
 
   // Base path ===================================================
-  if(type != atools::fs::FsPaths::NAVIGRAPH)
+  if(type != atools::fs::FsPaths::DFD)
   {
     QString basepath = parser.value(basepathOpt);
     if(basepath.isEmpty())
@@ -176,7 +174,7 @@ void NavdataReader::parseArgs()
   }
 
   // Source database ===================================================
-  if(type == atools::fs::FsPaths::NAVIGRAPH)
+  if(type == atools::fs::FsPaths::DFD)
   {
     QString dbFile = parser.value(sourceDbOpt);
 
@@ -186,7 +184,7 @@ void NavdataReader::parseArgs()
   }
 
   // Scenery.cfg ===================================================
-  if(type != atools::fs::FsPaths::XPLANE11 && type != atools::fs::FsPaths::NAVIGRAPH)
+  if(type != atools::fs::FsPaths::XPLANE11 && type != atools::fs::FsPaths::DFD)
   {
     QString sceneryFile = parser.value(sceneryOpt);
     if(sceneryFile.isEmpty())
@@ -222,7 +220,10 @@ void NavdataReader::parseArgs()
   if(!databaseName.isEmpty())
     db.setDatabaseName(databaseName);
 
-  qInfo() << "===== Database" << QFileInfo(databaseName).absoluteFilePath() << "=====";
+  if(!opts.getSourceDatabase().isEmpty())
+    qInfo() << "===== Input Database " << QFileInfo(opts.getSourceDatabase()).absoluteFilePath() << "=====";
+
+  qInfo() << "===== Output Database" << QFileInfo(databaseName).absoluteFilePath() << "=====";
 }
 
 bool NavdataReader::checkFile(const QString& path, const QString& msg)
