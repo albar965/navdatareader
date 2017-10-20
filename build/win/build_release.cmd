@@ -9,6 +9,7 @@ del /S /Q /F "%APROJECTS%\deploy\Navdatareader"
 for /f %%f in ('dir /ad /b "%APROJECTS%\deploy\Navdatareader"') do rd /s /q "%APROJECTS%\deploy\Navdatareader\%%f"
 rd /S /Q "%APROJECTS%\deploy\Navdatareader"
 IF ERRORLEVEL 1 goto :err
+popd
 
 setlocal
 set PATH=%PATH%;C:\Qt\5.9.1\mingw53_32\bin;C:\Qt\Tools\mingw530_32\bin
