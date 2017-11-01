@@ -1,18 +1,14 @@
 Navdatareader is a command line tool that uses the atools fs/bgl
 and fs/db modules to store a full flight simulator scenery database into
-Sqlite, a relational database .
+Sqlite, a relational database.
+
+It can read flight simulator databases from FSX, Prepar3D, X-Plane 11
+and the DFD format.
 
 ------------------------------------------------------------------------------
 
-All BGL features except scenery objects are supported.
-* airports including parking, com, fences, aprons, apron lights, helipads,
-  start points, taxiways and all runway information.
-* Approaches, transitions and the respective legs including coordinates.
-* VOR, NDB, ILS, DME, markers and waypoints
-* Metadata like BGL files and scenery areas.
-* Routes and route waypoints.
-* Airspace boundaries including com frequencies.
-* The delete airport records are handled for addon airports.
+A short manual is included as PDF in directory "help" or available online here:
+https://github.com/albar965/navdatareader/wiki
 
 ------------------------------------------------------------------------------
 

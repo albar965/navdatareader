@@ -42,6 +42,10 @@ macx {
 # End of configuration section
 # =======================================================================
 
+DEFINES += QT_NO_CAST_FROM_BYTEARRAY
+DEFINES += QT_NO_CAST_TO_ASCII
+#DEFINES += QT_NO_CAST_FROM_ASCII
+
 CONFIG += c++11
 
 # Get the current GIT revision to include it into the code
@@ -113,6 +117,7 @@ win32 {
   deploy.commands += xcopy $${WINPWD}\\CHANGELOG.txt $${DEPLOY_DIR_WIN} &&
   deploy.commands += xcopy $${WINPWD}\\README.txt $${DEPLOY_DIR_WIN} &&
   deploy.commands += xcopy $${WINPWD}\\LICENSE.txt $${DEPLOY_DIR_WIN} &&
+  deploy.commands += xcopy /i /s /e /f /y $${WINPWD}\\help $${DEPLOY_DIR_WIN}\\help &&
   deploy.commands += xcopy $${QT_HOME}\\bin\\libgcc*.dll $${DEPLOY_DIR_WIN} &&
   deploy.commands += xcopy $${QT_HOME}\\bin\\libstdc*.dll $${DEPLOY_DIR_WIN} &&
   deploy.commands += xcopy $${QT_HOME}\\bin\\libwinpthread*.dll $${DEPLOY_DIR_WIN} &&

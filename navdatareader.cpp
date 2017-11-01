@@ -69,8 +69,14 @@ void NavdataReader::run()
 
   qInfo() << opts;
 
+  QStringList DATABASE_PRAGMAS({QString("PRAGMA cache_size=-%1").arg(50000),
+                                "PRAGMA synchronous=OFF",
+                                "PRAGMA journal_mode=TRUNCATE",
+                                "PRAGMA page_size=8196"
+                                /*, "PRAGMA locking_mode=EXCLUSIVE"*/});
+
   // FKs don't work currently
-  db.open( /*{"PRAGMA foreign_keys = ON"}*/);
+  db.open(DATABASE_PRAGMAS);
 
   atools::fs::NavDatabaseErrors errors;
   atools::fs::NavDatabase nd(&opts, &db, &errors);

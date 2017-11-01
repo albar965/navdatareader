@@ -1,3 +1,11 @@
+0.9.9.develop
+
+* Added manual
+* Support for DFD and X-Plane databases
+* Cleanup in option parsing and better error handling
+
+See atools CHANGELOG.txt for more compiler related changes and fixes
+
 0.9.4.develop
 
 * Removed boundary_line table and pre-calculate boundary geometry now which ist stored as binary data.

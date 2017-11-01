@@ -36,6 +36,8 @@ int main(int argc, char *argv[])
   QCoreApplication::setApplicationName("Navdata Reader");
   QCoreApplication::setOrganizationName("ABarthel");
   QCoreApplication::setOrganizationDomain("abarthel.org");
+
+  // VERSION_NUMBER
   QCoreApplication::setApplicationVersion("0.9.8.develop");
 
   try
