@@ -1,3 +1,16 @@
+1.0.0.beta
+
+* Updated database metadata.
+* Fixes for bounding box calculation around the anti meridian.
+
+changes from atools 2.7.0.develop:
+* Finished DFD compiler
+* Disabling maximum airway segment length for data sources that contain a valid airspace geometry
+  (X-Plane and DFD - FSX/P3D contain invalid segments).
+* Extended database metadata with optional compiler_version, valid_through and data source columns.
+* Better handling of X-Plane OpenAirspace comments and fixed problem where airspace names contain a comment character.
+* Fixed problems with bounding box and overlap calculations around the anti meridian.
+
 0.9.9.develop
 
 * Added manual

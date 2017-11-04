@@ -53,6 +53,13 @@ void NavdataReader::run()
   atools::logging::LoggingHandler::initialize(atools::settings::Settings::getOverloadedLocalPath(
                                                 ":/navdatareader/resources/config/logging.cfg"));
 
+  if(!opts.getSourceDatabase().isEmpty())
+    qInfo() << "===== Input Database " << QFileInfo(opts.getSourceDatabase()).absoluteFilePath() << "=====";
+
+  qInfo() << "===== Output Database" << QFileInfo(db.databaseName()).absoluteFilePath() << "=====";
+  qInfo() << "===== Using source data type" << atools::fs::FsPaths::typeToShortName(type) << "=====";
+  qInfo() << "===== Configuration" << configFile << "=====";
+
   qInfo() << "This software is licensed under the GPL3 or any later version.";
   qInfo() << "See http://www.gnu.org/licenses/gpl-3.0 for more information.";
   qInfo() << "The source code for this application is available at https://github.com/albar965";
@@ -79,7 +86,7 @@ void NavdataReader::run()
   db.open(DATABASE_PRAGMAS);
 
   atools::fs::NavDatabaseErrors errors;
-  atools::fs::NavDatabase nd(&opts, &db, &errors);
+  atools::fs::NavDatabase nd(&opts, &db, &errors, GIT_REVISION);
   QString sceneryCfgCodec = opts.getSimulatorType() == atools::fs::FsPaths::P3D_V4 ? "UTF-8" : QString();
   nd.create(sceneryCfgCodec);
 
@@ -164,7 +171,6 @@ void NavdataReader::parseArgs()
   parser.process(*QCoreApplication::instance());
 
   // Simulator Type ===================================================
-  atools::fs::FsPaths::SimulatorType type = atools::fs::FsPaths::FSX;
   if(parser.isSet(fstypeOpt))
   {
     type = atools::fs::FsPaths::stringToType(parser.value(fstypeOpt).toUpper());
@@ -195,8 +201,6 @@ void NavdataReader::parseArgs()
     qCritical().noquote().nospace() << "*** ERROR: No DFD database given." << endl;
     parser.showHelp(1);
   }
-
-  qInfo() << "Using source data type" << atools::fs::FsPaths::typeToShortName(type);
 
   // Base path ===================================================
   if(type != atools::fs::FsPaths::DFD)
@@ -235,14 +239,12 @@ void NavdataReader::parseArgs()
   copyFilePath = parser.value(copyOpt);
 
   // Configuration file ===================================================
-  QString configFile = parser.value(cfgOpt);
+  configFile = parser.value(cfgOpt);
   if(configFile.isEmpty())
     // Command line overrides resource settings file
     configFile = ":/navdatareader/resources/config/navdatareader.cfg";
   if(!checkFile(configFile, "Configuration"))
     exit(1);
-
-  qInfo() << "===== Configuration" << configFile << "=====";
 
   QSettings settings(configFile, QSettings::IniFormat);
 
@@ -253,11 +255,6 @@ void NavdataReader::parseArgs()
   QString databaseName = parser.value(databaseOpt);
   if(!databaseName.isEmpty())
     db.setDatabaseName(databaseName);
-
-  if(!opts.getSourceDatabase().isEmpty())
-    qInfo() << "===== Input Database " << QFileInfo(opts.getSourceDatabase()).absoluteFilePath() << "=====";
-
-  qInfo() << "===== Output Database" << QFileInfo(databaseName).absoluteFilePath() << "=====";
 }
 
 bool NavdataReader::checkFile(const QString& path, const QString& msg)

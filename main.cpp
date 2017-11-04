@@ -33,12 +33,12 @@ int main(int argc, char *argv[])
   int retval = 0;
   atools::gui::ConsoleApplication app(argc, argv);
   Q_UNUSED(app);
-  QCoreApplication::setApplicationName("Navdata Reader");
+  QCoreApplication::setApplicationName("Navdatareader");
   QCoreApplication::setOrganizationName("ABarthel");
   QCoreApplication::setOrganizationDomain("abarthel.org");
 
   // VERSION_NUMBER
-  QCoreApplication::setApplicationVersion("0.9.8.develop");
+  QCoreApplication::setApplicationVersion("1.0.0.beta");
 
   try
   {

@@ -40,10 +40,12 @@ private:
   /* Copy all airport files to the path given on the command line */
   void copyFiles();
 
+  atools::fs::FsPaths::SimulatorType type = atools::fs::FsPaths::FSX;
+
   atools::sql::SqlDatabase db;
   atools::fs::NavDatabaseOptions opts;
   QString copyFilePath;
-
+  QString configFile;
 };
 
 #endif // NAVDATAREADER_H
