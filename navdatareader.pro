@@ -46,7 +46,7 @@ DEFINES += QT_NO_CAST_FROM_BYTEARRAY
 DEFINES += QT_NO_CAST_TO_ASCII
 #DEFINES += QT_NO_CAST_FROM_ASCII
 
-CONFIG += c++11
+CONFIG += c++14
 
 # Get the current GIT revision to include it into the code
 win32:DEFINES += GIT_REVISION='\\"$$system($${GIT_BIN} rev-parse --short HEAD)\\"'
