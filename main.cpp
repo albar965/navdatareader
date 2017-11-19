@@ -37,7 +37,7 @@ int main(int argc, char *argv[])
   QCoreApplication::setOrganizationName("ABarthel");
   QCoreApplication::setOrganizationDomain("abarthel.org");
 
-  QCoreApplication::setApplicationVersion("1.0.1.beta"); // VERSION_NUMBER
+  QCoreApplication::setApplicationVersion("1.0.2.beta"); // VERSION_NUMBER
 
   try
   {
@@ -47,16 +47,19 @@ int main(int argc, char *argv[])
   }
   catch(const atools::Exception& e)
   {
+    qCritical() << "*** Compilation failed";
     qCritical() << "Caught atools::Exception " << e.what();
     retval = 1;
   }
   catch(const std::exception& e)
   {
+    qCritical() << "*** Compilation failed";
     qCritical() << "Caught std::exception " << e.what();
     retval = 1;
   }
   catch(...)
   {
+    qCritical() << "*** Compilation failed";
     qCritical() << "Caught other";
     retval = 1;
   }

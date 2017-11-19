@@ -1,6 +1,14 @@
+1.0.2.beta
+
+* Updated manual re. error reporting and compilation failure.
+* Program now fails on all kind of errors with return code 1.
+
+from atools version  2.8.0.beta
+* Fixed crash when getting simulator base path for unknown simulator type.
+
 1.0.1.beta
 
-* All indexes are  dropped after compilation now to save download bandwidth.
+* All indexes are dropped after compilation now to save download bandwidth.
   Indexes are created again by Little Navmap on first database usage on the client's side.
 * Small fixes in logging where messages went to stderr where they shouldn't.
 * Added DropAllIndexes option in configuration file.

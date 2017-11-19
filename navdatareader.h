@@ -31,6 +31,11 @@ public:
   NavdataReader();
   void run();
 
+  int getNumErrors() const
+  {
+    return numErrors;
+  }
+
 private:
   /* Parse command line arguments */
   void parseArgs();
@@ -42,6 +47,7 @@ private:
 
   atools::fs::FsPaths::SimulatorType type = atools::fs::FsPaths::FSX;
 
+  int numErrors = 0;
   atools::sql::SqlDatabase db;
   atools::fs::NavDatabaseOptions opts;
   QString copyFilePath;

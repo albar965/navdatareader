@@ -27,6 +27,7 @@
 #include "fs/navdatabaseerrors.h"
 #include "logging/logginghandler.h"
 #include "settings/settings.h"
+#include "exception.h"
 
 #include <QDebug>
 #include <QCommandLineParser>
@@ -111,6 +112,8 @@ void NavdataReader::run()
       for(const QString& err : errs.sceneryErrorsMessages)
         qWarning() << "Other error:" << err;
     }
+
+    throw atools::Exception("Found errors while compiling. Check log file.");
   }
 }
 
