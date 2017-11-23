@@ -1,3 +1,7 @@
+1.0.3.beta
+
+* Calculating range from NDB navaid_class now.
+
 1.0.2.beta
 
 * Updated manual re. error reporting and compilation failure.
