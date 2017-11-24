@@ -1,6 +1,8 @@
 1.0.3.beta
 
 * Calculating range from NDB navaid_class now.
+* Basic validation values are now more precise for DFD compilation.
+* Fixed logging configuration to produce separate error and warning log now.
 
 1.0.2.beta
 
