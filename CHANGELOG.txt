@@ -1,8 +1,22 @@
+1.0.4.beta
+
+* Adjusted basic validation for new results after fixes in atools.
+
+from atools version 2.8.2.beta
+
+* DFD compiler now estimates if holding is given in time or distance for procedure legs.
+* DFD compiler now always sets region for fixes where it was missing for procedure legs.
+* Solved problem where fix was not set for DME distance and radial terminated procedure legs.
+  Now copying recommended fix to avoid invalid procedures.
+
 1.0.3.beta
 
 * Calculating range from NDB navaid_class now.
 * Basic validation values are now more precise for DFD compilation.
 * Fixed logging configuration to produce separate error and warning log now.
+* DFD compiler now estimates if holding is given in time or distance for procedure legs.
+* DFD compiler now always sets region for fixes where it was missing for procedure legs.
+* Solved problem where fix was not set for DME distance and radial terminated procedure legs. Now copying recommended fix.
 
 1.0.2.beta
 
@@ -21,7 +35,7 @@ from atools version  2.8.0.beta
 * Extended database metadata with optional compiler_version, valid_through and data source columns.
 * Increased database minor version to 6.
 
-from atools version  2.8.0.beta
+from atools version 2.8.0.beta
 
 * Finished DFD to Little Navmap database compiler for Navigraph data. #126
 * Added script table and option to store create index scripts in that table for preparation by the client. #126
