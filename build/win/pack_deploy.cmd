@@ -20,11 +20,11 @@ IF ERRORLEVEL 1 goto :err
 IF ERRORLEVEL 1 goto :err
 
 del \\darkon\public\Navdatareader-%FILEDATE%.zip
-copy /Y /Z /B Navdatareader.zip \\darkon\public\Navdatareader-win-%FILEDATE%.zip
+copy /Y /Z /B Navdatareader.zip \\darkon\public\Releases\Navdatareader-win-%FILEDATE%.zip
 IF ERRORLEVEL 1 goto :err
 
 del \\frida\public\Navdatareader-%FILEDATE%.zip
-copy /Y /Z /B Navdatareader.zip \\frida\public\Navdatareader-win-%FILEDATE%.zip
+copy /Y /Z /B Navdatareader.zip \\frida\public\Releases\Navdatareader-win-%FILEDATE%.zip
 IF ERRORLEVEL 1 goto :err
 
 popd
