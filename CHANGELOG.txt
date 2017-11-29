@@ -1,3 +1,7 @@
+Version 1.0.5
+
+* No changes except version.
+
 1.0.4.beta
 
 * Adjusted basic validation for new results after fixes in atools.
