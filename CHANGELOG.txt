@@ -7,7 +7,7 @@ from atools version 2.8.4
   information for multiple or all. Needed for future fixes of albar965/littlenavmap#179.
 * Added new columns "region" and "is_3d" (X-Plane) in airport table. Adapted all compilers to fill these.
 * Database minor version bumped up to 8 which is an indication for schema changes but still compatible.
-* Number of ALS is not correctly assigned to airports in X-Plane data compiler.
+* Number of ALS is now correctly assigned to airports in X-Plane data compiler.
   This resulted in many airports having an ALS indication where none is.
 
 Version 1.0.5
