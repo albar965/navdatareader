@@ -24,14 +24,14 @@ QT -= gui
 
 # Windows ==================
 win32 {
-  QT_HOME=C:\\Qt\\5.9.1\\mingw53_32
+  QT_HOME=C:\\Qt\\5.9.3\\mingw53_32
   OPENSSL=C:\\OpenSSL-Win32
   GIT_BIN='C:\\Git\\bin\\git'
 }
 
 # Linux ==================
 unix:!macx {
-  QT_HOME=/home/alex/Qt/5.9.1/gcc_64
+  QT_HOME=/home/alex/Qt/5.9.3/gcc_64
 }
 
 macx {
