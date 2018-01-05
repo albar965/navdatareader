@@ -37,7 +37,7 @@ int main(int argc, char *argv[])
   QCoreApplication::setOrganizationName("ABarthel");
   QCoreApplication::setOrganizationDomain("abarthel.org");
 
-  QCoreApplication::setApplicationVersion("1.0.6"); // VERSION_NUMBER
+  QCoreApplication::setApplicationVersion("1.0.7"); // VERSION_NUMBER
 
   try
   {
