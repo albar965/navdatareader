@@ -257,7 +257,17 @@ void NavdataReader::parseArgs()
   db = SqlDatabase(settings, "Database");
   QString databaseName = parser.value(databaseOpt);
   if(!databaseName.isEmpty())
+  {
+    // Remove any stale files
+    QFileInfo file(databaseName);
+    if(file.exists() && file.isFile())
+    {
+      if(QFile::remove(databaseName))
+        qInfo() << "Removed" << databaseName;
+    }
+
     db.setDatabaseName(databaseName);
+  }
 }
 
 bool NavdataReader::checkFile(const QString& path, const QString& msg)
