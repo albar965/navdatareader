@@ -1,5 +1,5 @@
 /*****************************************************************************
-* Copyright 2015-2017 Alexander Barthel albar965@mailbox.org
+* Copyright 2015-2018 Alexander Barthel albar965@mailbox.org
 *
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -64,7 +64,7 @@ void NavdataReader::run()
   qInfo() << "This software is licensed under the GPL3 or any later version.";
   qInfo() << "See http://www.gnu.org/licenses/gpl-3.0 for more information.";
   qInfo() << "The source code for this application is available at https://github.com/albar965";
-  qInfo() << "Copyright 2015-2017 Alexander Barthel (albar965@mailbox.org).";
+  qInfo() << "Copyright 2015-2018 Alexander Barthel (albar965@mailbox.org).";
   qInfo().nospace().noquote() << "Version " << QCoreApplication::applicationVersion()
                               << " (revision " << GIT_REVISION << ")";
   qInfo().nospace().noquote() << "atools Version " << atools::version()

@@ -1,5 +1,5 @@
 #*****************************************************************************
-# Copyright 2015-2017 Alexander Barthel albar965@mailbox.org
+# Copyright 2015-2018 Alexander Barthel albar965@mailbox.org
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -24,14 +24,14 @@ QT -= gui
 
 # Windows ==================
 win32 {
-  QT_HOME=C:\\Qt\\5.9.3\\mingw53_32
+  QT_HOME=C:\\Qt\\5.9.5\\mingw53_32
   OPENSSL=C:\\OpenSSL-Win32
   GIT_BIN='C:\\Git\\bin\\git'
 }
 
 # Linux ==================
 unix:!macx {
-  QT_HOME=/home/alex/Qt/5.9.3/gcc_64
+  QT_HOME=/home/alex/Qt/5.9.5/gcc_64
 }
 
 macx {
