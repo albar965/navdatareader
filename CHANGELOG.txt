@@ -1,3 +1,17 @@
+Version 1.0.10
+
+* Updated from Qt 5.9.3 to 5.9.5
+
+from atools version 3.0.0.beta
+DFD/X-Plane:
+* Fixed issue where approach name and/or suffix were not read correctly in X-Plane and DFD compiler.
+* Fixed error with duplicate VOR/NDB waypoints in DFD compiler.
+FSX/P3D:
+* Added script by Gérard to clean out fake runways for AI in FSX/P3D.
+* Added logging for airport altitude when reading delete records from FSX/P3D.
+  Example: "Add-on airport altitude for VQ10 changed from 7703 ft (BGL Scenery/0902/APX72220.bgl) to 8363 ft"
+* Improved BGL file and scenery reading to include hidden and system files.
+
 Version 1.0.9
 
 from atools version 2.8.7
