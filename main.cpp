@@ -60,7 +60,7 @@ int main(int argc, char *argv[])
   catch(...)
   {
     qCritical() << "*** Compilation failed";
-    qCritical() << "Caught other";
+    qCritical() << "Caught unknown exception";
     retval = 1;
   }
 
