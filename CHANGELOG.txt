@@ -1,3 +1,27 @@
+Numbers (#) refer to Github issues.
+For example: albar965/littlenavmap#3 is https://github.com/albar965/littlenavmap/issues/3.
+
+Version 1.0.12
+
+* Added validation rule for mora_grid table. albar965/littlenavmap#84.
+
+from atools version 3.0.4
+* Database minor version updated to 12.
+X-Plane:
+* X-Plane parking positions are now at correct coordinates. albar965/littlenavmap#256
+* Now reading "scenery_packs.ini" for X-Plane to allow disabling of scenery by
+  tools. albar965/littlenavmap#151
+DFD/X-Plane:
+* Added "arinc_descr_code" to database that allows to identify IAF, MAF and FAF. albar965/littlenavmap#196
+DFD:
+* Added "multiple_code" and "time_code" columns to schema to indicate overlapping
+  airspaces. albar965/littlenavmap#279
+* Added "mora_grid" table for minimum off route altitude data to schema. DFD compiler
+  now populates "mora_grid" table. albar965/littlenavmap#84
+* Added restrictive_designation and restrictive_type to boundary table and DFD compiler.
+* Refactoring in cleanup in logging system. Log files can now be rotated if a given size is
+  exceeded. albar965/littlenavmap#275
+
 Version 1.0.11
 
 * Updated magnetic variation file to 1801.
