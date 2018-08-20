@@ -21,6 +21,7 @@ DFD:
 * Added restrictive_designation and restrictive_type to boundary table and DFD compiler.
 * Refactoring in cleanup in logging system. Log files can now be rotated if a given size is
   exceeded. albar965/littlenavmap#275
+* Now populating airport_id in tables vor, ndb and waypoint. albar965/littlenavmap#289
 
 Version 1.0.11
 
