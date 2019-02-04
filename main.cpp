@@ -1,5 +1,5 @@
 /*****************************************************************************
-* Copyright 2015-2019 Alexander Barthel albar965@mailbox.org
+* Copyright 2015-2019 Alexander Barthel alex@littlenavmap.org
 *
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
   Q_UNUSED(app);
   QCoreApplication::setApplicationName("Navdatareader");
   QCoreApplication::setOrganizationName("ABarthel");
-  QCoreApplication::setOrganizationDomain("abarthel.org");
+  QCoreApplication::setOrganizationDomain("littlenavmap.org");
 
   QCoreApplication::setApplicationVersion("1.0.12"); // VERSION_NUMBER
 
