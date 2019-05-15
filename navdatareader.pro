@@ -53,7 +53,7 @@ TEMPLATE = app
 TARGET_NAME=Navdatareader
 
 # =======================================================================
-# Copy ennvironment variables into qmake variables
+# Copy environment variables into qmake variables
 
 ATOOLS_INC_PATH=$$(ATOOLS_INC_PATH)
 ATOOLS_LIB_PATH=$$(ATOOLS_LIB_PATH)
@@ -149,6 +149,8 @@ OTHER_FILES += \
   $$files(build/*, true) \
   $$files(help/*, true) \
   $$files(magdec/*, true) \
+  .travis.yml \
+  .gitignore \
   BUILD.txt \
   CHANGELOG.txt \
   LICENSE.txt \
