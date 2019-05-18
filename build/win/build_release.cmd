@@ -49,7 +49,7 @@ IF ERRORLEVEL 1 goto :err
 
 qmake.exe "%APROJECTS%\atools\atools.pro" -spec win32-g++ CONFIG+=release
 IF ERRORLEVEL 1 goto :err
-mingw32-make.exe -j2
+mingw32-make.exe -j4
 IF ERRORLEVEL 1 goto :err
 popd
 
@@ -64,7 +64,7 @@ IF ERRORLEVEL 1 goto :err
 
 qmake.exe "%APROJECTS%\navdatareader\navdatareader.pro" -spec win32-g++ CONFIG+=release
 IF ERRORLEVEL 1 goto :err
-mingw32-make.exe -j2
+mingw32-make.exe -j4
 IF ERRORLEVEL 1 goto :err
 mingw32-make.exe deploy
 IF ERRORLEVEL 1 goto :err
