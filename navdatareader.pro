@@ -148,7 +148,6 @@ HEADERS += \
 OTHER_FILES += \
   $$files(build/*, true) \
   $$files(help/*, true) \
-  $$files(magdec/*, true) \
   .travis.yml \
   .gitignore \
   BUILD.txt \
@@ -163,7 +162,6 @@ RESOURCES += \
 
 # Linux - Copy help and Marble plugins and data
 unix:!macx {
-  copydata.commands += cp -avfu $$PWD/magdec $$OUT_PWD &&
   copydata.commands += cp -avfu $$PWD/help $$OUT_PWD
 }
 
@@ -177,7 +175,6 @@ unix:!macx {
   deploy.commands += mkdir -pv $$DEPLOY_DIR_LIB/sqldrivers &&
   deploy.commands += cp -Rvf $$OUT_PWD/navdatareader $$DEPLOY_DIR &&
   deploy.commands += cp -Rvf $$OUT_PWD/help $$DEPLOY_DIR &&
-  deploy.commands += cp -Rvf $$OUT_PWD/magdec $$DEPLOY_DIR &&
   deploy.commands += cp -Rvf $$PWD/resources/config $$DEPLOY_DIR/config &&
   deploy.commands += cp -vf $$PWD/CHANGELOG.txt $$DEPLOY_DIR &&
   deploy.commands += cp -vf $$PWD/README.txt $$DEPLOY_DIR &&
@@ -205,7 +202,6 @@ win32 {
   deploy.commands += xcopy $$p($$[QT_INSTALL_BINS]/libstdc*.dll) $$p($$DEPLOY_BASE/$$TARGET_NAME) &&
   deploy.commands += xcopy $$p($$[QT_INSTALL_BINS]/libwinpthread*.dll) $$p($$DEPLOY_BASE/$$TARGET_NAME) &&
   deploy.commands += xcopy /i /s /e /f /y $$p($$PWD/help) $$p($$DEPLOY_BASE/$$TARGET_NAME/help) &&
-  deploy.commands += xcopy /i /s /e /f /y $$p($$PWD/magdec) $$p($$DEPLOY_BASE/$$TARGET_NAME/magdec) &&
   deploy.commands += xcopy /i /s /e /f /y $$p($$PWD/resources/config) $$p($$DEPLOY_BASE/$$TARGET_NAME/config) &&
   deploy.commands += $$p($$[QT_INSTALL_BINS]/windeployqt) $$WINDEPLOY_FLAGS $$p($$DEPLOY_BASE/$$TARGET_NAME)
 }
