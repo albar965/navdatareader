@@ -19,6 +19,7 @@
 
 #include "fs/scenery/scenerycfg.h"
 #include "sql/sqldatabase.h"
+#include "sql/sqlquery.h"
 #include "fs/fspaths.h"
 #include "fs/navdatabase.h"
 #include "atools.h"
