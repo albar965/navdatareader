@@ -1,5 +1,7 @@
 @echo off
 
+if defined APROJECTS ( echo %APROJECTS% ) else ( echo APROJECTS not set && exit /b 1 )
+
 rem === Pull from atools and navdatareader repositories =============================
 
 pushd "%APROJECTS%\atools"
