@@ -19,7 +19,7 @@ if [ ! -d "$APROJECTS" ]; then echo "$APROJECTS" does not exist ; exit 1 ; fi
 # See the *.pro project files for more information.
 #
 # Example:
-# export QMAKE_STATIC=~/Projekte/build-qt-5.12.0-release/bin/qmake
+# export QMAKE_STATIC=~/Projekte/build-qt-5.12.4-release/bin/qmake
 # export MARBLE_LIB_PATH=~/Programme/Marble-debug/lib
 # export MARBLE_INC_PATH=~/Programme/Marble-debug/include
 
