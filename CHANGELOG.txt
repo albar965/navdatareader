@@ -1,6 +1,21 @@
 Numbers (#) refer to Github issues.
 For example: albar965/littlenavmap#3 is https://github.com/albar965/littlenavmap/issues/3.
 
+Version 1.0.13
+
+* Added geomagnetic model calculation based on current year and month where resulting table is written into database.
+  This applies to the DFD and X-Plane compiler.
+
+Build and Deployment for Developers: albar965/littlenavmap#387
+* Updated for Qt 5.12.4.
+* Linux compilation now based on Ubuntu 18.04.
+* Complete update of project files to allow configuration with environment variables. Removed all hardcoded paths.
+* Added documentation about environment variables to configure build and updated build instructions
+  in "BUILD.txt" and "navdatareader.pro" files.
+
+related from atools version 3.4.0.beta
+See CHANGELOG.txt in atools project for more technical details. Relevant comments were added to list above.
+
 Version 1.0.12
 
 * Added validation rule for mora_grid table. albar965/littlenavmap#84.
