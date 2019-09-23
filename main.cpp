@@ -32,12 +32,11 @@ int main(int argc, char *argv[])
 
   int retval = 0;
   atools::gui::ConsoleApplication app(argc, argv);
-  Q_UNUSED(app);
   QCoreApplication::setApplicationName("Navdatareader");
   QCoreApplication::setOrganizationName("ABarthel");
   QCoreApplication::setOrganizationDomain("littlenavmap.org");
 
-  QCoreApplication::setApplicationVersion("1.0.13"); // VERSION_NUMBER
+  QCoreApplication::setApplicationVersion("1.0.14"); // VERSION_NUMBER
 
   try
   {
