@@ -1,6 +1,49 @@
 Numbers (#) refer to Github issues.
 For example: albar965/littlenavmap#3 is https://github.com/albar965/littlenavmap/issues/3.
 
+Version 1.0.15
+
+All:
+* Added IATA and ICAO code to airport tables. These are populated in the X-Plane and DFD compiler.
+* Added geomagnetic model calculation. Changed X-Plane and DFD compiler to save
+  declination based on current year and month into database. albar965/littlenavmap#300
+* Fixed parsing issue with coordinates when using C locale.
+* Added debug output to log for scenery configuration when loading scenery libraries.
+* Database minor version up to 15 for compatible schema changes.
+
+X-Plane:
+* Added real ICAO code to airport to circumvent issues with X-Plane artificial airport ids which are
+  kept in column ident.
+* Set codec to UTF when reading X-Plane and weather files.
+* Added support for gui_label 3D attribute in X-Plane 11.35 and higher. Updated rating calculation.
+  albar965/littlenavmap#424
+* Fixed error in rating calculation function for X-Plane. albar965/littlenavmap#410
+* Added support for X-Plane 8.33 kHz frequency spacing. albar965/littlenavmap#409
+
+FSX and P3D:
+* Fixed issue where scenery entries were read despite being disabled in add-ons.cfg for P3D.
+* Discovery paths from add-ons.cfg are now read for P3D.
+* Removed logging banners inflating log unnecessarily when loading P3D or FSX scenery library.
+* Fixed crash that appears when using fsAerodata cycle 1905r1 or later. albar965/littlenavmap#413
+* Better error handling and reporting around "magdec.bgl" file and database. Now falling back to WMM
+  if file could not be read.
+
+Build and Deployment for Developers: albar965/littlenavmap#387
+* Updated for Qt 5.12.4. Changed OpenSSL to 1.1.1.
+* Linux compilation now uses system OpenSSL again and is based on Ubuntu 18.04.
+* Complete update of project files to allow configuration with environment variables. Removed all hard coded paths.
+* Added documentation about environment variables to configure build and updated build instructions
+  in "BUILD.txt" and "atools.pro" files.
+
+===============================================================================
+
+Version 1.0.14
+
+related from atools version 3.4.2.beta
+See CHANGELOG.txt in atools project for more technical details. Relevant comments were added to list above.
+
+===============================================================================
+
 Version 1.0.13
 
 * Added geomagnetic model calculation based on current year and month where resulting table is written into database.
