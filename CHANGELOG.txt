@@ -1,6 +1,11 @@
 Numbers (#) refer to Github issues.
 For example: albar965/littlenavmap#3 is https://github.com/albar965/littlenavmap/issues/3.
 
+Version 1.0.16
+
+DFD:
+* Added route type (RNAV, official, etc.) to airway tables. albar965/littlenavmap#466
+
 Version 1.0.15
 
 All:
