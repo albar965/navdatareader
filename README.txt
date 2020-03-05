@@ -48,5 +48,5 @@ The source code for this application is available at Github:
 https://github.com/albar965/atools
 https://github.com/albar965/navdatareader
 
-Copyright 2015-2019 Alexander Barthel (alex@littlenavmap.org).
+Copyright 2015-2020 Alexander Barthel (alex@littlenavmap.org).
 
