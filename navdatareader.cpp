@@ -89,7 +89,8 @@ void NavdataReader::run()
 
   atools::fs::NavDatabaseErrors errors;
   atools::fs::NavDatabase nd(&opts, &db, &errors, GIT_REVISION);
-  QString sceneryCfgCodec = opts.getSimulatorType() == atools::fs::FsPaths::P3D_V4 ? "UTF-8" : QString();
+  QString sceneryCfgCodec = (opts.getSimulatorType() == atools::fs::FsPaths::P3D_V4 ||
+                             opts.getSimulatorType() == atools::fs::FsPaths::P3D_V5) ? "UTF-8" : QString();
   nd.create(sceneryCfgCodec);
 
   // Copy all files containing airport or navaid information to another directory
