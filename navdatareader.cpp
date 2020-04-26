@@ -130,7 +130,7 @@ void NavdataReader::parseArgs()
 
   QCommandLineOption fstypeOpt({"f", "flight-simulator"},
                                QObject::tr("Required option. Flight simulator type <simulator> or other data source. "
-                                           "Either FSX, FSXSE, P3DV2, P3DV3, P3DV4, XP11 or DFD."),
+                                           "Either FSX, FSXSE, P3DV2, P3DV3, P3DV4, P3DV5, XP11 or DFD."),
                                QObject::tr("simulator"));
   parser.addOption(fstypeOpt);
 
