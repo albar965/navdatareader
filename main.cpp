@@ -21,6 +21,7 @@
 #include "navdatareader.h"
 #include "exception.h"
 #include "gui/consoleapplication.h"
+#include "geo/calculations.h"
 
 #include <QDebug>
 #include <QCoreApplication>
@@ -29,6 +30,8 @@ int main(int argc, char *argv[])
 {
   // Initialize the resources from atools static library
   Q_INIT_RESOURCE(atools);
+
+  atools::geo::registerMetaTypes();
 
   int retval = 0;
   atools::gui::ConsoleApplication app(argc, argv);
