@@ -22,6 +22,7 @@ DFD:
   Example: EDDF RWY25R ILSZ IFNW. #532
 * Coordinates for fix and recommended fix in procedure tables added. Used for better navaid
   resolution in next Little Navmap version. #205
+* Adding artificial waypoints to allow procedure fix resolution in LNM versions <= 2.4.5 in DFD databases.
 
 X-Plane:
 * Improved removal of "[X]" prefixes in X-Plane and fixed issue where military airports were not
