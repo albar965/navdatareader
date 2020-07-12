@@ -22,6 +22,7 @@
 #include "exception.h"
 #include "gui/consoleapplication.h"
 #include "geo/calculations.h"
+#include "fs/fspaths.h"
 
 #include <QDebug>
 #include <QCoreApplication>
@@ -30,6 +31,7 @@ int main(int argc, char *argv[])
 {
   // Initialize the resources from atools static library
   Q_INIT_RESOURCE(atools);
+  atools::fs::FsPaths::intitialize();
 
   atools::geo::registerMetaTypes();
 
