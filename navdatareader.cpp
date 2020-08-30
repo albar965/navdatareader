@@ -50,10 +50,13 @@ NavdataReader::NavdataReader()
 
 void NavdataReader::run()
 {
-  parseArgs();
-
   atools::logging::LoggingHandler::initialize(atools::settings::Settings::getOverloadedLocalPath(
                                                 ":/navdatareader/resources/config/logging.cfg"));
+
+  // Load simulator paths =================================
+  atools::fs::FsPaths::loadAllPaths();
+
+  parseArgs();
 
   if(!opts.getSourceDatabase().isEmpty())
     qInfo() << "===== Input Database " << QFileInfo(opts.getSourceDatabase()).absoluteFilePath() << "=====";
@@ -75,6 +78,8 @@ void NavdataReader::run()
   LoggingUtil::logSystemInformation();
 
   LoggingUtil::logStandardPaths();
+
+  atools::fs::FsPaths::logAllPaths();
 
   qInfo() << opts;
 
@@ -130,7 +135,7 @@ void NavdataReader::parseArgs()
 
   QCommandLineOption fstypeOpt({"f", "flight-simulator"},
                                QObject::tr("Required option. Flight simulator type <simulator> or other data source. "
-                                           "Either FSX, FSXSE, P3DV2, P3DV3, P3DV4, P3DV5, XP11 or DFD."),
+                                           "Either FSX, FSXSE, P3DV2, P3DV3, P3DV4, P3DV5, XP11, MSFS or DFD."),
                                QObject::tr("simulator"));
   parser.addOption(fstypeOpt);
 
@@ -229,8 +234,8 @@ void NavdataReader::parseArgs()
     opts.setSourceDatabase(dbFile);
   }
 
-  // Scenery.cfg ===================================================
-  if(type != atools::fs::FsPaths::XPLANE11 && type != atools::fs::FsPaths::DFD)
+  // Scenery.cfg only FSX and P3D ===================================================
+  if(type != atools::fs::FsPaths::XPLANE11 && type != atools::fs::FsPaths::DFD && type != atools::fs::FsPaths::MSFS)
   {
     QString sceneryFile = parser.value(sceneryOpt);
     if(sceneryFile.isEmpty())
