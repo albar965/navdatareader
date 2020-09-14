@@ -219,7 +219,7 @@ void NavdataReader::parseArgs()
     if(basepath.isEmpty())
       basepath = atools::fs::FsPaths::getBasePath(type);
 
-    if(!checkDir(basepath, "Base path"))
+    if(!atools::checkDir(basepath))
       exit(1);
     opts.setBasepath(basepath);
   }
@@ -229,7 +229,7 @@ void NavdataReader::parseArgs()
   {
     QString dbFile = parser.value(sourceDbOpt);
 
-    if(!checkFile(dbFile, "Source database"))
+    if(!atools::checkFile(dbFile))
       exit(1);
     opts.setSourceDatabase(dbFile);
   }
@@ -240,7 +240,7 @@ void NavdataReader::parseArgs()
     QString sceneryFile = parser.value(sceneryOpt);
     if(sceneryFile.isEmpty())
       sceneryFile = atools::fs::FsPaths::getSceneryLibraryPath(type);
-    if(!checkFile(sceneryFile, "Scenery.cfg"))
+    if(!atools::checkFile(sceneryFile))
       exit(1);
 
     opts.setSceneryFile(sceneryFile);
@@ -253,7 +253,7 @@ void NavdataReader::parseArgs()
   if(configFile.isEmpty())
     // Command line overrides resource settings file
     configFile = ":/navdatareader/resources/config/navdatareader.cfg";
-  if(!checkFile(configFile, "Configuration"))
+  if(!atools::checkFile(configFile, "Configuration"))
     exit(1);
 
   QSettings settings(configFile, QSettings::IniFormat);
@@ -275,54 +275,6 @@ void NavdataReader::parseArgs()
 
     db.setDatabaseName(databaseName);
   }
-}
-
-bool NavdataReader::checkFile(const QString& path, const QString& msg)
-{
-  if(path.isEmpty())
-  {
-    qCritical().noquote().nospace() << "*** ERROR: " << msg << ": File \"" << path << "\" is empty.";
-    return false;
-  }
-  else
-  {
-    QFileInfo fi(path);
-    if(!fi.exists())
-    {
-      qCritical().noquote().nospace() << "*** ERROR: " << msg << ": File \"" << path << "\" does not exist.";
-      return false;
-    }
-    else if(!fi.isFile())
-    {
-      qCritical().noquote().nospace() << "*** ERROR: " << msg << ": File \"" << path << "\" is not a file.";
-      return false;
-    }
-  }
-  return true;
-}
-
-bool NavdataReader::checkDir(const QString& path, const QString& msg)
-{
-  if(path.isEmpty())
-  {
-    qCritical().noquote().nospace() << "*** ERROR: " << msg << ": Directory \"" << path << "\" is empty.";
-    return false;
-  }
-  else
-  {
-    QFileInfo fi(path);
-    if(!fi.exists())
-    {
-      qCritical().noquote().nospace() << "*** ERROR: " << msg << ": Directory  \"" << path << "\" does not exist.";
-      return false;
-    }
-    else if(!fi.isDir())
-    {
-      qCritical().noquote().nospace() << "*** ERROR: " << msg << ": Directory \"" << path << "\" is not a directory.";
-      return false;
-    }
-  }
-  return true;
 }
 
 void NavdataReader::copyFiles()

@@ -39,8 +39,6 @@ public:
 private:
   /* Parse command line arguments */
   void parseArgs();
-  bool checkDir(const QString& path, const QString& msg);
-  bool checkFile(const QString& path, const QString& msg);
 
   /* Copy all airport files to the path given on the command line */
   void copyFiles();
