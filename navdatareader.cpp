@@ -42,6 +42,7 @@
 using atools::fs::scenery::SceneryCfg;
 using atools::sql::SqlDatabase;
 using atools::fs::NavDatabaseErrors;
+using atools::fs::FsPaths;
 
 NavdataReader::NavdataReader()
 {
@@ -54,7 +55,7 @@ void NavdataReader::run()
                                                 ":/navdatareader/resources/config/logging.cfg"));
 
   // Load simulator paths =================================
-  atools::fs::FsPaths::loadAllPaths();
+  FsPaths::loadAllPaths();
 
   parseArgs();
 
@@ -62,7 +63,7 @@ void NavdataReader::run()
     qInfo() << "===== Input Database " << QFileInfo(opts.getSourceDatabase()).absoluteFilePath() << "=====";
 
   qInfo() << "===== Output Database" << QFileInfo(db.databaseName()).absoluteFilePath() << "=====";
-  qInfo() << "===== Using source data type" << atools::fs::FsPaths::typeToShortName(type) << "=====";
+  qInfo() << "===== Using source data type" << FsPaths::typeToShortName(type) << "=====";
   qInfo() << "===== Configuration" << configFile << "=====";
 
   qInfo() << "This software is licensed under the GPL3 or any later version.";
@@ -79,7 +80,7 @@ void NavdataReader::run()
 
   LoggingUtil::logStandardPaths();
 
-  atools::fs::FsPaths::logAllPaths();
+  FsPaths::logAllPaths();
 
   qInfo() << opts;
 
@@ -94,8 +95,8 @@ void NavdataReader::run()
 
   atools::fs::NavDatabaseErrors errors;
   atools::fs::NavDatabase nd(&opts, &db, &errors, GIT_REVISION);
-  QString sceneryCfgCodec = (opts.getSimulatorType() == atools::fs::FsPaths::P3D_V4 ||
-                             opts.getSimulatorType() == atools::fs::FsPaths::P3D_V5) ? "UTF-8" : QString();
+  QString sceneryCfgCodec = (opts.getSimulatorType() == FsPaths::P3D_V4 ||
+                             opts.getSimulatorType() == FsPaths::P3D_V5) ? "UTF-8" : QString();
   nd.create(sceneryCfgCodec);
 
   // Copy all files containing airport or navaid information to another directory
@@ -183,11 +184,11 @@ void NavdataReader::parseArgs()
   // Simulator Type ===================================================
   if(parser.isSet(fstypeOpt))
   {
-    type = atools::fs::FsPaths::stringToType(parser.value(fstypeOpt).toUpper());
+    type = FsPaths::stringToType(parser.value(fstypeOpt).toUpper());
     opts.setSimulatorType(type);
   }
 
-  if(type == atools::fs::FsPaths::UNKNOWN)
+  if(type == FsPaths::UNKNOWN)
   {
     qCritical().noquote().nospace() << "*** ERROR: Unknown type for option -f." << endl;
     parser.showHelp(1);
@@ -200,24 +201,24 @@ void NavdataReader::parseArgs()
     parser.showHelp(1);
   }
 
-  if(type == atools::fs::FsPaths::XPLANE11 && !parser.isSet(basepathOpt))
+  if(type == FsPaths::XPLANE11 && !parser.isSet(basepathOpt))
   {
     qCritical().noquote().nospace() << "*** ERROR: No base path for X-Plane given." << endl;
     parser.showHelp(1);
   }
 
-  if(type == atools::fs::FsPaths::DFD && !parser.isSet(sourceDbOpt))
+  if(type == FsPaths::DFD && !parser.isSet(sourceDbOpt))
   {
     qCritical().noquote().nospace() << "*** ERROR: No DFD database given." << endl;
     parser.showHelp(1);
   }
 
   // Base path ===================================================
-  if(type != atools::fs::FsPaths::DFD)
+  if(type != FsPaths::DFD)
   {
     QString basepath = parser.value(basepathOpt);
     if(basepath.isEmpty())
-      basepath = atools::fs::FsPaths::getBasePath(type);
+      basepath = FsPaths::getBasePath(type);
 
     if(!atools::checkDir(basepath))
       exit(1);
@@ -225,7 +226,7 @@ void NavdataReader::parseArgs()
   }
 
   // Source database ===================================================
-  if(type == atools::fs::FsPaths::DFD)
+  if(type == FsPaths::DFD)
   {
     QString dbFile = parser.value(sourceDbOpt);
 
@@ -235,15 +236,21 @@ void NavdataReader::parseArgs()
   }
 
   // Scenery.cfg only FSX and P3D ===================================================
-  if(type != atools::fs::FsPaths::XPLANE11 && type != atools::fs::FsPaths::DFD && type != atools::fs::FsPaths::MSFS)
+  if(type != FsPaths::XPLANE11 && type != FsPaths::DFD && type != FsPaths::MSFS)
   {
     QString sceneryFile = parser.value(sceneryOpt);
     if(sceneryFile.isEmpty())
-      sceneryFile = atools::fs::FsPaths::getSceneryLibraryPath(type);
+      sceneryFile = FsPaths::getSceneryLibraryPath(type);
     if(!atools::checkFile(sceneryFile))
       exit(1);
 
     opts.setSceneryFile(sceneryFile);
+  }
+
+  if(type == FsPaths::MSFS)
+  {
+    opts.setMsfsCommunityPath(FsPaths::getMsfsCommunityPath(opts.getBasepath()));
+    opts.setMsfsOfficialPath(FsPaths::getMsfsOfficialPath(opts.getBasepath()));
   }
 
   copyFilePath = parser.value(copyOpt);
