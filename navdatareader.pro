@@ -94,8 +94,8 @@ win32 {
 macx {
   isEmpty(GIT_PATH) : GIT_PATH=git
 
-  # Compatibility down to OS X 10.10
-  QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.10
+  # Compatibility down to OS X Sierra 10.12 inclusive
+  QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.12
 }
 
 isEmpty(GIT_PATH) {

@@ -21,14 +21,45 @@
 #include "navdatareader.h"
 #include "exception.h"
 #include "gui/consoleapplication.h"
+#include "geo/calculations.h"
+#include "fs/fspaths.h"
 
 #include <QDebug>
 #include <QCoreApplication>
 
+/*
+ *  .Options:
+ *  .  -h, --help                               Displays this help.
+ *  .  -v, --version                            Displays version information.
+ *  .  -f, --flight-simulator <simulator>       Required option. Flight simulator
+ *  .                                           type <simulator> or other data
+ *  .                                           source. Either FSX, FSXSE, P3DV2,
+ *  .                                           P3DV3, P3DV4, P3DV5, XP11, MSFS or
+ *  .                                           DFD.
+ *  .  -s, --scenery <scenery>                  Scenery.cfg file <scenery> for FSX
+ *  .                                           and P3D. Determined by registry
+ *  .                                           entries if not given.
+ *  .  -d, --source-database <source-database>  Required option for DFD compilation.
+ *  .                                           Source database <source-database> for
+ *  .                                           DFD based compilation.
+ *  .  -b, --basepath <basepath>                Flight simulator basepath for BGL
+ *  .                                           files <basepath>. Determined by
+ *  .                                           registry entries if not given.
+ *  .  -o, --output <output>                    Output Sqlite database filename
+ *  .                                           <output> Default is "navdata.sqlite".
+ *  .  -c, --config <config>                    Configuration file <config> for
+ *  .                                           Navdatareader. Default is to use
+ *  .                                           integrated "navdatareader.cfg".
+ *  .  --copy-files <filepath>                  Copy all airport files to the given
+ *  .                                           <filepath> (keeping path structure)
+ */
 int main(int argc, char *argv[])
 {
   // Initialize the resources from atools static library
   Q_INIT_RESOURCE(atools);
+  atools::fs::FsPaths::intitialize();
+
+  atools::geo::registerMetaTypes();
 
   int retval = 0;
   atools::gui::ConsoleApplication app(argc, argv);
@@ -36,7 +67,7 @@ int main(int argc, char *argv[])
   QCoreApplication::setOrganizationName("ABarthel");
   QCoreApplication::setOrganizationDomain("littlenavmap.org");
 
-  QCoreApplication::setApplicationVersion("1.0.18"); // VERSION_NUMBER
+  QCoreApplication::setApplicationVersion("1.0.20.beta"); // VERSION_NUMBER
 
   try
   {
