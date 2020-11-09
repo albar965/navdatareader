@@ -7,25 +7,12 @@ For example: albar965/littlenavmap#3 is https://github.com/albar965/littlenavmap
 
 ## Related notes from atools Version 3.6.3.beta and 3.6.4.beta
 
-* Fixed MSFS flight plan export missing region codes.
 * Fixed issue with missing longest runway surface for airports with MSFS.
-* Fixed parsing of the incomplete METAR date. This could result in reports having the wrong date.
-* Fixed issue where METAR reports might not be updated in index which could result in missing updates.
-* Added support for coordinate parsing from Wikipedia which uses special characters to minute and
-  second symbols. Coordinates like `40°41′21″N 74°2′40″W` can now be directly pasted into
-  _Little Navmap_ dialogs.
-* Floating dock windows now also set to stay on top to avoid main window hiding them.
 * Now imitating the behavior of MSFS if an scenery update tries to reuse the ident of an airport
   for a new one. Example: Boyd Field (54XS) in MSFS which actually Bar C Ranch Airport (54XS) in
   real life at another location.
 * Fixed issue where military airports were not recognized in add-ons.
-* Minimized state is now reverted to normal window state when restoring.
-* Updated Chinese translation from John Liu.
 * Adjusted detection of MSFS Navigraph navdata update to avoid all airports being detected as add-on.
-* PLN files now have altitude set for all waypoints.
-* Better error reporting for flight plans now including filename.
-* Fixed crash when loading LNMPLN flight plans with an empty waypoint list.
-* Removed ICAO region code from MSFS export to improve loading in simulator.
 
 ===============================================================================
 
