@@ -3,6 +3,12 @@ For example: albar965/littlenavmap#3 is https://github.com/albar965/littlenavmap
 
 ===============================================================================
 
+# Version 1.0.22
+
+* Stable version
+
+===============================================================================
+
 # Version 1.0.21.beta
 
 ## Related notes from atools Version 3.6.3.beta and 3.6.4.beta
