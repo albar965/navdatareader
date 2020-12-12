@@ -6,6 +6,9 @@ For example: albar965/littlenavmap#3 is https://github.com/albar965/littlenavmap
 # Version 1.0.22
 
 * Stable version
+* Excluding Navigraph manifest file now to avoid error messages with package "navigraph-maintenance"
+  when reading MSFS scenery data.
+* Limited localizer width to 20 degree to avoid excessive values from FSX and MSFS breaking ILS geometry.
 
 ===============================================================================
 

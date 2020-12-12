@@ -26,8 +26,12 @@ navdatareader/resources/config/logging.cfg
 --------------------
 The database schema is documented in the atools project which contains
 the SQL files that create all the needed tables:
+
 * atools/resources/sql/fs/db/create_ap_schema.sql:
   Airports, runways, COM, approaches, transitions and other airport related tables.
+
+* atools/resources/sql/fs/db/create_nav_schema.sql:
+  VOR, NDB, ILS, waypoints and airways.
 
 * atools/resources/sql/fs/db/create_boundary_schema.sql:
   Airspace boundaries and related frequencies
@@ -35,11 +39,8 @@ the SQL files that create all the needed tables:
 * atools/resources/sql/fs/db/create_meta_schema.sql:
   Metadata for BGL files and scenery areas.
 
-* atools/resources/sql/fs/db/create_nav_schema.sql:
-  VOR, NDB, ILS, waypoints and airways.
-
 * atools/resources/sql/fs/db/create_route_schema.sql:
-  Tables needed to route calculation.
+  Tables needed to route calculation. OBSOLETE - not used in LNM as of 2.6.
 
 ------------------------------------------------------------------------------
 This software is licensed under GPL3 or any later version.
