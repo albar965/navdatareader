@@ -3,6 +3,20 @@ For example: albar965/littlenavmap#3 is https://github.com/albar965/littlenavmap
 
 ===============================================================================
 
+# Version 1.0.23
+
+* Fixed error when reading procedures with invalid or unknown approach types from FSX, P3D and MSFS.
+  Now logging error instead.
+* Added verbose logging for X-Plane compiler based on navdatareader.cfg. Added warnings if rows are
+  not written to the database.
+* Now also including MSFS scenery with content type `CORE`.
+* Now skipping maintenance.bgl file in MSFS scenery library which causes error messages when
+  loading scenery library.
+* Airport names now loaded from base scenery with Navigraph update in MSFS. Were missing previously.
+* Now omitting scenery library entries which are marked with active=`false` in Content.xml for MSFS.
+
+===============================================================================
+
 # Version 1.0.22
 
 * Stable version
