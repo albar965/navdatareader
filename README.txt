@@ -5,6 +5,8 @@ Sqlite, a relational database.
 It can read flight simulator databases from FSX, Prepar3D, MSFS, X-Plane 11
 and the DFD format.
 
+Issues can be submitted at https://github.com/albar965/littlenavmap/issues .
+
 ------------------------------------------------------------------------------
 
 A short manual is included as PDF in directory "help" or available online here:
