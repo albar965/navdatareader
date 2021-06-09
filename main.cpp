@@ -67,7 +67,7 @@ int main(int argc, char *argv[])
   QCoreApplication::setOrganizationName("ABarthel");
   QCoreApplication::setOrganizationDomain("littlenavmap.org");
 
-  QCoreApplication::setApplicationVersion("1.1.0.develop"); // VERSION_NUMBER
+  QCoreApplication::setApplicationVersion("1.0.24"); // VERSION_NUMBER
 
   try
   {

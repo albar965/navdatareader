@@ -5,12 +5,12 @@ if defined APROJECTS ( echo %APROJECTS% ) else ( echo APROJECTS not set && exit 
 rem === Pull from atools and navdatareader repositories =============================
 
 pushd "%APROJECTS%\atools"
-C:\Git\bin\git pull --verbose  --tags
+"%ATOOLS_GIT_PATH%" pull --verbose  --tags
 IF ERRORLEVEL 1 goto :err
 popd
 
 pushd "%APROJECTS%\navdatareader"
-C:\Git\bin\git pull  --verbose  --tags
+"%ATOOLS_GIT_PATH%" pull  --verbose  --tags
 IF ERRORLEVEL 1 goto :err
 popd
 

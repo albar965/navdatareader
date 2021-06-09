@@ -3,6 +3,35 @@ For example: albar965/littlenavmap#3 is https://github.com/albar965/littlenavmap
 
 ===============================================================================
 
+# Version 1.0.24
+
+* Corrected airport filter to avoid omitting airport updates when loading FSX/P3D/MSFS scenery.
+* Fixed reading of new procedure records in MSFS BGL. Thanks to @icykoneko for the implementation
+  and the help. Closes albar965/littlenavmap#649
+* Fixed issue where some navaids did not get airport_id assigned if in different BGL file. Now
+  resolving id later in database after reading BGLs.
+* Added new airspace types MCTR, TRSA and GCA where the last one is for unknown and general
+  airspace types. albar965/littlenavmap#607
+* Now omitting closed dummy airport structures having no runways which are added as MSFS POIs.
+* Write MSFS SIDs and STARs to database
+* Changed exception for invalid files in X-Plane CIFP path to warning in log file.
+
+===============================================================================
+
+# Version 1.0.23
+
+* Fixed error when reading procedures with invalid or unknown approach types from FSX, P3D and MSFS.
+  Now logging error instead.
+* Added verbose logging for X-Plane compiler based on navdatareader.cfg. Added warnings if rows are
+  not written to the database.
+* Now also including MSFS scenery with content type `CORE`.
+* Now skipping maintenance.bgl file in MSFS scenery library which causes error messages when
+  loading scenery library.
+* Airport names now loaded from base scenery with Navigraph update in MSFS. Were missing previously.
+* Now omitting scenery library entries which are marked with active=`false` in Content.xml for MSFS.
+
+===============================================================================
+
 # Version 1.0.22
 
 * Stable version
