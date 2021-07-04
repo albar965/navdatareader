@@ -19,7 +19,7 @@ if [ ! -d "$APROJECTS" ]; then echo "$APROJECTS" does not exist ; exit 1 ; fi
 # See the *.pro project files for more information.
 #
 # Example:
-# export QMAKE_STATIC=~/Projekte/build-qt-5.12.9-release/bin/qmake
+# export QMAKE_STATIC=~/Projekte/build-qt-5.12.11-release/bin/qmake
 # export MARBLE_LIB_PATH=~/Programme/Marble-debug/lib
 # export MARBLE_INC_PATH=~/Programme/Marble-debug/include
 
@@ -28,7 +28,7 @@ export ATOOLS_INC_PATH=${ATOOLS_INC_PATH:-"${APROJECTS}/atools/src"}
 export ATOOLS_LIB_PATH=${ATOOLS_LIB_PATH:-"${APROJECTS}/build-atools-${CONF_TYPE}"}
 
 # Defines the used Qt for all builds
-export QMAKE_SHARED=${QMAKE_SHARED:-"${HOME}/Qt/5.12.9/gcc_64/bin/qmake"}
+export QMAKE_SHARED=${QMAKE_SHARED:-"${HOME}/Qt/5.12.11/gcc_64/bin/qmake"}
 
 # Do not change the DEPLOY_BASE since some scripts depend on it
 export DEPLOY_BASE="${APROJECTS}/deploy"
