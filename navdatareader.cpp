@@ -260,7 +260,7 @@ void NavdataReader::parseArgs()
   if(configFile.isEmpty())
     // Command line overrides resource settings file
     configFile = ":/navdatareader/resources/config/navdatareader.cfg";
-  if(!atools::checkFile(configFile, "Configuration"))
+  if(!atools::checkFile(configFile))
     exit(1);
 
   QSettings settings(configFile, QSettings::IniFormat);

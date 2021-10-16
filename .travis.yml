@@ -1,0 +1,63 @@
+language: cpp
+os: linux
+compiler: gcc
+dist: focal
+
+addons:
+  apt:
+    # Get new gcc
+    packages:
+      - gcc-9
+      - g++-9
+
+before_install:
+    # Add repository for Qt
+    - sudo apt-add-repository --yes ppa:beineri/opt-qt-5.15.2-focal
+    - sudo apt-get -qq update
+
+    # Decrypt auth token for deployment
+    - '[ "$TRAVIS_SECURE_ENV_VARS" == "false" ] || openssl aes-256-cbc -K $encrypted_c40414cc1989_key -iv $encrypted_c40414cc1989_iv -in deployment/.dropbox_uploader.enc -out ~/.dropbox_uploader -d'
+
+install:
+    # Install needed Qt modules and libraries for qt
+    - sudo apt-get --yes install libgl1-mesa-dev qt515base qt515svg qt515script
+
+    # Set Qt variables
+    - QTDIR="/opt/qt515"
+    - PATH="$QTDIR/bin:$PATH"
+    - source /opt/qt515/bin/qt515-env.sh
+
+    # Set used gcc version
+    - sudo ln -s /usr/bin/gcc-9 /usr/local/bin/gcc
+    - sudo ln -s /usr/bin/g++-9 /usr/local/bin/g++
+    - export CC=gcc-9
+    - export CXX=g++-9
+
+before_script:
+    # Clone atools VERSION_NUMBER - atools
+    - git clone --branch=master https://github.com/albar965/atools.git ../atools
+
+    # Get atools if auth token for dropbox is available
+    - '[ "$TRAVIS_SECURE_ENV_VARS" == "false" ] || ../navdatareader/deployment/dropbox_uploader.sh download linux/atools-release.tar.gz ../atools-release.tar.gz'
+    - '[ "$TRAVIS_SECURE_ENV_VARS" == "false" ] || tar -xvzf ../atools-release.tar.gz -C ../'
+
+script:
+    # Build atools if auth token for dropbox is not available
+    - '[ "$TRAVIS_SECURE_ENV_VARS" == "true" ] || mkdir ../build-atools-release'
+    - '[ "$TRAVIS_SECURE_ENV_VARS" == "true" ] || cd ../build-atools-release'
+    - '[ "$TRAVIS_SECURE_ENV_VARS" == "true" ] || qmake ../atools/atools.pro CONFIG+=release'
+    - '[ "$TRAVIS_SECURE_ENV_VARS" == "true" ] || make -j2'
+
+    # Build navdatareader
+    - mkdir ../build-navdatareader-release
+    - cd ../build-navdatareader-release
+    - qmake ../navdatareader/navdatareader.pro CONFIG+=release QMAKE_CXXFLAGS+=-Wno-deprecated-copy QMAKE_CXXFLAGS+=-Wno-deprecated-declarations
+    - make -j2
+
+after_success:
+    # Deploy artefacts to dropbox
+    - tar -cvzf ../navdatareader-release.tar.gz ../build-navdatareader-release/
+    - '[ -f ~/.dropbox_uploader ] && ../navdatareader/deployment/dropbox_uploader.sh delete linux/navdatareader-release.tar.gz'
+    - '[ -f ~/.dropbox_uploader ] && ../navdatareader/deployment/dropbox_uploader.sh mkdir linux'
+    - '[ -f ~/.dropbox_uploader ] && ../navdatareader/deployment/dropbox_uploader.sh upload ../navdatareader-release.tar.gz linux'
+

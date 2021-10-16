@@ -28,7 +28,7 @@ export ATOOLS_INC_PATH=${ATOOLS_INC_PATH:-"${APROJECTS}/atools/src"}
 export ATOOLS_LIB_PATH=${ATOOLS_LIB_PATH:-"${APROJECTS}/build-atools-${CONF_TYPE}"}
 
 # Defines the used Qt for all builds
-export QMAKE_SHARED=${QMAKE_SHARED:-"${HOME}/Qt/5.12.11/gcc_64/bin/qmake"}
+export QMAKE_SHARED=${QMAKE_SHARED:-"${HOME}/Qt/5.15.2/gcc_64/bin/qmake"}
 
 # Do not change the DEPLOY_BASE since some scripts depend on it
 export DEPLOY_BASE="${APROJECTS}/deploy"

@@ -24,7 +24,7 @@ if defined DEPLOY_BASE ( echo %DEPLOY_BASE% ) else ( set DEPLOY_BASE=%APROJECTS%
 if defined ATOOLS_GIT_PATH ( echo %ATOOLS_GIT_PATH% ) else ( set ATOOLS_GIT_PATH=C:\Git\bin\git)
 
 rem Defines the used Qt for all builds
-if defined PATH_SHARED ( echo %PATH_SHARED% ) else ( set PATH_SHARED=C:\Qt\5.12.11\mingw73_32\bin;C:\Qt\Tools\mingw730_32\bin)
+if defined PATH_SHARED ( echo %PATH_SHARED% ) else ( set PATH_SHARED=C:\Qt\5.15.2\mingw81_32\bin;C:\Qt\Tools\mingw810_32\bin)
 
 rem === Build atools and navdatareader =============================
 
@@ -56,7 +56,7 @@ popd
 rem ===========================================================================
 rem ========================== navdatareader 32 bit
 setlocal
-set PATH=%PATH%;C:\Qt\5.12.11\mingw73_32\bin;C:\Qt\Tools\mingw730_32\bin
+set PATH=%PATH%;%PATH_SHARED%
 pushd "%APROJECTS%\build-navdatareader-release"
 del /S /Q /F "%APROJECTS%\build-navdatareader-release"
 for /f %%f in ('dir /ad /b "%APROJECTS%\build-navdatareader-release"') do rd /s /q "%APROJECTS%\build-navdatareader-release\%%f"

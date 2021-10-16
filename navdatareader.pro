@@ -88,7 +88,7 @@ unix:!macx {
 win32 {
   WINDEPLOY_FLAGS = --compiler-runtime
   CONFIG(debug, debug|release) : WINDEPLOY_FLAGS += --debug
-  CONFIG(release, debug|release) : WINDEPLOY_FLAGS += --release
+#  CONFIG(release, debug|release) : WINDEPLOY_FLAGS += --release
 }
 
 macx {
