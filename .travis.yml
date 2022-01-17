@@ -35,7 +35,7 @@ install:
 
 before_script:
     # Clone atools VERSION_NUMBER - atools
-    - git clone --branch=master https://github.com/albar965/atools.git ../atools
+    - git clone --branch=release/3.8 https://github.com/albar965/atools.git ../atools
 
     # Get atools if auth token for dropbox is available
     - '[ "$TRAVIS_SECURE_ENV_VARS" == "false" ] || ../navdatareader/deployment/dropbox_uploader.sh download linux/atools-release.tar.gz ../atools-release.tar.gz'

@@ -3,6 +3,76 @@ For example: albar965/littlenavmap#3 is https://github.com/albar965/littlenavmap
 
 ===============================================================================
 
+# Version 1.0.26
+
+## New Features in Database
+
+Airport MSA sectors, enroute holdings, vertical angles in procedures and SBAS/GBAS/RNP/GLS information.
+
+## Notes for Little Navmap versions smaller or equal to 2.6.17
+
+* Additions and fixes should not cause issues and will be fully used in future Little Navmap
+  development releases 2.7 as well as stable releases of 2.8.
+* GLS paths might incorrctly show up as ILS feathers  but only when using the `Navigraph for all
+  Features` scenery selection on DFD compiled databases.
+* Airport parking positions can be selected when using `Navigraph for all Features` but are not
+  shown on the map.
+
+## All
+
+* Updated database minor version to 22. Database version is now 14.22.
+* Changed execution order to allow content checking of table `scripts` in database compiler.
+* Changed runway dimension fields in database to floating point to avoid rounding errors with small
+  displaced thresholds.
+
+## DFD and X-Plane
+
+* Added compiling of en-route holdings to DFD and X-Plane compiler (new table `holding`).
+* Added gate positions to DFD compiler now used in table `parking`.
+* Added writing of airport MSA sectors and pre-calculated geometry to DFD and X-Plane compiler.
+  Table `airport_msa`. albar965/littlenavmap#498
+* Added SBAS/GBAS paths points and stations to X-Plane and DFD databases. Added to table `ils`.
+* Added vertical angle to approach and transition legs now read from DFD, X-Plane and MSFS. Column
+  `vertical_angle` in tables `approach_leg` and table `transition_leg`. albar965/littlenavmap#803
+* Added column `arinc_type` for detailed waypoint information to tables `waypoint` and
+  `nav_search`. Populating arinc_type for X-Plane and DFD database compilers.
+* Fixed issue where theta and rho in procedures were written as 0 instead of null values in DFD and
+  X-Plane compiler. This did not allow to recognize the difference between bearing 0 and bearing not given.
+* Fixed issue in DFD compiler where runways with offset threshold were not depicted properly.
+* Corrected assignment of runway end ids to ILS in DFD compiler.
+* Fixing equal runway end positions for DFD compiler now which resulted in zero-length runways when
+  drawing.
+* Corrected wrong number of ILS for airports in DFD compiler.
+* Fixed issues when resolving recommended procedure fixes in DFD compiler. Now also searching for ILS and other
+  approach facilities. albar965/littlenavmap#640
+
+## X-Plane Only
+
+* Fixed issue where runway end table had altitude not set.
+* Now skipping empty lines in X-Plane `apt.dat` file header.
+* Added X-Plane airport type to airport table.
+* Fixed X-Plane scenery compiler wrongly writing ENRT as airport ident for VOR, NDB, waypoints and
+  holdings.
+* Reading transition altitude from X-Plane airports now.
+* Added writing of MORA grid from X-Plane database in data compiler.
+
+## MSFS Only
+
+* Added vertical angle to approach and transition legs. albar965/littlenavmap#803
+* Fixed issue in scenery library loader where airports were wrongly recognized as MSFS POI dummies.
+* Fixed detection of MSFS Navigraph update due to name change.
+* Better error message when failing to read BGL files.
+* Enabled new approach type record for MSFS.
+* Reduced warnings for unknown BGL records in MSFS to avoid flooding the log with messages when
+  reading scenery.
+* Fixed issue where runway end table had altitude not set for MSFS.
+* Added new record type for airport apron appearing since MSFS SU6 beta. Reading apron structure for
+  new MSFS record. Disabled warning about unknown airport record types when compiling MSFS data.
+  albar965/littlenavmap#799
+* Corrected MSFS dummy POI airport detection. Now ignoring airport closed flag.
+
+===============================================================================
+
 # Version 1.0.25
 
 * Added FAA and local ident columns to airport table for X-Plane loader. Removed xpident column in
