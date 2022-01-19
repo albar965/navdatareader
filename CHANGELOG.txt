@@ -15,6 +15,8 @@ For example: albar965/littlenavmap#3 is https://github.com/albar965/littlenavmap
 * Now omitting closed dummy airport structures having no runways which are added as MSFS POIs.
 * Write MSFS SIDs and STARs to database
 * Changed exception for invalid files in X-Plane CIFP path to warning in log file.
+* Now dropping all artificial waypoints created only for procedure or airway resolution from
+  nav_search table.
 
 ===============================================================================
 
