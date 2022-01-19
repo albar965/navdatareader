@@ -24,6 +24,8 @@ Airport MSA sectors, enroute holdings, vertical angles in procedures and SBAS/GB
 * Changed execution order to allow content checking of table `scripts` in database compiler.
 * Changed runway dimension fields in database to floating point to avoid rounding errors with small
   displaced thresholds.
+* Now dropping all artificial waypoints created only for procedure or airway resolution from
+  nav_search table.
 
 ## DFD and X-Plane
 
