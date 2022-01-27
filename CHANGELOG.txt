@@ -5,8 +5,12 @@ For example: albar965/littlenavmap#3 is https://github.com/albar965/littlenavmap
 
 # Version 1.0.27
 
-* Adapted validation to new row numbers for DFD in cycle 2201.
-* This fixes the idx_boundary_file_id already exists.
+* Adapted validation to new row numbers for DFD in cycle 2201. This fixes the `idx_boundary_file_id
+  already exists` issue.
+* Removed exception in table validation. Now only printing a warning if table count does not match.
+  This ensures a complete database even if validation finds issues.
+* Now keeping indexes when finishing DFD database. This avoids the `preparing database` message in
+  Little Navmap when loading the database the first time.
 
 # Version 1.0.26
 
