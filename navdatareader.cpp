@@ -44,6 +44,10 @@ using atools::sql::SqlDatabase;
 using atools::fs::NavDatabaseErrors;
 using atools::fs::FsPaths;
 
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
+using Qt::endl;
+#endif
+
 NavdataReader::NavdataReader()
 {
 
