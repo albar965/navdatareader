@@ -29,11 +29,17 @@ class NavdataReader
 {
 public:
   NavdataReader();
+
   void run();
 
   int getNumErrors() const
   {
     return numErrors;
+  }
+
+  bool isBasicValidationError() const
+  {
+    return foundBasicValidationError;
   }
 
 private:
@@ -50,6 +56,7 @@ private:
   atools::fs::NavDatabaseOptions opts;
   QString copyFilePath;
   QString configFile;
+  bool foundBasicValidationError = false;
 };
 
 #endif // NAVDATAREADER_H
