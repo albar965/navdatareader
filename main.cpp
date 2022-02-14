@@ -61,7 +61,7 @@ int main(int argc, char *argv[])
 
   atools::geo::registerMetaTypes();
 
-  int retval = 0;
+  int retval = 0; // Success is default
   atools::gui::ConsoleApplication app(argc, argv);
   QCoreApplication::setApplicationName("Navdatareader");
   QCoreApplication::setOrganizationName("ABarthel");
@@ -74,6 +74,9 @@ int main(int argc, char *argv[])
     // Read the scenery.cfg, read all scenery areas and BGL files and store them in the Sqlite database
     NavdataReader reader;
     reader.run();
+
+    if(reader.isBasicValidationError())
+      retval = 1;
   }
   catch(const atools::Exception& e)
   {
@@ -96,5 +99,6 @@ int main(int argc, char *argv[])
 
   qInfo() << "done.";
   atools::logging::LoggingHandler::shutdown();
+
   return retval;
 }
