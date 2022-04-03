@@ -20,6 +20,7 @@
 
 #include "sql/sqldatabase.h"
 #include "fs/navdatabaseoptions.h"
+#include "fs/navdatabaseflags.h"
 
 /*
  * Reads configuration options from the command line, the configuration file and
@@ -37,9 +38,9 @@ public:
     return numErrors;
   }
 
-  bool isBasicValidationError() const
+  const atools::fs::ResultFlags& getResultFlags() const
   {
-    return foundBasicValidationError;
+    return resultFlags;
   }
 
 private:
@@ -56,7 +57,7 @@ private:
   atools::fs::NavDatabaseOptions opts;
   QString copyFilePath;
   QString configFile;
-  bool foundBasicValidationError = false;
+  atools::fs::ResultFlags resultFlags = atools::fs::NONE;
 };
 
 #endif // NAVDATAREADER_H

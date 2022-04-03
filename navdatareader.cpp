@@ -97,7 +97,7 @@ void NavdataReader::run()
   atools::fs::NavDatabase nd(&opts, &db, &errors, GIT_REVISION);
   QString sceneryCfgCodec = (opts.getSimulatorType() == FsPaths::P3D_V4 ||
                              opts.getSimulatorType() == FsPaths::P3D_V5) ? "UTF-8" : QString();
-  nd.create(sceneryCfgCodec, foundBasicValidationError);
+  resultFlags = nd.create(sceneryCfgCodec);
 
   // Copy all files containing airport or navaid information to another directory
   // Only for debugging purposes

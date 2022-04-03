@@ -75,7 +75,7 @@ int main(int argc, char *argv[])
     NavdataReader reader;
     reader.run();
 
-    if(reader.isBasicValidationError())
+    if(reader.getResultFlags().testFlag(atools::fs::COMPILE_BASIC_VALIDATION_ERROR))
       retval = 1;
   }
   catch(const atools::Exception& e)
