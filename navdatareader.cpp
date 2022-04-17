@@ -97,7 +97,7 @@ void NavdataReader::run()
   atools::fs::NavDatabase nd(&opts, &db, &errors, GIT_REVISION);
   QString sceneryCfgCodec = (opts.getSimulatorType() == FsPaths::P3D_V4 ||
                              opts.getSimulatorType() == FsPaths::P3D_V5) ? "UTF-8" : QString();
-  nd.create(sceneryCfgCodec, foundBasicValidationError);
+  resultFlags = nd.create(sceneryCfgCodec);
 
   // Copy all files containing airport or navaid information to another directory
   // Only for debugging purposes
@@ -136,7 +136,7 @@ void NavdataReader::parseArgs()
 
   QCommandLineOption fstypeOpt({"f", "flight-simulator"},
                                QObject::tr("Required option. Flight simulator type <simulator> or other data source. "
-                                           "Either FSX, FSXSE, P3DV2, P3DV3, P3DV4, P3DV5, XP11, MSFS or DFD."),
+                                           "Either FSX, FSXSE, P3DV2, P3DV3, P3DV4, P3DV5, XP11, XP12, MSFS or DFD."),
                                QObject::tr("simulator"));
   parser.addOption(fstypeOpt);
 
@@ -188,7 +188,7 @@ void NavdataReader::parseArgs()
     opts.setSimulatorType(type);
   }
 
-  if(type == FsPaths::UNKNOWN)
+  if(type == FsPaths::NONE)
   {
     qCritical().noquote().nospace() << "*** ERROR: Unknown type for option -f." << endl;
     parser.showHelp(1);
@@ -201,7 +201,7 @@ void NavdataReader::parseArgs()
     parser.showHelp(1);
   }
 
-  if(type == FsPaths::XPLANE11 && !parser.isSet(basepathOpt))
+  if(FsPaths::isAnyXplane(type) && !parser.isSet(basepathOpt))
   {
     qCritical().noquote().nospace() << "*** ERROR: No base path for X-Plane given." << endl;
     parser.showHelp(1);
@@ -236,7 +236,7 @@ void NavdataReader::parseArgs()
   }
 
   // Scenery.cfg only FSX and P3D ===================================================
-  if(type != FsPaths::XPLANE11 && type != FsPaths::DFD && type != FsPaths::MSFS)
+  if(!FsPaths::isAnyXplane(type) && type != FsPaths::DFD && type != FsPaths::MSFS)
   {
     QString sceneryFile = parser.value(sceneryOpt);
     if(sceneryFile.isEmpty())
