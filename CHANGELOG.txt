@@ -3,9 +3,32 @@ For example: albar965/littlenavmap#3 is https://github.com/albar965/littlenavmap
 
 # Version 1.0.29
 
+## X-Plane and DFD
 
+* Fixed issues with magnetic variation and inbound course in DFD and X-Plane compiler. Holding
+  course is now written as magnetic course to avoid unneeded calculations. Databases minor version
+  updated to 24.
+* Added airport transition level for X-Plane and DFD compiler. Improved transition level and
+  altitude reading for X-Plane since users add various wrong variants.
+* Added "has_vertical_angle" and "has_rnp" to table "approach".
+* Corrected issues with true course runways like in BGTL for X-Plane and DFD compiler. Approaches
+  were missing runway assignments and could not be resolved. albar965/littlenavmap#870
 
+## MSFS
 
+* Corrected closed airport logic for MSFS. Now fully relying on closed airport flag for MSFS. This
+  can result in closed airports having open runways and open airports having all runways open. #876
+* Fixed issue where all airports were recognized as add-on with MSFS update 9.
+* Fixed issues for updating airports by disabling a corner case from FSX and P3D which apparently
+  does not apply to MSFS. Before a feature was not updated if the new airport did not contain new
+  features like aprons or taxiways. Example LICC add-on.
+
+## X-Plane
+
+* Fixed exception while loading X-Plane scenery library if earth_hold.dat, earth_mora.dat or
+  earth_msa.dat cannot be found in Custom Data despite existing fix, nav and awy files.
+* Fixed issue `Index out of bounds: Index: 5, size: 5` when reading X-Plane user_fix.dat with
+  optional column missing.
 
 ===============================================================================
 
