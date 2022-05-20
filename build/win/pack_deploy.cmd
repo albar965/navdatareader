@@ -22,9 +22,11 @@ IF ERRORLEVEL 1 goto :err
 rem ===========================================================================
 rem ==== Copy all =============================================================
 
+set /p FILENAMETEMP=<"%APROJECTS%\deploy\Navdatareader\version.txt"
+set FILENAME=%FILENAMETEMP: =%
+
 if defined SSH_DEPLOY_TARGET (
-set /p FILENAME=<"Navdatareader"\version.txt
-pscp -i %HOMEDRIVE%\%HOMEPATH%\.ssh\id_rsa Navdatareader.zip %SSH_DEPLOY_TARGET%/Navdatareader-win-%FILENAME%.zip
+pscp -i "%HOMEDRIVE%\%HOMEPATH%\.ssh\id_rsa" "Navdatareader.zip" "%SSH_DEPLOY_TARGET%/Navdatareader-win-%FILENAME%.zip"
 )
 
 popd
