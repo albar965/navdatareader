@@ -71,7 +71,7 @@ void NavdataReader::run()
   qInfo() << "The source code for this application is available at https://github.com/albar965";
   qInfo() << "Copyright 2015-2020 Alexander Barthel (alex@littlenavmap.org).";
   qInfo().nospace().noquote() << "Version " << QCoreApplication::applicationVersion()
-                              << " (revision " << GIT_REVISION << ")";
+                              << " (revision " << GIT_REVISION_NAVDATAREADER << ")";
   qInfo().nospace().noquote() << "atools Version " << atools::version()
                               << " (revision " << atools::gitRevision() << ")";
 
@@ -94,7 +94,7 @@ void NavdataReader::run()
   db.open(DATABASE_PRAGMAS);
 
   atools::fs::NavDatabaseErrors errors;
-  atools::fs::NavDatabase nd(&opts, &db, &errors, GIT_REVISION);
+  atools::fs::NavDatabase nd(&opts, &db, &errors, GIT_REVISION_NAVDATAREADER);
   QString sceneryCfgCodec = (opts.getSimulatorType() == FsPaths::P3D_V4 ||
                              opts.getSimulatorType() == FsPaths::P3D_V5) ? "UTF-8" : QString();
   resultFlags = nd.create(sceneryCfgCodec);
