@@ -103,8 +103,10 @@ macx {
 
 isEmpty(GIT_PATH) {
   GIT_REVISION=UNKNOWN
+  GIT_REVISION_FULL=UNKNOWN
 } else {
   GIT_REVISION=$$system('$$GIT_PATH' rev-parse --short HEAD)
+  GIT_REVISION_FULL=$$system('$$GIT_PATH' rev-parse HEAD)
 }
 
 LIBS += -L$$ATOOLS_LIB_PATH -latools
@@ -138,6 +140,7 @@ exists($$PWD/../build_options.pro) {
 message(-----------------------------------)
 message(VERSION_NUMBER: $$VERSION_NUMBER)
 message(GIT_REVISION: $$GIT_REVISION)
+message(GIT_REVISION_FULL: $$GIT_REVISION_FULL)
 message(GIT_PATH: $$GIT_PATH)
 message(ATOOLS_INC_PATH: $$ATOOLS_INC_PATH)
 message(ATOOLS_LIB_PATH: $$ATOOLS_LIB_PATH)
@@ -194,7 +197,7 @@ unix:!macx {
   deploy.commands += mkdir -pv $$DEPLOY_DIR_LIB &&
   deploy.commands += mkdir -pv $$DEPLOY_DIR_LIB/sqldrivers &&
   deploy.commands += echo $$VERSION_NUMBER > $$DEPLOY_DIR/version.txt &&
-  deploy.commands += echo $$GIT_REVISION > $$DEPLOY_DIR/revision.txt &&
+  deploy.commands += echo $$GIT_REVISION_FULL > $$DEPLOY_DIR/revision.txt &&
   deploy.commands += cp -Rvf $$OUT_PWD/navdatareader $$DEPLOY_DIR &&
   deploy.commands += cp -Rvf $$OUT_PWD/help $$DEPLOY_DIR &&
   deploy.commands += cp -Rvf $$PWD/resources/config $$DEPLOY_DIR/config &&
@@ -217,7 +220,7 @@ win32 {
   deploy.commands = rmdir /s /q $$p($$DEPLOY_BASE/$$TARGET_NAME) &
   deploy.commands += mkdir $$p($$DEPLOY_BASE/$$TARGET_NAME/sqldrivers) &&
   deploy.commands += echo $$VERSION_NUMBER > $$p($$DEPLOY_BASE/$$TARGET_NAME/version.txt) &&
-  deploy.commands += echo $$GIT_REVISION > $$p($$DEPLOY_BASE/$$TARGET_NAME/revision.txt) &&
+  deploy.commands += echo $$GIT_REVISION_FULL > $$p($$DEPLOY_BASE/$$TARGET_NAME/revision.txt) &&
   deploy.commands += xcopy $$p($$OUT_PWD/navdatareader.exe) $$p($$DEPLOY_BASE/$$TARGET_NAME) &&
   deploy.commands += xcopy $$p($$PWD/CHANGELOG.txt) $$p($$DEPLOY_BASE/$$TARGET_NAME) &&
   deploy.commands += xcopy $$p($$PWD/README.txt) $$p($$DEPLOY_BASE/$$TARGET_NAME) &&

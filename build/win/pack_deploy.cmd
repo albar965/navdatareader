@@ -22,7 +22,10 @@ IF ERRORLEVEL 1 goto :err
 rem ===========================================================================
 rem ==== Copy all =============================================================
 
+rem Get file version number
 set /p FILENAMETEMP=<"%APROJECTS%\deploy\Navdatareader\version.txt"
+
+rem Remove spaces from variable
 set FILENAME=%FILENAMETEMP: =%
 
 if defined SSH_DEPLOY_TARGET (
