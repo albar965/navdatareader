@@ -1,5 +1,5 @@
 /*****************************************************************************
-* Copyright 2015-2020 Alexander Barthel alex@littlenavmap.org
+* Copyright 2015-2022 Alexander Barthel alex@littlenavmap.org
 *
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -15,17 +15,15 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *****************************************************************************/
 
-#include "logging/logginghandler.h"
-#include "logging/loggingutil.h"
-#include "settings/settings.h"
-#include "navdatareader.h"
 #include "exception.h"
-#include "gui/consoleapplication.h"
 #include "geo/calculations.h"
-#include "fs/fspaths.h"
+#include "gui/consoleapplication.h"
+#include "io/fileroller.h"
+#include "logging/logginghandler.h"
+#include "navdatareader.h"
 
-#include <QDebug>
-#include <QCoreApplication>
+#include <QFileInfo>
+#include <QDir>
 
 /*
  *  .Options:
@@ -50,8 +48,6 @@
  *  .  -c, --config <config>                    Configuration file <config> for
  *  .                                           Navdatareader. Default is to use
  *  .                                           integrated "navdatareader.cfg".
- *  .  --copy-files <filepath>                  Copy all airport files to the given
- *  .                                           <filepath> (keeping path structure)
  */
 int main(int argc, char *argv[])
 {
@@ -68,11 +64,11 @@ int main(int argc, char *argv[])
   QCoreApplication::setOrganizationDomain("littlenavmap.org");
 
   QCoreApplication::setApplicationVersion(VERSION_NUMBER_NAVDATAREADER); // VERSION_NUMBER
+  NavdataReader reader;
 
   try
   {
     // Read the scenery.cfg, read all scenery areas and BGL files and store them in the Sqlite database
-    NavdataReader reader;
     reader.run();
 
     if(reader.getResultFlags().testFlag(atools::fs::COMPILE_BASIC_VALIDATION_ERROR))
@@ -95,6 +91,24 @@ int main(int argc, char *argv[])
     qCritical() << "*** Compilation failed";
     qCritical() << "Caught unknown exception";
     retval = 1;
+  }
+
+  if(retval == 1)
+  {
+    // Failed - rename output file and add "BROKEN" suffix to avoid accidental use
+    QFileInfo filename = reader.getDatabaseName();
+    QString newName = filename.absolutePath() + QDir::separator() + filename.baseName() + "_BROKEN." + filename.completeSuffix();
+
+    // Create backup copies of broken files
+    // little_navmap_navigraph_BROKEN.sqlite
+    // little_navmap_navigraph_BROKEN.sqlite.1
+    atools::io::FileRoller roller(2);
+    roller.rollFile(newName);
+
+    // Rename output file
+    qWarning() << "Renaming output file from" << filename << "to" << newName;
+    if(!QFile::rename(reader.getDatabaseName(), newName))
+      qWarning() << "*** Renaming failed";
   }
 
   qInfo() << "done.";
