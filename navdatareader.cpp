@@ -196,7 +196,7 @@ void NavdataReader::parseArgs()
     if(basepath.isEmpty())
       basepath = FsPaths::getBasePath(type);
 
-    if(!atools::checkDir(basepath))
+    if(!atools::checkDir(Q_FUNC_INFO, basepath))
       exit(1);
     opts.setBasepath(basepath);
   }
@@ -206,7 +206,7 @@ void NavdataReader::parseArgs()
   {
     QString dbFile = parser.value(sourceDbOpt);
 
-    if(!atools::checkFile(dbFile))
+    if(!atools::checkFile(Q_FUNC_INFO, dbFile))
       exit(1);
     opts.setSourceDatabase(dbFile);
   }
@@ -217,7 +217,7 @@ void NavdataReader::parseArgs()
     QString sceneryFile = parser.value(sceneryOpt);
     if(sceneryFile.isEmpty())
       sceneryFile = FsPaths::getSceneryLibraryPath(type);
-    if(!atools::checkFile(sceneryFile))
+    if(!atools::checkFile(Q_FUNC_INFO, sceneryFile))
       exit(1);
 
     opts.setSceneryFile(sceneryFile);
@@ -234,7 +234,7 @@ void NavdataReader::parseArgs()
   if(configFile.isEmpty())
     // Command line overrides resource settings file
     configFile = ":/navdatareader/resources/config/navdatareader.cfg";
-  if(!atools::checkFile(configFile))
+  if(!atools::checkFile(Q_FUNC_INFO, configFile))
     exit(1);
 
   QSettings settings(configFile, QSettings::IniFormat);
