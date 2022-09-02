@@ -48,7 +48,7 @@ VERSION_NUMBER=1.0.29
 QT += sql core
 
 CONFIG += build_all c++14 console
-CONFIG -= app_bundle gui debug_and_release debug_and_release_targetD
+CONFIG -= app_bundle gui debug_and_release debug_and_release_target
 
 TARGET = navdatareader
 TEMPLATE = app
