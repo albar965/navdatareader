@@ -42,13 +42,13 @@
 # End of configuration documentation
 # =============================================================================
 
-# Define program version here
-VERSION_NUMBER=1.1.3.develop
+# Define program version here VERSION_NUMBER_TODO
+VERSION_NUMBER=1.0.29
 
 QT += sql core
 
 CONFIG += build_all c++14 console
-CONFIG -= app_bundle gui debug_and_release debug_and_release_target
+CONFIG -= app_bundle gui debug_and_release debug_and_release_targetD
 
 TARGET = navdatareader
 TEMPLATE = app

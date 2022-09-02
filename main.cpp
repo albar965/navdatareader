@@ -63,7 +63,7 @@ int main(int argc, char *argv[])
   QCoreApplication::setOrganizationName("ABarthel");
   QCoreApplication::setOrganizationDomain("littlenavmap.org");
 
-  QCoreApplication::setApplicationVersion(VERSION_NUMBER_NAVDATAREADER); // VERSION_NUMBER
+  QCoreApplication::setApplicationVersion(VERSION_NUMBER_NAVDATAREADER);
   NavdataReader reader;
 
   try

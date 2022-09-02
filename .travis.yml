@@ -34,7 +34,7 @@ install:
     - export CXX=g++-9
 
 before_script:
-    # Clone atools VERSION_NUMBER - atools
+    # Clone atools - atools VERSION_NUMBER_TODO
     - git clone --branch=release/3.8 https://github.com/albar965/atools.git ../atools
 
     # Get atools if auth token for dropbox is available
