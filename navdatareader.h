@@ -18,9 +18,9 @@
 #ifndef NAVDATAREADER_H
 #define NAVDATAREADER_H
 
-#include "sql/sqldatabase.h"
-#include "fs/navdatabaseoptions.h"
 #include "fs/navdatabaseflags.h"
+#include "fs/navdatabaseoptions.h"
+#include "sql/sqldatabase.h"
 
 /*
  * Reads configuration options from the command line, the configuration file and
@@ -29,8 +29,6 @@
 class NavdataReader
 {
 public:
-  NavdataReader();
-
   void run();
 
   int getNumErrors() const
@@ -43,21 +41,20 @@ public:
     return resultFlags;
   }
 
+  /* Database file name */
+  QString getDatabaseName() const;
+
 private:
   /* Parse command line arguments */
   void parseArgs();
-
-  /* Copy all airport files to the path given on the command line */
-  void copyFiles();
 
   atools::fs::FsPaths::SimulatorType type = atools::fs::FsPaths::FSX;
 
   int numErrors = 0;
   atools::sql::SqlDatabase db;
   atools::fs::NavDatabaseOptions opts;
-  QString copyFilePath;
   QString configFile;
-  atools::fs::ResultFlags resultFlags = atools::fs::NONE;
+  atools::fs::ResultFlags resultFlags = atools::fs::COMPILE_NONE;
 };
 
 #endif // NAVDATAREADER_H

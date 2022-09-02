@@ -42,6 +42,9 @@
 # End of configuration documentation
 # =============================================================================
 
+# Define program version here
+VERSION_NUMBER=1.1.3.develop
+
 QT += sql core
 
 CONFIG += build_all c++14 console
@@ -99,16 +102,19 @@ macx {
 }
 
 isEmpty(GIT_PATH) {
-  GIT_REVISION='\\"UNKNOWN\\"'
+  GIT_REVISION=UNKNOWN
+  GIT_REVISION_FULL=UNKNOWN
 } else {
-  GIT_REVISION='\\"$$system('$$GIT_PATH' rev-parse --short HEAD)\\"'
+  GIT_REVISION=$$system('$$GIT_PATH' rev-parse --short HEAD)
+  GIT_REVISION_FULL=$$system('$$GIT_PATH' rev-parse HEAD)
 }
 
 LIBS += -L$$ATOOLS_LIB_PATH -latools
 PRE_TARGETDEPS += $$ATOOLS_LIB_PATH/libatools.a
 DEPENDPATH += $$ATOOLS_INC_PATH
 INCLUDEPATH += $$PWD/src $$ATOOLS_INC_PATH
-DEFINES += GIT_REVISION=$$GIT_REVISION
+DEFINES += VERSION_NUMBER_NAVDATAREADER='\\"$$VERSION_NUMBER\\"'
+DEFINES += GIT_REVISION_NAVDATAREADER='\\"$$GIT_REVISION\\"'
 DEFINES += QT_NO_CAST_FROM_BYTEARRAY
 DEFINES += QT_NO_CAST_TO_ASCII
 
@@ -132,8 +138,10 @@ exists($$PWD/../build_options.pro) {
 
 !isEqual(QUIET, "true") {
 message(-----------------------------------)
-message(GIT_PATH: $$GIT_PATH)
+message(VERSION_NUMBER: $$VERSION_NUMBER)
 message(GIT_REVISION: $$GIT_REVISION)
+message(GIT_REVISION_FULL: $$GIT_REVISION_FULL)
+message(GIT_PATH: $$GIT_PATH)
 message(ATOOLS_INC_PATH: $$ATOOLS_INC_PATH)
 message(ATOOLS_LIB_PATH: $$ATOOLS_LIB_PATH)
 message(DEPLOY_BASE: $$DEPLOY_BASE)
@@ -188,6 +196,8 @@ unix:!macx {
   deploy.commands = rm -Rfv $$DEPLOY_DIR &&
   deploy.commands += mkdir -pv $$DEPLOY_DIR_LIB &&
   deploy.commands += mkdir -pv $$DEPLOY_DIR_LIB/sqldrivers &&
+  deploy.commands += echo $$VERSION_NUMBER > $$DEPLOY_DIR/version.txt &&
+  deploy.commands += echo $$GIT_REVISION_FULL > $$DEPLOY_DIR/revision.txt &&
   deploy.commands += cp -Rvf $$OUT_PWD/navdatareader $$DEPLOY_DIR &&
   deploy.commands += cp -Rvf $$OUT_PWD/help $$DEPLOY_DIR &&
   deploy.commands += cp -Rvf $$PWD/resources/config $$DEPLOY_DIR/config &&
@@ -209,6 +219,8 @@ win32 {
 
   deploy.commands = rmdir /s /q $$p($$DEPLOY_BASE/$$TARGET_NAME) &
   deploy.commands += mkdir $$p($$DEPLOY_BASE/$$TARGET_NAME/sqldrivers) &&
+  deploy.commands += echo $$VERSION_NUMBER > $$p($$DEPLOY_BASE/$$TARGET_NAME/version.txt) &&
+  deploy.commands += echo $$GIT_REVISION_FULL > $$p($$DEPLOY_BASE/$$TARGET_NAME/revision.txt) &&
   deploy.commands += xcopy $$p($$OUT_PWD/navdatareader.exe) $$p($$DEPLOY_BASE/$$TARGET_NAME) &&
   deploy.commands += xcopy $$p($$PWD/CHANGELOG.txt) $$p($$DEPLOY_BASE/$$TARGET_NAME) &&
   deploy.commands += xcopy $$p($$PWD/README.txt) $$p($$DEPLOY_BASE/$$TARGET_NAME) &&
@@ -220,9 +232,6 @@ win32 {
   deploy.commands += xcopy /i /s /e /f /y $$p($$PWD/resources/config) $$p($$DEPLOY_BASE/$$TARGET_NAME/config) &&
   deploy.commands += $$p($$[QT_INSTALL_BINS]/windeployqt) $$WINDEPLOY_FLAGS $$p($$DEPLOY_BASE/$$TARGET_NAME)
 }
-
-# =====================================================================
-# Additional targets
 
 # =====================================================================
 # Additional targets

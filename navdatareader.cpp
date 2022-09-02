@@ -1,5 +1,5 @@
 /*****************************************************************************
-* Copyright 2015-2020 Alexander Barthel alex@littlenavmap.org
+* Copyright 2015-2022 Alexander Barthel alex@littlenavmap.org
 *
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -17,37 +17,20 @@
 
 #include "navdatareader.h"
 
-#include "fs/scenery/scenerycfg.h"
-#include "sql/sqldatabase.h"
-#include "sql/sqlquery.h"
-#include "fs/fspaths.h"
-#include "fs/navdatabase.h"
 #include "atools.h"
-#include "logging/loggingutil.h"
-#include "fs/db/databasemeta.h"
+#include "exception.h"
+#include "fs/navdatabase.h"
 #include "fs/navdatabaseerrors.h"
 #include "logging/logginghandler.h"
+#include "logging/loggingutil.h"
 #include "settings/settings.h"
-#include "exception.h"
 
-#include <QDebug>
 #include <QCommandLineParser>
-#include <QCoreApplication>
-#include <QElapsedTimer>
-#include <QFileInfo>
 #include <QSettings>
-#include <QCoreApplication>
-#include <QDir>
 
-using atools::fs::scenery::SceneryCfg;
 using atools::sql::SqlDatabase;
 using atools::fs::NavDatabaseErrors;
 using atools::fs::FsPaths;
-
-NavdataReader::NavdataReader()
-{
-
-}
 
 void NavdataReader::run()
 {
@@ -57,6 +40,7 @@ void NavdataReader::run()
   // Load simulator paths =================================
   FsPaths::loadAllPaths();
 
+  // Fill NavDatabaseOptions from command line
   parseArgs();
 
   if(!opts.getSourceDatabase().isEmpty())
@@ -71,7 +55,7 @@ void NavdataReader::run()
   qInfo() << "The source code for this application is available at https://github.com/albar965";
   qInfo() << "Copyright 2015-2020 Alexander Barthel (alex@littlenavmap.org).";
   qInfo().nospace().noquote() << "Version " << QCoreApplication::applicationVersion()
-                              << " (revision " << GIT_REVISION << ")";
+                              << " (revision " << GIT_REVISION_NAVDATAREADER << ")";
   qInfo().nospace().noquote() << "atools Version " << atools::version()
                               << " (revision " << atools::gitRevision() << ")";
 
@@ -94,16 +78,8 @@ void NavdataReader::run()
   db.open(DATABASE_PRAGMAS);
 
   atools::fs::NavDatabaseErrors errors;
-  atools::fs::NavDatabase nd(&opts, &db, &errors, GIT_REVISION);
-  QString sceneryCfgCodec = (opts.getSimulatorType() == FsPaths::P3D_V4 ||
-                             opts.getSimulatorType() == FsPaths::P3D_V5) ? "UTF-8" : QString();
-  resultFlags = nd.create(sceneryCfgCodec);
-
-  // Copy all files containing airport or navaid information to another directory
-  // Only for debugging purposes
-  if(!copyFilePath.isEmpty())
-    copyFiles();
-
+  atools::fs::NavDatabase nd(&opts, &db, &errors, GIT_REVISION_NAVDATAREADER);
+  resultFlags = nd.compileDatabase();
   db.close();
 
   if(errors.getTotalErrors() > 0)
@@ -125,10 +101,16 @@ void NavdataReader::run()
   }
 }
 
+QString NavdataReader::getDatabaseName() const
+{
+  return db.databaseName();
+}
+
 void NavdataReader::parseArgs()
 {
   // Build command line option parser ===================================================
   QCommandLineParser parser;
+
   parser.setApplicationDescription("Flight Simulator Navdata Database Reader.\n"
                                    "This software is licensed under the GPL3 or any later version.");
   parser.addHelpOption();
@@ -172,12 +154,6 @@ void NavdataReader::parseArgs()
                             QObject::tr("config"));
   parser.addOption(cfgOpt);
 
-  QCommandLineOption copyOpt(QStringList("copy-files"),
-                             QObject::tr("Copy all airport files to the given "
-                                         "<filepath> (keeping path structure)"),
-                             QObject::tr("filepath"));
-  parser.addOption(copyOpt);
-
   // Process the actual command line arguments given by the user
   parser.process(*QCoreApplication::instance());
 
@@ -220,7 +196,7 @@ void NavdataReader::parseArgs()
     if(basepath.isEmpty())
       basepath = FsPaths::getBasePath(type);
 
-    if(!atools::checkDir(basepath))
+    if(!atools::checkDir(Q_FUNC_INFO, basepath))
       exit(1);
     opts.setBasepath(basepath);
   }
@@ -230,7 +206,7 @@ void NavdataReader::parseArgs()
   {
     QString dbFile = parser.value(sourceDbOpt);
 
-    if(!atools::checkFile(dbFile))
+    if(!atools::checkFile(Q_FUNC_INFO, dbFile))
       exit(1);
     opts.setSourceDatabase(dbFile);
   }
@@ -241,7 +217,7 @@ void NavdataReader::parseArgs()
     QString sceneryFile = parser.value(sceneryOpt);
     if(sceneryFile.isEmpty())
       sceneryFile = FsPaths::getSceneryLibraryPath(type);
-    if(!atools::checkFile(sceneryFile))
+    if(!atools::checkFile(Q_FUNC_INFO, sceneryFile))
       exit(1);
 
     opts.setSceneryFile(sceneryFile);
@@ -253,14 +229,12 @@ void NavdataReader::parseArgs()
     opts.setMsfsOfficialPath(FsPaths::getMsfsOfficialPath(opts.getBasepath()));
   }
 
-  copyFilePath = parser.value(copyOpt);
-
   // Configuration file ===================================================
   configFile = parser.value(cfgOpt);
   if(configFile.isEmpty())
     // Command line overrides resource settings file
     configFile = ":/navdatareader/resources/config/navdatareader.cfg";
-  if(!atools::checkFile(configFile))
+  if(!atools::checkFile(Q_FUNC_INFO, configFile))
     exit(1);
 
   QSettings settings(configFile, QSettings::IniFormat);
@@ -281,35 +255,5 @@ void NavdataReader::parseArgs()
     }
 
     db.setDatabaseName(databaseName);
-  }
-}
-
-void NavdataReader::copyFiles()
-{
-  atools::sql::SqlQuery query(&db);
-
-  query.exec("select filepath from bgl_file");
-  while(query.next())
-  {
-    QString filepath = query.value("filepath").toString();
-
-    if(!filepath.isEmpty())
-    {
-      QString destPath(filepath);
-#if defined(Q_OS_WIN32)
-      if(destPath.at(1) == ':')
-        destPath.remove(1, 1);
-#endif
-
-      QString destFilename = copyFilePath + QDir::separator() + destPath;
-      QString destDir = QFileInfo(destFilename).absolutePath();
-      if(!QDir(destDir).mkpath(destDir))
-        qWarning() << "Error creating directory" << destDir;
-
-      QFile file(filepath);
-      qInfo() << "Copying file" << file.fileName() << "to" << destFilename;
-      if(!file.copy(destFilename))
-        qWarning() << "Error copying file" << file.fileName() << "to" << destFilename;
-    }
   }
 }

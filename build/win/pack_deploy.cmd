@@ -7,12 +7,7 @@ rem === Deploy built programs. ZIP, check with Windows Defender and copy them to
 rem Override by envrionment variable for another target or leave empty for no copying - needs putty tools in path
 rem set SSH_DEPLOY_TARGET=user@host:/data/alex/Public/Releases
 
-for /f "delims=" %%# in ('powershell get-date -format "{yyyyMMdd-HHmm}"') do @set FILEDATE=%%#
-
-echo Filedate %FILEDATE%
-
 pushd "%APROJECTS%\deploy"
-
 
 rem ===========================================================================
 rem ==== Pack Navdatareader ===================================================================
@@ -27,8 +22,14 @@ IF ERRORLEVEL 1 goto :err
 rem ===========================================================================
 rem ==== Copy all =============================================================
 
+rem Get file version number
+set /p FILENAMETEMP=<"%APROJECTS%\deploy\Navdatareader\version.txt"
+
+rem Remove spaces from variable
+set FILENAME=%FILENAMETEMP: =%
+
 if defined SSH_DEPLOY_TARGET (
-pscp -i %HOMEDRIVE%\%HOMEPATH%\.ssh\id_rsa Navdatareader.zip %SSH_DEPLOY_TARGET%/Navdatareader-win-%FILEDATE%.zip
+pscp -i "%HOMEDRIVE%\%HOMEPATH%\.ssh\id_rsa" "Navdatareader.zip" "%SSH_DEPLOY_TARGET%/Navdatareader-win-%FILENAME%.zip"
 )
 
 popd
