@@ -4,96 +4,66 @@ This text is partially Markdown, hence sometimes strange formatting.
 
 ===============================================================================
 
-# Version 1.1.3.develop
+# Version 1.0.29
 
 ## All
 
-* Minor database version updated to 26 for schema changes.
-* Added `has_vertical_angle` and `has_rnp` to table `approach`.
+* Minor database version updated to 27 for schema changes.
+* Added columns `has_vertical_angle` and `has_rnp` to table `approach`.
 * Now renaming output database and adding suffix `BROKEN` to avoid accidental use in case of error.
-* Build: Moved version number to variable in file `navdatareader.pro` instead of coding into
-  sources. Now writing files `version.txt` and `revision.txt` files into deployment folder allowing
-  deployment scripts to automatically name archives.
-* Better error handling in navdatabase.
-* Removed option `--copy-files`.
 
 ## X-Plane and DFD
 
+* Added airport transition level for X-Plane and DFD compiler.
 * Corrected issues with true course runways like in BGTL for X-Plane and DFD compiler. Approaches
   were missing runway assignments and could not be resolved. #870
-* Added airport transition level for X-Plane and DFD compiler. Improved transition level and
-  altitude reading for X-Plane since users add various variants.
 * Fixed issues with magnetic variation and inbound course in DFD and X-Plane compiler.
 * Holding course is now written as magnetic course to avoid unneeded calculations. This also fixes
   the wrong en-route holding inbound course in Little Navmap.
 
 ## X-Plane
 
+* Fixed issue `Index out of bounds: Index: 5, size: 5` when reading X-Plane user_fix.dat with
+  optional column missing.
 * Now skipping empty X-Plane `apt.dat` files to avoid program freezing in an empty loop for
   malformed files.
 * Fixed exception while loading X-Plane scenery library if files `earth_hold.dat`, `earth_mora.dat` or
   `earth_msa.dat` cannot be found in `Custom Data` despite existing fix, nav and airway files.
-* Fixed issue `Index out of bounds: Index: 5, size: 5` when reading X-Plane `user_fix.dat` with
-  optional column missing.
-* Prepared data compilation for X-Plane 12 based on limited information. Added X-Plane 12 detection
-  to FsPaths. #867
+* Prepared data compilation for X-Plane 12 based on limited information. Added X-Plane 12
+  detection. #867
 * Fixed database connection leak when compiling X-Plane scenery library.
+* Improved transition level and altitude reading for X-Plane since users add various variants.
 
 ## MSFS
 
+* Corrected closed airport logic for MSFS. Now fully relying on closed airport flag for MSFS. This
+  can result in closed airports having open runways and open airports having all runways open. #876
 * Changed handling for MSFS file `Content.xml` for SU10. Priorities for known base folders are now
   forced to lowest values to ensure the correct loading order. Other folders are loaded without any
   special order.
 * Now ignoring waypoints with empty ICAO region code and invalid type as they appear in some MSFS
   add-on sceneries. This fixes the exception `NOT NULL constraint failed: tmp_waypoint.region ...`
   when loading. #910
-* Reduced logging for invalid MSFS BGL files.
 * Now allowing BGL files from missions to catch respective airports for MSFS.
 * Community path for MSFS is now optional for detection but will throw an error on loading if missing.
-* Added suffix to airport parking. This is currently only used by MSFS.
+* Added suffix to airport parking.
 * Added push request #16 of @flpduarte. Fixed bug in which Little Navmap would only read and
   display a single transition from addon (Community) SIDs and STARs, despite these procedures
   actually having more than one transition. This happens when using the latest MSFS SDK (SU9 or later).
 * Added warning messages for encrypted MSFS add-ons when reading scenery library.
 * Fixed issue where airport frequencies were written as 0 instead of null for MSFS resulting in
   wrong search results.
-* Corrected closed airport logic for MSFS. Now fully relying on closed airport flag for MSFS. This
-  can result in closed airports having open runways and open airports having all runways open. #876
 * Fixed issue where all airports were recognized as add-on with MSFS update 9.
 * Fixed issues for updating airports by disabling a corner case from FSX and P3D which apparently
   does not apply to MSFS. Before a feature was not updated if the new airport did not contain new
   features like aprons or taxiways. Example LICC add-on.
+* Reduced logging for invalid MSFS BGL files.
 
-===============================================================================
+## Build
 
-# Version 1.0.29
-
-## X-Plane and DFD
-
-* Fixed issues with magnetic variation and inbound course in DFD and X-Plane compiler. Holding
-  course is now written as magnetic course to avoid unneeded calculations. Databases minor version
-  updated to 24.
-* Added airport transition level for X-Plane and DFD compiler. Improved transition level and
-  altitude reading for X-Plane since users add various wrong variants.
-* Added "has_vertical_angle" and "has_rnp" to table "approach".
-* Corrected issues with true course runways like in BGTL for X-Plane and DFD compiler. Approaches
-  were missing runway assignments and could not be resolved. albar965/littlenavmap#870
-
-## MSFS
-
-* Corrected closed airport logic for MSFS. Now fully relying on closed airport flag for MSFS. This
-  can result in closed airports having open runways and open airports having all runways open. #876
-* Fixed issue where all airports were recognized as add-on with MSFS update 9.
-* Fixed issues for updating airports by disabling a corner case from FSX and P3D which apparently
-  does not apply to MSFS. Before a feature was not updated if the new airport did not contain new
-  features like aprons or taxiways. Example LICC add-on.
-
-## X-Plane
-
-* Fixed exception while loading X-Plane scenery library if earth_hold.dat, earth_mora.dat or
-  earth_msa.dat cannot be found in Custom Data despite existing fix, nav and awy files.
-* Fixed issue `Index out of bounds: Index: 5, size: 5` when reading X-Plane user_fix.dat with
-  optional column missing.
+* Moved version number to variable in file `navdatareader.pro` instead of coding into
+  sources. Now writing files `version.txt` and `revision.txt` files into deployment folder allowing
+  deployment scripts to automatically name archives.
 
 ===============================================================================
 
