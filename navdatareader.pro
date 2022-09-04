@@ -195,7 +195,7 @@ unix:!macx {
 
   deploy.commands = rm -Rfv $$DEPLOY_DIR &&
   deploy.commands += mkdir -pv $$DEPLOY_DIR_LIB &&
-  deploy.commands += mkdir -pv $$DEPLOY_DIR_LIB/sqldrivers &&
+  deploy.commands += mkdir -pv $$DEPLOY_DIR/sqldrivers &&
   deploy.commands += echo $$VERSION_NUMBER > $$DEPLOY_DIR/version.txt &&
   deploy.commands += echo $$GIT_REVISION_FULL > $$DEPLOY_DIR/revision.txt &&
   deploy.commands += cp -Rvf $$OUT_PWD/navdatareader $$DEPLOY_DIR &&
@@ -204,7 +204,7 @@ unix:!macx {
   deploy.commands += cp -vf $$PWD/CHANGELOG.txt $$DEPLOY_DIR &&
   deploy.commands += cp -vf $$PWD/README.txt $$DEPLOY_DIR &&
   deploy.commands += cp -vf $$PWD/LICENSE.txt $$DEPLOY_DIR &&
-  deploy.commands += cp -vfa $$[QT_INSTALL_PLUGINS]/sqldrivers/libqsqlite.so*  $$DEPLOY_DIR_LIB/sqldrivers &&
+  deploy.commands += cp -vfa $$[QT_INSTALL_PLUGINS]/sqldrivers/libqsqlite.so*  $$DEPLOY_DIR/sqldrivers &&
   deploy.commands += cp -vfa $$[QT_INSTALL_LIBS]/libicudata.so*  $$DEPLOY_DIR_LIB &&
   deploy.commands += cp -vfa $$[QT_INSTALL_LIBS]/libicui18n.so*  $$DEPLOY_DIR_LIB &&
   deploy.commands += cp -vfa $$[QT_INSTALL_LIBS]/libicuuc.so*  $$DEPLOY_DIR_LIB &&
