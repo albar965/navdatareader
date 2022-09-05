@@ -8,7 +8,7 @@ This text is partially Markdown, hence sometimes strange formatting.
 
 ## All
 
-* Minor database version updated to 25 for schema changes.
+* Minor database version updated to 27 for schema changes.
 * Added columns `has_vertical_angle` and `has_rnp` to table `approach`.
 * Now renaming output database and adding suffix `BROKEN` to avoid accidental use in case of error.
 
