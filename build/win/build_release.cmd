@@ -26,6 +26,13 @@ if defined ATOOLS_GIT_PATH ( echo %ATOOLS_GIT_PATH% ) else ( set ATOOLS_GIT_PATH
 rem Defines the used Qt for all builds
 if defined PATH_SHARED ( echo %PATH_SHARED% ) else ( set PATH_SHARED=C:\Qt\5.15.2\mingw81_32\bin;C:\Qt\Tools\mingw810_32\bin)
 
+set ATOOLS_NO_GRIB=true
+set ATOOLS_NO_GUI=true
+set ATOOLS_NO_ROUTING=true
+set ATOOLS_NO_TRACK=true
+set ATOOLS_NO_WEATHER=true
+set ATOOLS_NO_WEB=true
+
 rem === Build atools and navdatareader =============================
 
 rem ===========================================================================

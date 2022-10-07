@@ -33,6 +33,13 @@ export QMAKE_SHARED=${QMAKE_SHARED:-"${HOME}/Qt/5.15.2/gcc_64/bin/qmake"}
 # Do not change the DEPLOY_BASE since some scripts depend on it
 export DEPLOY_BASE="${APROJECTS}/deploy"
 
+export ATOOLS_NO_GRIB=true
+export ATOOLS_NO_GUI=true
+export ATOOLS_NO_ROUTING=true
+export ATOOLS_NO_TRACK=true
+export ATOOLS_NO_WEATHER=true
+export ATOOLS_NO_WEB=true
+
 # ===========================================================================
 # ========================== navdatareader - shared Qt
 # ===========================================================================
