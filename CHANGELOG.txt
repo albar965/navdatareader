@@ -4,6 +4,62 @@ This text is partially Markdown, hence sometimes strange formatting.
 
 ===============================================================================
 
+# Version 1.0.30
+
+## All
+
+* Fixed issue with mapped drives on Windows where add-on airports were not detected when having
+  MSFS installed on a mapped drive.
+* Now supporting symbolic links, Windows junctions and Windows shortcuts in MSFS `Community` and
+  X-Plane `Custom Scenery` folder. Fixed exclude file, exclude directory and exclude add-on
+  recognition to consider links.
+* Fixed issue where paths were stored with the wrong separators in the database on Windows.
+* Added functions to calculate real canonical path and link target considering symbolic links,
+  Windows junctions and Windows shortcuts.
+* Now using canonical path to compare scenery library exclusions set from the user interface to
+  avoid issues with symbolic links.
+* Minor version of database changed to 27 to indicate change in metadata table and parking suffix
+  change.
+
+## DFD
+
+* Adjusted validation limits for VOR and NDB.
+
+## X-Plane
+
+* Fixed several issues with new X-Plane runway surface types. Fixed dropped runways if they used
+  unknown surface types for X-Plane airports. This resulted in airports registered without runways
+  and having helipad symbol assigned. Implemented new undocumented asphalt and concrete textures
+  found in WED 2.5.
+* Removing area/country codes from X-Plane country names now.
+* Calculating RNP value now correct for procedures from X-Plane data.
+* Fixed remaining issues with macOS aliases. These can now be used in X- Plane `Custom Scenery`.
+* Made reading of X-Plane `scenery_packs.ini` more error tolerant for XP12. Now only printing warnings.
+* Fixed import and export for X-Plane 11 and 12 `user_fix.dat`. Now allowing null coordinates as well
+  exporting and importing waypoint flags and full name. Userpoint tags are used to load and save the
+  ID of the airport terminal area and the waypoint type.
+* Fixed issue where X-Plane 12 add-on airports were not read from `Custom Scenery`. Airports not
+  included in the file `scenery_packs.ini` are now treated like enabled. #927
+* Fixed error message when reading XP12 scenery packs file.
+* Now falling back to Asphalt for undocumented, unknown or invalid surface types in XP12.
+
+## MSFS
+
+* Adjusted detection of Navigraph package.
+* Corrected layer ordering for MSFS scenery library to adhere to priorities in file `Content.xml`.
+* Fixed issue where airport city names were missing since MSFS SU11 beta.
+* Changed handling for MSFS file `Content.xml` for SU10. Priorities for known base folders are now
+  forced to lowest values to ensure the correct loading order. Other folders are loaded without any
+  special order.
+* Now ignoring waypoints with empty ICAO region code and invalid type as they appear in some MSFS
+  add-on sceneries. #910
+* Reduced logging for invalid MSFS BGL files.
+* Now allowing BGL files from missions to catch respective airports for MSFS.
+* Added general properties column to the database metadata table. Now storing in properties if
+  navdata update was found for MSFS to allow later database validation.
+
+===============================================================================
+
 # Version 1.0.29
 
 ## All
