@@ -30,6 +30,7 @@ set ATOOLS_NO_GRIB=true
 set ATOOLS_NO_GUI=true
 set ATOOLS_NO_ROUTING=true
 set ATOOLS_NO_TRACK=true
+set ATOOLS_NO_USERDATA=true
 set ATOOLS_NO_WEATHER=true
 set ATOOLS_NO_WEB=true
 
