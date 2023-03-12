@@ -53,7 +53,7 @@ void NavdataReader::run()
   qInfo() << "This software is licensed under the GPL3 or any later version.";
   qInfo() << "See http://www.gnu.org/licenses/gpl-3.0 for more information.";
   qInfo() << "The source code for this application is available at https://github.com/albar965";
-  qInfo() << "Copyright 2015-2022 Alexander Barthel (alex@littlenavmap.org).";
+  qInfo() << "Copyright 2015-2023 Alexander Barthel (alex@littlenavmap.org).";
   qInfo().nospace().noquote() << "Version " << QCoreApplication::applicationVersion()
                               << " (revision " << GIT_REVISION_NAVDATAREADER << ")";
   qInfo().nospace().noquote() << "atools Version " << atools::version()

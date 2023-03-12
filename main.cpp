@@ -32,7 +32,7 @@
  *  .  -f, --flight-simulator <simulator>       Required option. Flight simulator
  *  .                                           type <simulator> or other data
  *  .                                           source. Either FSX, FSXSE, P3DV2,
- *  .                                           P3DV3, P3DV4, P3DV5, XP11, MSFS or
+ *  .                                           P3DV3, P3DV4, P3DV5, XP11, XP12, MSFS or
  *  .                                           DFD.
  *  .  -s, --scenery <scenery>                  Scenery.cfg file <scenery> for FSX
  *  .                                           and P3D. Determined by registry
