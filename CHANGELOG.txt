@@ -20,6 +20,7 @@ This text is partially Markdown, hence sometimes strange formatting.
   avoid issues with symbolic links.
 * Minor version of database changed to 27 to indicate change in metadata table and parking suffix
   change.
+* Windows build is now 64-bit.
 
 ## DFD
 

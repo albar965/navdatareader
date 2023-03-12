@@ -24,7 +24,7 @@ if defined DEPLOY_BASE ( echo %DEPLOY_BASE% ) else ( set DEPLOY_BASE=%APROJECTS%
 if defined ATOOLS_GIT_PATH ( echo %ATOOLS_GIT_PATH% ) else ( set ATOOLS_GIT_PATH=C:\Git\bin\git)
 
 rem Defines the used Qt for all builds
-if defined PATH_SHARED ( echo %PATH_SHARED% ) else ( set PATH_SHARED=C:\Qt\5.15.2\mingw81_32\bin;C:\Qt\Tools\mingw810_32\bin)
+if defined PATH_SHARED ( echo %PATH_SHARED% ) else ( set PATH_SHARED=C:\Qt\5.15.2\mingw81_64\bin;C:\Qt\Tools\mingw810_64\bin)
 
 set ATOOLS_NO_GRIB=true
 set ATOOLS_NO_GUI=true
@@ -49,7 +49,7 @@ setlocal
 set PATH=%PATH%;%PATH_SHARED%
 
 rem ===========================================================================
-rem ========================== atools 32 bit
+rem ========================== atools 64 bit
 pushd "%APROJECTS%\build-atools-release"
 del /S /Q /F "%APROJECTS%\build-atools-release"
 for /f %%f in ('dir /ad /b "%APROJECTS%\build-atools-release"') do rd /s /q "%APROJECTS%\build-atools-release\%%f"
@@ -62,7 +62,7 @@ IF ERRORLEVEL 1 goto :err
 popd
 
 rem ===========================================================================
-rem ========================== navdatareader 32 bit
+rem ========================== navdatareader 64 bit
 setlocal
 set PATH=%PATH%;%PATH_SHARED%
 pushd "%APROJECTS%\build-navdatareader-release"
