@@ -25,6 +25,7 @@ This text is partially Markdown, hence sometimes strange formatting.
 ## DFD
 
 * Adjusted validation limits for VOR and NDB.
+* No populating column ils.loc_width and calculating geometry accordingly. #1011
 
 ## X-Plane
 
