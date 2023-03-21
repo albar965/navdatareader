@@ -14,8 +14,6 @@ This text is partially Markdown, hence sometimes strange formatting.
   X-Plane `Custom Scenery` folder. Fixed exclude file, exclude directory and exclude add-on
   recognition to consider links.
 * Fixed issue where paths were stored with the wrong separators in the database on Windows.
-* Added functions to calculate real canonical path and link target considering symbolic links,
-  Windows junctions and Windows shortcuts.
 * Now using canonical path to compare scenery library exclusions set from the user interface to
   avoid issues with symbolic links.
 * Minor version of database changed to 27 to indicate change in metadata table and parking suffix
@@ -24,8 +22,8 @@ This text is partially Markdown, hence sometimes strange formatting.
 
 ## DFD
 
+* Now populating column ils.loc_width and calculating geometry accordingly. #1011
 * Adjusted validation limits for VOR and NDB.
-* No populating column ils.loc_width and calculating geometry accordingly. #1011
 
 ## X-Plane
 
