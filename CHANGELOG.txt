@@ -19,6 +19,7 @@ This text is partially Markdown, hence sometimes strange formatting.
 * Minor version of database changed to 27 to indicate change in metadata table and parking suffix
   change.
 * Windows build is now 64-bit.
+* Added option to disable obsolete airport_large and airport_medium tables.
 
 ## DFD
 
