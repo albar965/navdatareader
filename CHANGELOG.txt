@@ -4,6 +4,30 @@ This text is partially Markdown, hence sometimes strange formatting.
 
 ===============================================================================
 
+# Version 1.0.31
+
+## DFD
+
+* Now adding start positions for runways and parking spots to allow departure parking selection.
+
+## X-Plane
+
+* X-Plane 12 manually corrected localizers file is now read.
+
+## MSFS
+
+* Fix for missing aircraft model translations since MSFS SU12.
+* Fixed country names appearing as language keys when compiling MSFS. Names are now empty again
+  since MSFS does not provide these.
+* Corrected detection and reading of Navigraph navdata update in MSFS. Now reading airports from
+  update. Navdata and procedures are ignored. The wrongly excluded package is now read. Speed up for
+  reading scenery library by ignoring unused procedures from navdata update. #1019
+* Fixed issue where MSFS navdata update was recognized despite having its folders excluded.
+* More cleanup for MSFS airport names. Now removing space at end and beginning of all names to
+  allow search since some airport names are entered wrongly.
+
+===============================================================================
+
 # Version 1.0.30
 
 ## All
