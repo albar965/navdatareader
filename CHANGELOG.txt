@@ -25,6 +25,8 @@ This text is partially Markdown, hence sometimes strange formatting.
 * Fixed issue where MSFS navdata update was recognized despite having its folders excluded.
 * More cleanup for MSFS airport names. Now removing space at end and beginning of all names to
   allow search since some airport names are entered wrongly.
+* Corrected overzealous filter for MSFS airport dummy structures which removed add-on helipads or
+  airports. Example add-on: `willicopta-spital-la-chaux-de-fonds-lsh9` which did not show up.
 
 ===============================================================================
 
