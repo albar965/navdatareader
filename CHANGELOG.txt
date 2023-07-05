@@ -28,6 +28,10 @@ This text is partially Markdown, hence sometimes strange formatting.
 * Corrected overzealous filter for MSFS airport dummy structures which removed add-on helipads or
   airports. Example add-on: `willicopta-spital-la-chaux-de-fonds-lsh9` which did not show up.
 
+## Prepar3D
+
+* Added support for Prepar3D v6.
+
 ===============================================================================
 
 # Version 1.0.30
