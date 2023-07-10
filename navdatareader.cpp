@@ -240,6 +240,7 @@ void NavdataReader::parseArgs()
   QSettings settings(configFile, QSettings::IniFormat);
 
   opts.loadFromSettings(settings);
+  opts.setCallDefaultCallback(true);
 
   // Create database ===================================================
   db = SqlDatabase(settings, "Database");
