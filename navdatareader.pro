@@ -155,6 +155,7 @@ message(QT_INSTALL_PLUGINS: $$[QT_INSTALL_PLUGINS])
 message(QT_INSTALL_TRANSLATIONS: $$[QT_INSTALL_TRANSLATIONS])
 message(QT_INSTALL_BINS: $$[QT_INSTALL_BINS])
 message(CONFIG: $$CONFIG)
+message(QT: $$QT)
 message(-----------------------------------)
 }
 
