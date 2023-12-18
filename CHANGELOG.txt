@@ -4,6 +4,16 @@ This text is partially Markdown, hence sometimes strange formatting.
 
 ===============================================================================
 
+# Version 1.2.0.beta
+
+* DFD: Fixed issue where circular airspace arcs resulted in self crossing polygons. The fix is
+  required for airspaec text placement in Little Navmap 3.0 and later.
+* All compilers: Doubled number or arc and circle segments for more accuracy in map display airspaces.
+* MSFS: Fixed issues with moved or updated airports when reading scenery library.
+* MSFS: Now excluding all navaids in detected Navigraph update when reading the scenery library.
+
+===============================================================================
+
 # Version 1.0.31
 
 ## DFD
