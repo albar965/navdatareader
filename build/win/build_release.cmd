@@ -33,6 +33,7 @@ set ATOOLS_NO_TRACK=true
 set ATOOLS_NO_USERDATA=true
 set ATOOLS_NO_WEATHER=true
 set ATOOLS_NO_WEB=true
+set ATOOLS_NO_NAVSERVER=true
 
 rem === Build atools and navdatareader =============================
 
