@@ -173,7 +173,6 @@ OTHER_FILES += \
   $$files(build/*, true) \
   $$files(help/*, true) \
   $$files(config/*, true) \
-  .travis.yml \
   .gitignore \
   BUILD.txt \
   CHANGELOG.txt \
