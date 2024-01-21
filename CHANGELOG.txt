@@ -4,13 +4,31 @@ This text is partially Markdown, hence sometimes strange formatting.
 
 ===============================================================================
 
-# Version 1.2.0.beta
+# Version 1.2.0
 
-* DFD: Fixed issue where circular airspace arcs resulted in self crossing polygons. The fix is
-  required for airspaec text placement in Little Navmap 3.0 and later.
-* All compilers: Doubled number or arc and circle segments for more accuracy in map display airspaces.
-* MSFS: Fixed issues with moved or updated airports when reading scenery library.
-* MSFS: Now excluding all navaids in detected Navigraph update when reading the scenery library.
+## DFD
+
+* Fixed issue where circular airspace arcs resulted in self crossing polygons. The fix is
+  required for airspace text placement in Little Navmap 3.0 and later.
+* Runways marked as closed are now shown as such.
+* Airport patterns now correctly marked as not available.
+* Runways having one end closed are now positioned correctly. Example: EDDF runway 18.
+
+## MSFS
+
+* Fixed issues with moved or updated airports when reading scenery library.
+* Now excluding all navaids in detected Navigraph update when reading the scenery library.
+
+## X-Plane
+
+* Now setting "is_draw_surface" always to 1 for X-Plane to avoid transparent aprons.
+  albar965/littlenavmap#1059
+
+## All Compilers
+
+* Doubled number of pre-calculated arc and circle segments for more accuracy in map display
+  airspaces.
+* Additional scenery folder is now read recursively for all simulators.
 
 ===============================================================================
 
