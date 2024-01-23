@@ -1,5 +1,5 @@
 /*****************************************************************************
-* Copyright 2015-2022 Alexander Barthel alex@littlenavmap.org
+* Copyright 2015-2024 Alexander Barthel alex@littlenavmap.org
 *
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -86,7 +86,7 @@ void NavdataReader::run()
   {
     qWarning() << "==================================================================";
     qWarning() << "== FOUND ERRORS ==================================================";
-    for(const NavDatabaseErrors::SceneryErrors& errs : errors.sceneryErrors)
+    for(const NavDatabaseErrors::SceneryErrors& errs : qAsConst(errors.sceneryErrors))
     {
       qWarning() << "Error in scenery" << errs.scenery;
 

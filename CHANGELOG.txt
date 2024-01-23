@@ -14,10 +14,11 @@ This text is partially Markdown, hence sometimes strange formatting.
 * Airport patterns now correctly marked as not available.
 * Runways having one end closed are now positioned correctly. Example: EDDF runway 18.
 
-## MSFS
+## MSFS, P3D and FSX
 
 * Fixed issues with moved or updated airports when reading scenery library.
 * Now excluding all navaids in detected Navigraph update when reading the scenery library.
+* Fixed wrong calculation for airport rating which did not update add-on airports.
 
 ## X-Plane
 
@@ -29,6 +30,7 @@ This text is partially Markdown, hence sometimes strange formatting.
 * Doubled number of pre-calculated arc and circle segments for more accuracy in map display
   airspaces.
 * Additional scenery folder is now read recursively for all simulators.
+
 
 ===============================================================================
 
