@@ -30,6 +30,8 @@ This text is partially Markdown, hence sometimes strange formatting.
 * Doubled number of pre-calculated arc and circle segments for more accuracy in map display
   airspaces.
 * Additional scenery folder is now read recursively for all simulators.
+* Deleting duplicate navaids now by region, ident and position. This allows to update frequency or
+  type for VOR and NDB on P3D or FSX by add-on.
 
 
 ===============================================================================
