@@ -19,6 +19,8 @@ This text is partially Markdown, hence sometimes strange formatting.
 * Fixed issues with moved or updated airports when reading scenery library.
 * Now excluding all navaids in detected Navigraph update when reading the scenery library.
 * Fixed wrong calculation for airport rating which did not update add-on airports.
+* MSFS: Wrongly built airports like the MS MKJS now keep their procedure information in MSFS despite
+  trying to override it with an empty procedure set. #1085
 
 ## X-Plane
 
