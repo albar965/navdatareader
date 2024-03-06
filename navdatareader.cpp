@@ -59,10 +59,9 @@ void NavdataReader::run()
   qInfo().nospace().noquote() << "atools Version " << atools::version()
                               << " (revision " << atools::gitRevision() << ")";
 
-  using atools::logging::LoggingUtil;
-  LoggingUtil::logSystemInformation();
-
-  LoggingUtil::logStandardPaths();
+  atools::settings::Settings::logMessages();
+  atools::logging::LoggingUtil::logSystemInformation();
+  atools::logging::LoggingUtil::logStandardPaths();
 
   FsPaths::logAllPaths();
 
