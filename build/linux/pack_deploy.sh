@@ -13,8 +13,8 @@ if [ ! -d "$APROJECTS" ]; then echo "$APROJECTS" does not exist ; exit 1 ; fi
 # Override by envrionment variable for another target
 export SSH_DEPLOY_TARGET=${SSH_DEPLOY_TARGET:-"sol:/data/alex/Public/Releases"}
 
-if [ -f "/etc/lsb-release" ]; then
-  source /etc/lsb-release
+if [ -f "/etc/os-release" ]; then
+  source /etc/os-release
   export FILENAME=$DISTRIB_RELEASE-$(head -n1 ${APROJECTS}/deploy/"$TARGET_NAME"/version.txt)
 else
   export FILENAME=$(head -n1 ${APROJECTS}/deploy/"$TARGET_NAME"/version.txt)
