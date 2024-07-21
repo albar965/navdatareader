@@ -64,6 +64,8 @@ GIT_PATH=$$(ATOOLS_GIT_PATH)
 DEPLOY_BASE=$$(DEPLOY_BASE)
 QUIET=$$(ATOOLS_QUIET)
 
+ATOOLS_NO_CRASHHANDLER=$$(ATOOLS_NO_CRASHHANDLER)
+
 # =======================================================================
 # Fill defaults for unset
 
@@ -77,6 +79,9 @@ isEmpty(ATOOLS_LIB_PATH) : ATOOLS_LIB_PATH=$$PWD/../build-atools-$$CONF_TYPE
 
 # =======================================================================
 # Set compiler flags and paths
+
+# No crash handler on Linux and macOS
+unix : ATOOLS_NO_CRASHHANDLER = true
 
 unix:!macx {
   isEmpty(GIT_PATH) : GIT_PATH=git
@@ -110,6 +115,17 @@ isEmpty(GIT_PATH) {
 }
 
 LIBS += -L$$ATOOLS_LIB_PATH -latools
+
+# Cpptrace ==========================
+!isEqual(ATOOLS_NO_CRASHHANDLER, "true") {
+  DEFINES += CPPTRACE_STATIC_DEFINE
+  win32 : LIBS += -L$$PWD/../cpptrace-$$CONF_TYPE-$$WINARCH/lib -lcpptrace -ldbghelp -ldwarf -lz -lzstd
+  unix:!macx : LIBS += -L$$PWD/../cpptrace-$$CONF_TYPE/lib -lcpptrace -ldwarf -lz -lzstd
+  CONFIG += force_debug_info
+} else {
+  DEFINES += DISABLE_CRASHHANDLER
+}
+
 PRE_TARGETDEPS += $$ATOOLS_LIB_PATH/libatools.a
 DEPENDPATH += $$ATOOLS_INC_PATH
 INCLUDEPATH += $$PWD/src $$ATOOLS_INC_PATH
@@ -144,6 +160,7 @@ message(GIT_REVISION_FULL: $$GIT_REVISION_FULL)
 message(GIT_PATH: $$GIT_PATH)
 message(ATOOLS_INC_PATH: $$ATOOLS_INC_PATH)
 message(ATOOLS_LIB_PATH: $$ATOOLS_LIB_PATH)
+message(ATOOLS_NO_CRASHHANDLER: $$ATOOLS_NO_CRASHHANDLER)
 message(DEPLOY_BASE: $$DEPLOY_BASE)
 message(DEFINES: $$DEFINES)
 message(INCLUDEPATH: $$INCLUDEPATH)
@@ -211,7 +228,8 @@ unix:!macx {
   deploy.commands += cp -vfa $$[QT_INSTALL_LIBS]/libicuuc.so*  $$DEPLOY_DIR_LIB &&
   deploy.commands += cp -vfa $$[QT_INSTALL_LIBS]/libQt5Gui.so*  $$DEPLOY_DIR_LIB &&
   deploy.commands += cp -vfa $$[QT_INSTALL_LIBS]/libQt5Core.so*  $$DEPLOY_DIR_LIB &&
-  deploy.commands += cp -vfa $$[QT_INSTALL_LIBS]/libQt5Sql.so*  $$DEPLOY_DIR_LIB
+  deploy.commands += cp -vfa $$[QT_INSTALL_LIBS]/libQt5Sql.so*  $$DEPLOY_DIR_LIB &&
+  deploy.commands += rm -fv $$DEPLOY_DIR_LIB/lib*.so.*.debug $$DEPLOY_DIR_LIB/*/lib*.so.*.debug
 }
 
 # Windows specific deploy target only for release builds

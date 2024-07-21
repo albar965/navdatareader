@@ -41,6 +41,7 @@ export ATOOLS_NO_USERDATA=true
 export ATOOLS_NO_WEATHER=true
 export ATOOLS_NO_WEB=true
 export ATOOLS_NO_NAVSERVER=true
+export ATOOLS_NO_CRASHHANDLER=true
 
 # ===========================================================================
 # ========================== navdatareader - shared Qt
