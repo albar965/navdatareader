@@ -80,9 +80,6 @@ isEmpty(ATOOLS_LIB_PATH) : ATOOLS_LIB_PATH=$$PWD/../build-atools-$$CONF_TYPE
 # =======================================================================
 # Set compiler flags and paths
 
-# No crash handler on Linux and macOS
-unix : ATOOLS_NO_CRASHHANDLER = true
-
 unix:!macx {
   isEmpty(GIT_PATH) : GIT_PATH=git
 

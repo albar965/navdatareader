@@ -26,6 +26,7 @@ if [ ! -d "$APROJECTS" ]; then echo "$APROJECTS" does not exist ; exit 1 ; fi
 export CONF_TYPE=${CONF_TYPE:-"release"}
 export ATOOLS_INC_PATH=${ATOOLS_INC_PATH:-"${APROJECTS}/atools/src"}
 export ATOOLS_LIB_PATH=${ATOOLS_LIB_PATH:-"${APROJECTS}/build-atools-${CONF_TYPE}"}
+export ATOOLS_NO_CRASHHANDLER=${ATOOLS_NO_CRASHHANDLER:-"true"}
 
 # Defines the used Qt for all builds
 export QMAKE_SHARED=${QMAKE_SHARED:-"${HOME}/Qt/5.15.2/gcc_64/bin/qmake"}
@@ -41,7 +42,6 @@ export ATOOLS_NO_USERDATA=true
 export ATOOLS_NO_WEATHER=true
 export ATOOLS_NO_WEB=true
 export ATOOLS_NO_NAVSERVER=true
-export ATOOLS_NO_CRASHHANDLER=true
 
 # ===========================================================================
 # ========================== navdatareader - shared Qt
