@@ -43,7 +43,7 @@
 # =============================================================================
 
 # Define program version here VERSION_NUMBER_TODO
-VERSION_NUMBER=1.2.0
+VERSION_NUMBER=1.2.1
 
 QT += sql core
 
@@ -117,7 +117,7 @@ LIBS += -L$$ATOOLS_LIB_PATH -latools
 # Cpptrace ==========================
 !isEqual(ATOOLS_NO_CRASHHANDLER, "true") {
   DEFINES += CPPTRACE_STATIC_DEFINE
-  win32 : LIBS += -L$$PWD/../cpptrace-$$CONF_TYPE-$$WINARCH/lib -lcpptrace -ldbghelp -ldwarf -lz -lzstd
+  win32 : LIBS += -L$$PWD/../cpptrace-$$CONF_TYPE-win64/lib -lcpptrace -ldbghelp -ldwarf -lz -lzstd
   unix:!macx : LIBS += -L$$PWD/../cpptrace-$$CONF_TYPE/lib -lcpptrace -ldwarf -lz -lzstd
   CONFIG += force_debug_info
 } else {
@@ -171,8 +171,8 @@ message(QT_INSTALL_TRANSLATIONS: $$[QT_INSTALL_TRANSLATIONS])
 message(QT_INSTALL_BINS: $$[QT_INSTALL_BINS])
 message(CONFIG: $$CONFIG)
 message(QT: $$QT)
-message(OUT_PWD: $OUT_PWD)
-message(PWD: $PWD)
+message(OUT_PWD: $$OUT_PWD)
+message(PWD: $$PWD)
 message(-----------------------------------)
 }
 
