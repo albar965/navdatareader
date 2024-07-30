@@ -34,12 +34,6 @@ using atools::fs::FsPaths;
 
 void NavdataReader::run()
 {
-  atools::logging::LoggingHandler::initialize(atools::settings::Settings::getOverloadedLocalPath(
-                                                ":/navdatareader/resources/config/logging.cfg"));
-
-  // Load simulator paths =================================
-  FsPaths::loadAllPaths();
-
   // Fill NavDatabaseOptions from command line
   parseArgs();
 
@@ -153,6 +147,7 @@ void NavdataReader::parseArgs()
                             QObject::tr("config"));
   parser.addOption(cfgOpt);
 
+  // Calls exit if -h or -v =================================
   // Process the actual command line arguments given by the user
   parser.process(*QCoreApplication::instance());
 
@@ -187,6 +182,9 @@ void NavdataReader::parseArgs()
     qCritical().noquote().nospace() << "*** ERROR: No DFD database given." << endl;
     parser.showHelp(1);
   }
+
+  // Load simulator paths =================================
+  FsPaths::loadAllPaths();
 
   // Base path ===================================================
   if(type != FsPaths::DFD)

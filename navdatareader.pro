@@ -60,11 +60,12 @@ TARGET_NAME=Navdatareader
 
 ATOOLS_INC_PATH=$$(ATOOLS_INC_PATH)
 ATOOLS_LIB_PATH=$$(ATOOLS_LIB_PATH)
+ATOOLS_NO_CRASHHANDLER=$$(ATOOLS_NO_CRASHHANDLER)
+
 GIT_PATH=$$(ATOOLS_GIT_PATH)
 DEPLOY_BASE=$$(DEPLOY_BASE)
 QUIET=$$(ATOOLS_QUIET)
 
-ATOOLS_NO_CRASHHANDLER=$$(ATOOLS_NO_CRASHHANDLER)
 
 # =======================================================================
 # Fill defaults for unset
@@ -170,6 +171,8 @@ message(QT_INSTALL_TRANSLATIONS: $$[QT_INSTALL_TRANSLATIONS])
 message(QT_INSTALL_BINS: $$[QT_INSTALL_BINS])
 message(CONFIG: $$CONFIG)
 message(QT: $$QT)
+message(OUT_PWD: $OUT_PWD)
+message(PWD: $PWD)
 message(-----------------------------------)
 }
 
@@ -213,7 +216,7 @@ unix:!macx {
   deploy.commands += mkdir -pv $$DEPLOY_DIR/sqldrivers &&
   deploy.commands += echo $$VERSION_NUMBER > $$DEPLOY_DIR/version.txt &&
   deploy.commands += echo $$GIT_REVISION_FULL > $$DEPLOY_DIR/revision.txt &&
-  deploy.commands += cp -Rvf $$OUT_PWD/navdatareader $$DEPLOY_DIR &&
+  deploy.commands += cp -Rvf $$OUT_PWD/$${TARGET} $$DEPLOY_DIR &&
   deploy.commands += cp -Rvf $$OUT_PWD/help $$DEPLOY_DIR &&
   deploy.commands += cp -Rvf $$PWD/resources/config $$DEPLOY_DIR/config &&
   deploy.commands += cp -vf $$PWD/CHANGELOG.txt $$DEPLOY_DIR &&
@@ -233,19 +236,22 @@ unix:!macx {
 win32 {
   defineReplace(p){return ($$shell_quote($$shell_path($$1)))}
 
-  deploy.commands = rmdir /s /q $$p($$DEPLOY_BASE/$$TARGET_NAME) &
+  deploy.commands = rmdir /S /Q $$p($$DEPLOY_BASE/$$TARGET_NAME) &
   deploy.commands += mkdir $$p($$DEPLOY_BASE/$$TARGET_NAME/sqldrivers) &&
   deploy.commands += echo $$VERSION_NUMBER > $$p($$DEPLOY_BASE/$$TARGET_NAME/version.txt) &&
   deploy.commands += echo $$GIT_REVISION_FULL > $$p($$DEPLOY_BASE/$$TARGET_NAME/revision.txt) &&
-  deploy.commands += xcopy $$p($$OUT_PWD/navdatareader.exe) $$p($$DEPLOY_BASE/$$TARGET_NAME) &&
-  deploy.commands += xcopy $$p($$PWD/CHANGELOG.txt) $$p($$DEPLOY_BASE/$$TARGET_NAME) &&
-  deploy.commands += xcopy $$p($$PWD/README.txt) $$p($$DEPLOY_BASE/$$TARGET_NAME) &&
-  deploy.commands += xcopy $$p($$PWD/LICENSE.txt) $$p($$DEPLOY_BASE/$$TARGET_NAME) &&
-  deploy.commands += xcopy $$p($$[QT_INSTALL_BINS]/libgcc*.dll) $$p($$DEPLOY_BASE/$$TARGET_NAME) &&
-  deploy.commands += xcopy $$p($$[QT_INSTALL_BINS]/libstdc*.dll) $$p($$DEPLOY_BASE/$$TARGET_NAME) &&
-  deploy.commands += xcopy $$p($$[QT_INSTALL_BINS]/libwinpthread*.dll) $$p($$DEPLOY_BASE/$$TARGET_NAME) &&
-  deploy.commands += xcopy /i /s /e /f /y $$p($$PWD/help) $$p($$DEPLOY_BASE/$$TARGET_NAME/help) &&
-  deploy.commands += xcopy /i /s /e /f /y $$p($$PWD/resources/config) $$p($$DEPLOY_BASE/$$TARGET_NAME/config) &&
+  deploy.commands += xcopy /F $$p($$OUT_PWD/$${TARGET}.exe) $$p($$DEPLOY_BASE/$$TARGET_NAME) &&
+  exists($$OUT_PWD/$${TARGET}.debug) {
+    deploy.commands += xcopy /F $$p($$OUT_PWD/$${TARGET}.debug) $$p($$DEPLOY_BASE/$$TARGET_NAME) &&
+  }
+  deploy.commands += xcopy /F $$p($$PWD/CHANGELOG.txt) $$p($$DEPLOY_BASE/$$TARGET_NAME) &&
+  deploy.commands += xcopy /F $$p($$PWD/README.txt) $$p($$DEPLOY_BASE/$$TARGET_NAME) &&
+  deploy.commands += xcopy /F $$p($$PWD/LICENSE.txt) $$p($$DEPLOY_BASE/$$TARGET_NAME) &&
+  deploy.commands += xcopy /F $$p($$[QT_INSTALL_BINS]/libgcc*.dll) $$p($$DEPLOY_BASE/$$TARGET_NAME) &&
+  deploy.commands += xcopy /F $$p($$[QT_INSTALL_BINS]/libstdc*.dll) $$p($$DEPLOY_BASE/$$TARGET_NAME) &&
+  deploy.commands += xcopy /F $$p($$[QT_INSTALL_BINS]/libwinpthread*.dll) $$p($$DEPLOY_BASE/$$TARGET_NAME) &&
+  deploy.commands += xcopy /I /S /E /F /Y $$p($$PWD/help) $$p($$DEPLOY_BASE/$$TARGET_NAME/help) &&
+  deploy.commands += xcopy /I /S /E /F /Y $$p($$PWD/resources/config) $$p($$DEPLOY_BASE/$$TARGET_NAME/config) &&
   deploy.commands += $$p($$[QT_INSTALL_BINS]/windeployqt) $$WINDEPLOY_FLAGS $$p($$DEPLOY_BASE/$$TARGET_NAME)
 }
 
@@ -260,3 +266,15 @@ deploy.depends = all
 
 QMAKE_EXTRA_TARGETS += deploy copydata all
 
+!isEqual(ATOOLS_NO_CRASHHANDLER, "true") {
+  isEqual(CONF_TYPE, "release") {
+    # Copy debug executable and strip original
+    win32 {
+      defineReplace(p){return ($$shell_quote($$shell_path($$1)))}
+      QMAKE_POST_LINK = copy $$p($$OUT_PWD/$${TARGET}.exe) $$p($$OUT_PWD/$${TARGET}.debug) && \
+                        strip $$p($$OUT_PWD/$${TARGET}.exe)
+    } else {
+      QMAKE_POST_LINK = cp -avfu $$OUT_PWD/$${TARGET} $$OUT_PWD/$${TARGET}.debug && strip $$OUT_PWD/$${TARGET}
+    }
+  }
+}

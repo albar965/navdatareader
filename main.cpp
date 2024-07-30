@@ -21,6 +21,8 @@
 #include "io/fileroller.h"
 #include "logging/logginghandler.h"
 #include "navdatareader.h"
+#include "util/crashhandler.h"
+#include "settings/settings.h"
 
 #include <QFileInfo>
 #include <QDir>
@@ -62,8 +64,15 @@ int main(int argc, char *argv[])
   QCoreApplication::setApplicationName("Navdatareader");
   QCoreApplication::setOrganizationName("ABarthel");
   QCoreApplication::setOrganizationDomain("littlenavmap.org");
-
   QCoreApplication::setApplicationVersion(VERSION_NUMBER_NAVDATAREADER);
+
+  atools::logging::LoggingHandler::initialize(atools::settings::Settings::getOverloadedLocalPath(
+                                                ":/navdatareader/resources/config/logging.cfg"));
+
+  // Initialize crashhandler - disable on Linux to get core files
+  atools::util::crashhandler::init();
+  atools::util::crashhandler::setStackTraceLog("navdatareader-stacktrace.txt");
+
   NavdataReader reader;
 
   try
@@ -111,6 +120,7 @@ int main(int argc, char *argv[])
       qWarning() << "*** Renaming failed";
   }
 
+  atools::util::crashhandler::deInit();
   qInfo() << "done.";
   atools::logging::LoggingHandler::shutdown();
 
