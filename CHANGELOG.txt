@@ -3,6 +3,40 @@ For example: #3 is https://github.com/albar965/littlenavmap/issues/3.
 This text is partially Markdown, hence sometimes strange formatting.
 
 ===============================================================================
+# Version 1.2.1
+
+## DFD
+
+* Better airspace display deometry for Navigraph database. Now considering Rhumb line segment
+  flag in airspace description.
+
+## MSFS, P3D and FSX
+
+* Fixed issue where detection of malformed MSFS airports rejected valid airport add-ons with a
+  message `Duplicate airport ident`. This happened when add-on developers put more than one of the
+  same airport into one BGL file.
+
+## X-Plane
+
+* Fixed wrong airport bounding rectangle calculation for X-Plane airports. Example: KSEA in
+  X-Plane 12. This resulted in a too far zoom out when double clicking the airport.
+* Fixed duplicate reading of X-Plane `airspace.txt`. The file `airspace.txt` in `Custom Data` now
+  overrides the one in `Resources`.
+
+## All Compilers
+
+* Cleanup in navdatabase compiler. Tables `airport_medium`, `airport_large`, `route_node_radio`,
+  `route_edge_radio`, `route_node_airway` and `route_edge_airway` now removed. This breaks
+  compatibility with versions before 2020 of *Little Navmap*. The program will show an SQL exception
+  if this is the case. Users have to update *Little Navmap* if they run into this.
+* Added waypoint names to X-Plane and DFD compilers. albar965/littlenavmap#1176
+* Better detection of the longest runway for airports. Now ignoring water runways if airport has
+  water and land runways.
+* View creation in database now disabled.
+* Updated minor database version to 29 due to several schema changes. This results in a notice
+  about a previous database version although reloading is not required. albar965/littlenavmap#1176
+
+===============================================================================
 
 # Version 1.2.0
 
