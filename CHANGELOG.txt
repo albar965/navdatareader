@@ -8,7 +8,8 @@ This text is partially Markdown, hence sometimes strange formatting.
 ## DFD
 
 * Better airspace display deometry for Navigraph database. Now considering Rhumb line segment
-  flag in airspace description.
+  flag in airspace description. This eliminates wrong airspace boundaries drawn as
+  Great Circle lines.
 
 ## MSFS, P3D and FSX
 
@@ -35,6 +36,9 @@ This text is partially Markdown, hence sometimes strange formatting.
 * View creation in database now disabled.
 * Updated minor database version to 29 due to several schema changes. This results in a notice
   about a previous database version although reloading is not required. albar965/littlenavmap#1176
+* Better airspace geometry for all airspaces read from simulator and user libraries. Note that a
+  workaround is used to detect these segments for simulator and user airspaces since required
+  information is missing in simulators.
 
 ===============================================================================
 
