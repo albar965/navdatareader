@@ -20,7 +20,7 @@ rem Get file version number and remove spaces from variable
 rem Navdatareader-2.8.2.beta.zip
 set /p FILENAMETEMP=<"%APROJECTS%\deploy\Navdatareader\version.txt"
 set FILENAME_NDR=%FILENAMETEMP: =%
-set FILENAME_NDR_RELEASE=Navdatareader-%FILENAME_NDR%
+set FILENAME_NDR_RELEASE=Navdatareader-win-%FILENAME_NDR%
 
 rem "%APROJECTS%\deploy\Navdatareader" to "%APROJECTS%\deploy\Navdatareader-1.2.0"
 rmdir /Q /S "%APROJECTS%\deploy\%FILENAME_NDR_RELEASE%"
