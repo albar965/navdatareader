@@ -23,6 +23,8 @@ This text is partially Markdown, hence sometimes strange formatting.
   X-Plane 12. This resulted in a too far zoom out when double clicking the airport.
 * Fixed duplicate reading of X-Plane `airspace.txt`. The file `airspace.txt` in `Custom Data` now
   overrides the one in `Resources`.
+* Fixed issues reading MSA centers where runways were not detected. Now also looking for center
+  points of ILS.
 
 ## All Compilers
 
