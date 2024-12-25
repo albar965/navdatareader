@@ -24,6 +24,7 @@
 #include "logging/logginghandler.h"
 #include "logging/loggingutil.h"
 #include "settings/settings.h"
+#include "win/activationcontext.h"
 
 #include <QCommandLineParser>
 #include <QSettings>
@@ -31,6 +32,12 @@
 using atools::sql::SqlDatabase;
 using atools::fs::NavDatabaseErrors;
 using atools::fs::FsPaths;
+
+#if defined(WINARCH64)
+const QLatin1String SIMCONNECT_LOADER_DLL_NAME("SimConnect_msfs_2024.dll");
+#else
+const QLatin1String SIMCONNECT_LOADER_DLL_NAME;
+#endif
 
 void NavdataReader::run()
 {
@@ -70,9 +77,14 @@ void NavdataReader::run()
   // FKs don't work currently
   db.open(DATABASE_PRAGMAS);
 
+  atools::win::ActivationContext context;
+  context.loadLibrary(SIMCONNECT_LOADER_DLL_NAME);
+
   atools::fs::NavDatabaseErrors errors;
-  atools::fs::NavDatabase nd(&opts, &db, &errors, GIT_REVISION_NAVDATAREADER);
-  resultFlags = nd.compileDatabase();
+  atools::fs::NavDatabase navDatabase(&opts, &db, &errors, GIT_REVISION_NAVDATAREADER);
+  navDatabase.setActivationContext(&context, SIMCONNECT_LOADER_DLL_NAME);
+
+  resultFlags = navDatabase.compileDatabase();
   db.close();
 
   if(errors.getTotalErrors() > 0)
@@ -111,7 +123,7 @@ void NavdataReader::parseArgs()
 
   QCommandLineOption fstypeOpt({"f", "flight-simulator"},
                                QObject::tr("Required option. Flight simulator type <simulator> or other data source. "
-                                           "Either FSX, FSXSE, P3DV2, P3DV3, P3DV4, P3DV5, P3DV6, XP11, XP12, MSFS or DFD."),
+                                           "Either FSX, FSXSE, P3DV2, P3DV3, P3DV4, P3DV5, P3DV6, XP11, XP12, MSFS, MSFS24 or DFD."),
                                QObject::tr("simulator"));
   parser.addOption(fstypeOpt);
 
@@ -209,7 +221,7 @@ void NavdataReader::parseArgs()
   }
 
   // Scenery.cfg only FSX and P3D ===================================================
-  if(!FsPaths::isAnyXplane(type) && type != FsPaths::DFD && type != FsPaths::MSFS)
+  if(!FsPaths::isAnyXplane(type) && type != FsPaths::DFD && type != FsPaths::MSFS && type != FsPaths::MSFS_2024)
   {
     QString sceneryFile = parser.value(sceneryOpt);
     if(sceneryFile.isEmpty())
@@ -225,6 +237,8 @@ void NavdataReader::parseArgs()
     opts.setMsfsCommunityPath(FsPaths::getMsfsCommunityPath(opts.getBasepath()));
     opts.setMsfsOfficialPath(FsPaths::getMsfsOfficialPath(opts.getBasepath()));
   }
+  else if(type == FsPaths::MSFS_2024)
+    opts.setMsfs24StreamedPackagesPath(FsPaths::getMsfs24StreamedPackagesPath());
 
   // Configuration file ===================================================
   configFile = parser.value(cfgOpt);

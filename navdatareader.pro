@@ -61,6 +61,7 @@ TARGET_NAME=Navdatareader
 ATOOLS_INC_PATH=$$(ATOOLS_INC_PATH)
 ATOOLS_LIB_PATH=$$(ATOOLS_LIB_PATH)
 ATOOLS_NO_CRASHHANDLER=$$(ATOOLS_NO_CRASHHANDLER)
+SIMCONNECT_PATH_WIN64_MSFS_2024=$$(ATOOLS_SIMCONNECT_PATH_WIN64_MSFS_2024)
 
 GIT_PATH=$$(ATOOLS_GIT_PATH)
 DEPLOY_BASE=$$(DEPLOY_BASE)
@@ -92,9 +93,20 @@ unix:!macx {
 }
 
 win32 {
+  # MSFS
+  WINARCH = win64
+  !isEmpty(SIMCONNECT_PATH_WIN64_MSFS_2024) {
+    DEFINES += SIMCONNECT_BUILD_WIN64 WINARCH64
+    INCLUDEPATH += $$SIMCONNECT_PATH_WIN64_MSFS_2024"\include"
+    LIBS += $$SIMCONNECT_PATH_WIN64_MSFS_2024"\lib\SimConnect.lib"
+  }
+
   WINDEPLOY_FLAGS = --compiler-runtime
   CONFIG(debug, debug|release) : WINDEPLOY_FLAGS += --debug
-#  CONFIG(release, debug|release) : WINDEPLOY_FLAGS += --release
+
+  DEFINES += _USE_MATH_DEFINES
+
+  LIBS += -L$$ATOOLS_LIB_PATH -latools -lz
 }
 
 macx {
@@ -159,6 +171,7 @@ message(GIT_PATH: $$GIT_PATH)
 message(ATOOLS_INC_PATH: $$ATOOLS_INC_PATH)
 message(ATOOLS_LIB_PATH: $$ATOOLS_LIB_PATH)
 message(ATOOLS_NO_CRASHHANDLER: $$ATOOLS_NO_CRASHHANDLER)
+message(SIMCONNECT_PATH_WIN64_MSFS_2024: $$SIMCONNECT_PATH_WIN64_MSFS_2024)
 message(DEPLOY_BASE: $$DEPLOY_BASE)
 message(DEFINES: $$DEFINES)
 message(INCLUDEPATH: $$INCLUDEPATH)
@@ -249,6 +262,9 @@ win32 {
   deploy.commands += xcopy /F $$p($$PWD/CHANGELOG.txt) $$p($$DEPLOY_BASE/$$TARGET_NAME) &&
   deploy.commands += xcopy /F $$p($$PWD/README.txt) $$p($$DEPLOY_BASE/$$TARGET_NAME) &&
   deploy.commands += xcopy /F $$p($$PWD/LICENSE.txt) $$p($$DEPLOY_BASE/$$TARGET_NAME) &&
+  exists($$SIMCONNECT_PATH_WIN64_MSFS_2024/lib/SimConnect.dll) {
+    deploy.commands += copy /Y $$p($$SIMCONNECT_PATH_WIN64_MSFS_2024/lib/SimConnect.dll) $$p($$DEPLOY_BASE/$$TARGET_NAME/SimConnect_msfs_2024.dll) &&
+  }
   deploy.commands += xcopy /F $$p($$[QT_INSTALL_BINS]/libgcc*.dll) $$p($$DEPLOY_BASE/$$TARGET_NAME) &&
   deploy.commands += xcopy /F $$p($$[QT_INSTALL_BINS]/libstdc*.dll) $$p($$DEPLOY_BASE/$$TARGET_NAME) &&
   deploy.commands += xcopy /F $$p($$[QT_INSTALL_BINS]/libwinpthread*.dll) $$p($$DEPLOY_BASE/$$TARGET_NAME) &&
