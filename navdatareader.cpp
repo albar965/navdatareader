@@ -1,5 +1,5 @@
 /*****************************************************************************
-* Copyright 2015-2024 Alexander Barthel alex@littlenavmap.org
+* Copyright 2015-2025 Alexander Barthel alex@littlenavmap.org
 *
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -237,8 +237,6 @@ void NavdataReader::parseArgs()
     opts.setMsfsCommunityPath(FsPaths::getMsfsCommunityPath(opts.getBasepath()));
     opts.setMsfsOfficialPath(FsPaths::getMsfsOfficialPath(opts.getBasepath()));
   }
-  else if(type == FsPaths::MSFS_2024)
-    opts.setMsfs24StreamedPackagesPath(FsPaths::getMsfs24StreamedPackagesPath());
 
   // Configuration file ===================================================
   configFile = parser.value(cfgOpt);
