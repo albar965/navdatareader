@@ -55,6 +55,7 @@ int main(int argc, char *argv[])
 {
   // Initialize the resources from atools static library
   Q_INIT_RESOURCE(atools);
+  Q_INIT_RESOURCE(navdata);
   atools::fs::FsPaths::intitialize();
 
   atools::geo::registerMetaTypes();
