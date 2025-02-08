@@ -3,6 +3,23 @@ For example: #3 is https://github.com/albar965/littlenavmap/issues/3.
 This text is partially Markdown, hence sometimes strange formatting.
 
 ===============================================================================
+
+# Version 1.2.3
+
+* Addedd support for MSFS 2024
+  Now loading airports using SimConnect albar965/littlenavmap#1198
+* Added option to drop temporary tables.
+* Added new SimConnect options to configuration files albar965/littlenavmap#1198
+* Option to load disconnected navaids for MSFS 2024 from file.
+* Fixed issues where airways were not built correctly reading X-Plane data.
+  Examples which did not read:
+  `ZBAA IDKEX B339 ASILA A575 INTIK Y655 AROGU A575 KD A308 ML A300 RUBOR T448 SOPUS USSS`,
+  `ZUCK PINAB W80 WFX W179 OMBON B330 GOBIN W66 NUKTI B215 HAM W99 AGOXA ZWWW` and
+  `ZUCK UNRIX W180 BONSA W91 IDSID W30 MEBNA ZPPP` #1219
+* Fixed issue when building airways from X-Plane navdata. Example: The wrong NDB BM/UH far
+  away was selected to build the airway A800. #1237
+
+===============================================================================
 # Version 1.2.1
 
 ## DFD
