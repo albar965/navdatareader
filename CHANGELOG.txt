@@ -6,11 +6,11 @@ This text is partially Markdown, hence sometimes strange formatting.
 
 # Version 1.2.3
 
-* Addedd support for MSFS 2024
-  Now loading airports using SimConnect albar965/littlenavmap#1198
+* Addedd support for MSFS 2024. Now loading airports using SimConnect #1198
+* Added new SimConnect options to configuration files. #1198
 * Added option to drop temporary tables.
-* Added new SimConnect options to configuration files albar965/littlenavmap#1198
 * Option to load disconnected navaids for MSFS 2024 from file.
+* Adapted detection of Navigraph update to new folder names and made it more tolerant. #1198
 * Fixed issues where airways were not built correctly reading X-Plane data.
   Examples which did not read:
   `ZBAA IDKEX B339 ASILA A575 INTIK Y655 AROGU A575 KD A308 ML A300 RUBOR T448 SOPUS USSS`,
