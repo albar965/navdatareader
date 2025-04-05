@@ -91,14 +91,14 @@ void NavdataReader::run()
   {
     qWarning() << "==================================================================";
     qWarning() << "== FOUND ERRORS ==================================================";
-    for(const NavDatabaseErrors::SceneryErrors& errs : qAsConst(errors.sceneryErrors))
+    for(const atools::fs::SceneryErrors& errs : qAsConst(errors.getSceneryErrors()))
     {
-      qWarning() << "Error in scenery" << errs.scenery;
+      qWarning() << "Error in scenery" << errs.getScenery();
 
-      for(const NavDatabaseErrors::SceneryFileError& err : errs.fileErrors)
-        qWarning() << "Error in file" << err.filepath << "line" << err.lineNum << ":" << err.errorMessage;
+      for(const atools::fs::SceneryFileError& err : errs.getFileErrors())
+        qWarning() << "Error in file" << err.getFilepath() << "line" << err.getLineNum() << ":" << err.getErrorMessage();
 
-      for(const QString& err : errs.sceneryErrorsMessages)
+      for(const QString& err : errs.getSceneryErrorsMessages())
         qWarning() << "Other error:" << err;
     }
 
