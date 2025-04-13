@@ -4,6 +4,19 @@ This text is partially Markdown, hence sometimes strange formatting.
 
 ===============================================================================
 
+# Version 1.2.4
+
+* Fixed issue where all VORTAC were loaded as TACAN in MSFS 2020 resulting in wrong bearings and
+  wrong type display.
+* Now omitting channel for VOR, VORDME and DME for all MSFS simulators. Channel applies only to
+  VORTAC and TACAN.
+* Fixed issue with double runways when using Navigraph navdata update in MSFS 2020. Example: Add-on
+  for FHSH (no stock airport available) `kychungdotcom-airport-fhsh-sthelena` showed duplicate
+  runways.
+* Clean up error handling for scenery library loader to allow loading to continue after an error.
+
+===============================================================================
+
 # Version 1.2.3
 
 * Addedd support for MSFS 2024. Now loading airports using SimConnect #1198
