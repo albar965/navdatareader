@@ -23,6 +23,9 @@ if defined ATOOLS_LIB_PATH ( echo %ATOOLS_LIB_PATH% ) else ( set ATOOLS_LIB_PATH
 if defined DEPLOY_BASE ( echo %DEPLOY_BASE% ) else ( set DEPLOY_BASE=%APROJECTS%\deploy)
 if defined ATOOLS_GIT_PATH ( echo %ATOOLS_GIT_PATH% ) else ( set ATOOLS_GIT_PATH=C:\Git\bin\git)
 
+set ATOOLS_NO_CRASHHANDLER=%ATOOLS_NO_CRASHHANDLER_NAVDATAREADER%
+if defined ATOOLS_NO_CRASHHANDLER ( echo ATOOLS_NO_CRASHHANDLER=%ATOOLS_NO_CRASHHANDLER% ) else ( set ATOOLS_NO_CRASHHANDLER=true)
+
 rem Defines the used Qt for all builds
 if defined PATH_SHARED ( echo %PATH_SHARED% ) else ( set PATH_SHARED=C:\Qt\5.15.2\mingw81_64\bin;C:\Qt\Tools\mingw810_64\bin)
 
@@ -33,6 +36,7 @@ set ATOOLS_NO_TRACK=true
 set ATOOLS_NO_USERDATA=true
 set ATOOLS_NO_WEATHER=true
 set ATOOLS_NO_WEB=true
+set ATOOLS_NO_NAVSERVER=true
 
 rem === Build atools and navdatareader =============================
 

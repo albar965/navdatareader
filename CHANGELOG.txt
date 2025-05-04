@@ -4,6 +4,110 @@ This text is partially Markdown, hence sometimes strange formatting.
 
 ===============================================================================
 
+# Version 1.2.4
+
+* Fixed issue where all VORTAC were loaded as TACAN in MSFS 2020 resulting in wrong bearings and
+  wrong type display.
+* Now omitting channel for VOR, VORDME and DME for all MSFS simulators. Channel applies only to
+  VORTAC and TACAN.
+* Fixed issue with double runways when using Navigraph navdata update in MSFS 2020. Example: Add-on
+  for FHSH (no stock airport available) `kychungdotcom-airport-fhsh-sthelena` showed duplicate
+  runways.
+* Clean up error handling for scenery library loader to allow loading to continue after an error.
+
+===============================================================================
+
+# Version 1.2.3
+
+* Addedd support for MSFS 2024. Now loading airports using SimConnect #1198
+* Added new SimConnect options to configuration files. #1198
+* Added option to drop temporary tables.
+* Option to load disconnected navaids for MSFS 2024 from file.
+* Adapted detection of Navigraph update to new folder names and made it more tolerant. #1198
+* Fixed issues where airways were not built correctly reading X-Plane data.
+  Examples which did not read:
+  `ZBAA IDKEX B339 ASILA A575 INTIK Y655 AROGU A575 KD A308 ML A300 RUBOR T448 SOPUS USSS`,
+  `ZUCK PINAB W80 WFX W179 OMBON B330 GOBIN W66 NUKTI B215 HAM W99 AGOXA ZWWW` and
+  `ZUCK UNRIX W180 BONSA W91 IDSID W30 MEBNA ZPPP` #1219
+* Fixed issue when building airways from X-Plane navdata. Example: The wrong NDB BM/UH far
+  away was selected to build the airway A800. #1237
+
+===============================================================================
+# Version 1.2.1
+
+## DFD
+
+* Better airspace display deometry for Navigraph database. Now considering Rhumb line segment
+  flag in airspace description. This eliminates wrong airspace boundaries drawn as
+  Great Circle lines.
+
+## MSFS, P3D and FSX
+
+* Fixed issue where detection of malformed MSFS airports rejected valid airport add-ons with a
+  message `Duplicate airport ident`. This happened when add-on developers put more than one of the
+  same airport into one BGL file.
+
+## X-Plane
+
+* Fixed wrong airport bounding rectangle calculation for X-Plane airports. Example: KSEA in
+  X-Plane 12. This resulted in a too far zoom out when double clicking the airport.
+* Fixed duplicate reading of X-Plane `airspace.txt`. The file `airspace.txt` in `Custom Data` now
+  overrides the one in `Resources`.
+* Fixed issues reading MSA centers where runways were not detected. Now also looking for center
+  points of ILS.
+
+## All Compilers
+
+* Cleanup in navdatabase compiler. Tables `airport_medium`, `airport_large`, `route_node_radio`,
+  `route_edge_radio`, `route_node_airway` and `route_edge_airway` now removed. This breaks
+  compatibility with versions before 2020 of *Little Navmap*. The program will show an SQL exception
+  if this is the case. Users have to update *Little Navmap* if they run into this.
+* Added waypoint names to X-Plane and DFD compilers. albar965/littlenavmap#1176
+* Better detection of the longest runway for airports. Now ignoring water runways if airport has
+  water and land runways.
+* View creation in database now disabled.
+* Updated minor database version to 29 due to several schema changes. This results in a notice
+  about a previous database version although reloading is not required. albar965/littlenavmap#1176
+* Better airspace geometry for all airspaces read from simulator and user libraries. Note that a
+  workaround is used to detect these segments for simulator and user airspaces since required
+  information is missing in simulators.
+
+===============================================================================
+
+# Version 1.2.0
+
+## DFD
+
+* Fixed issue where circular airspace arcs resulted in self crossing polygons. The fix is
+  required for airspace text placement in Little Navmap 3.0 and later.
+* Runways marked as closed are now shown as such.
+* Airport patterns now correctly marked as not available.
+* Runways having one end closed are now positioned correctly. Example: EDDF runway 18.
+
+## MSFS, P3D and FSX
+
+* Fixed issues with moved or updated airports when reading scenery library.
+* Now excluding all navaids in detected Navigraph update when reading the scenery library.
+* Fixed wrong calculation for airport rating which did not update add-on airports.
+* MSFS: Wrongly built airports like the MS MKJS now keep their procedure information in MSFS despite
+  trying to override it with an empty procedure set. #1085
+
+## X-Plane
+
+* Now setting "is_draw_surface" always to 1 for X-Plane to avoid transparent aprons.
+  albar965/littlenavmap#1059
+
+## All Compilers
+
+* Doubled number of pre-calculated arc and circle segments for more accuracy in map display
+  airspaces.
+* Additional scenery folder is now read recursively for all simulators.
+* Deleting duplicate navaids now by region, ident and position. This allows to update frequency or
+  type for VOR and NDB on P3D or FSX by add-on.
+
+
+===============================================================================
+
 # Version 1.0.31
 
 ## DFD

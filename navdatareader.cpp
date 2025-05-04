@@ -1,5 +1,5 @@
 /*****************************************************************************
-* Copyright 2015-2022 Alexander Barthel alex@littlenavmap.org
+* Copyright 2015-2025 Alexander Barthel alex@littlenavmap.org
 *
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -24,6 +24,7 @@
 #include "logging/logginghandler.h"
 #include "logging/loggingutil.h"
 #include "settings/settings.h"
+#include "win/activationcontext.h"
 
 #include <QCommandLineParser>
 #include <QSettings>
@@ -32,14 +33,14 @@ using atools::sql::SqlDatabase;
 using atools::fs::NavDatabaseErrors;
 using atools::fs::FsPaths;
 
+#if defined(WINARCH64)
+const QLatin1String SIMCONNECT_LOADER_DLL_NAME("SimConnect_msfs_2024.dll");
+#else
+const QLatin1String SIMCONNECT_LOADER_DLL_NAME;
+#endif
+
 void NavdataReader::run()
 {
-  atools::logging::LoggingHandler::initialize(atools::settings::Settings::getOverloadedLocalPath(
-                                                ":/navdatareader/resources/config/logging.cfg"));
-
-  // Load simulator paths =================================
-  FsPaths::loadAllPaths();
-
   // Fill NavDatabaseOptions from command line
   parseArgs();
 
@@ -59,10 +60,9 @@ void NavdataReader::run()
   qInfo().nospace().noquote() << "atools Version " << atools::version()
                               << " (revision " << atools::gitRevision() << ")";
 
-  using atools::logging::LoggingUtil;
-  LoggingUtil::logSystemInformation();
-
-  LoggingUtil::logStandardPaths();
+  atools::settings::Settings::logMessages();
+  atools::logging::LoggingUtil::logSystemInformation();
+  atools::logging::LoggingUtil::logStandardPaths();
 
   FsPaths::logAllPaths();
 
@@ -77,23 +77,28 @@ void NavdataReader::run()
   // FKs don't work currently
   db.open(DATABASE_PRAGMAS);
 
+  atools::win::ActivationContext context;
+  context.loadLibrary(SIMCONNECT_LOADER_DLL_NAME);
+
   atools::fs::NavDatabaseErrors errors;
-  atools::fs::NavDatabase nd(&opts, &db, &errors, GIT_REVISION_NAVDATAREADER);
-  resultFlags = nd.compileDatabase();
+  atools::fs::NavDatabase navDatabase(&opts, &db, &errors, GIT_REVISION_NAVDATAREADER);
+  navDatabase.setActivationContext(&context, SIMCONNECT_LOADER_DLL_NAME);
+
+  resultFlags = navDatabase.compileDatabase();
   db.close();
 
   if(errors.getTotalErrors() > 0)
   {
     qWarning() << "==================================================================";
     qWarning() << "== FOUND ERRORS ==================================================";
-    for(const NavDatabaseErrors::SceneryErrors& errs : errors.sceneryErrors)
+    for(const atools::fs::SceneryErrors& errs : qAsConst(errors.getSceneryErrors()))
     {
-      qWarning() << "Error in scenery" << errs.scenery;
+      qWarning() << "Error in scenery" << errs.getScenery();
 
-      for(const NavDatabaseErrors::SceneryFileError& err : errs.fileErrors)
-        qWarning() << "Error in file" << err.filepath << "line" << err.lineNum << ":" << err.errorMessage;
+      for(const atools::fs::SceneryFileError& err : errs.getFileErrors())
+        qWarning() << "Error in file" << err.getFilepath() << "line" << err.getLineNum() << ":" << err.getErrorMessage();
 
-      for(const QString& err : errs.sceneryErrorsMessages)
+      for(const QString& err : errs.getSceneryErrorsMessages())
         qWarning() << "Other error:" << err;
     }
 
@@ -118,7 +123,7 @@ void NavdataReader::parseArgs()
 
   QCommandLineOption fstypeOpt({"f", "flight-simulator"},
                                QObject::tr("Required option. Flight simulator type <simulator> or other data source. "
-                                           "Either FSX, FSXSE, P3DV2, P3DV3, P3DV4, P3DV5, P3DV6, XP11, XP12, MSFS or DFD."),
+                                           "Either FSX, FSXSE, P3DV2, P3DV3, P3DV4, P3DV5, P3DV6, XP11, XP12, MSFS, MSFS24 or DFD."),
                                QObject::tr("simulator"));
   parser.addOption(fstypeOpt);
 
@@ -154,6 +159,7 @@ void NavdataReader::parseArgs()
                             QObject::tr("config"));
   parser.addOption(cfgOpt);
 
+  // Calls exit if -h or -v =================================
   // Process the actual command line arguments given by the user
   parser.process(*QCoreApplication::instance());
 
@@ -189,6 +195,9 @@ void NavdataReader::parseArgs()
     parser.showHelp(1);
   }
 
+  // Load simulator paths =================================
+  FsPaths::loadAllPaths();
+
   // Base path ===================================================
   if(type != FsPaths::DFD)
   {
@@ -212,7 +221,7 @@ void NavdataReader::parseArgs()
   }
 
   // Scenery.cfg only FSX and P3D ===================================================
-  if(!FsPaths::isAnyXplane(type) && type != FsPaths::DFD && type != FsPaths::MSFS)
+  if(!FsPaths::isAnyXplane(type) && type != FsPaths::DFD && type != FsPaths::MSFS && type != FsPaths::MSFS_2024)
   {
     QString sceneryFile = parser.value(sceneryOpt);
     if(sceneryFile.isEmpty())

@@ -43,7 +43,7 @@
 # =============================================================================
 
 # Define program version here VERSION_NUMBER_TODO
-VERSION_NUMBER=1.1.0.develop
+VERSION_NUMBER=1.2.4
 
 QT += sql core
 
@@ -60,9 +60,13 @@ TARGET_NAME=Navdatareader
 
 ATOOLS_INC_PATH=$$(ATOOLS_INC_PATH)
 ATOOLS_LIB_PATH=$$(ATOOLS_LIB_PATH)
+ATOOLS_NO_CRASHHANDLER=$$(ATOOLS_NO_CRASHHANDLER)
+SIMCONNECT_PATH_WIN64_MSFS_2024=$$(ATOOLS_SIMCONNECT_PATH_WIN64_MSFS_2024)
+
 GIT_PATH=$$(ATOOLS_GIT_PATH)
 DEPLOY_BASE=$$(DEPLOY_BASE)
 QUIET=$$(ATOOLS_QUIET)
+
 
 # =======================================================================
 # Fill defaults for unset
@@ -89,9 +93,20 @@ unix:!macx {
 }
 
 win32 {
+  # MSFS
+  WINARCH = win64
+  !isEmpty(SIMCONNECT_PATH_WIN64_MSFS_2024) {
+    DEFINES += SIMCONNECT_BUILD_WIN64 WINARCH64
+    INCLUDEPATH += $$SIMCONNECT_PATH_WIN64_MSFS_2024"\include"
+    LIBS += $$SIMCONNECT_PATH_WIN64_MSFS_2024"\lib\SimConnect.lib"
+  }
+
   WINDEPLOY_FLAGS = --compiler-runtime
   CONFIG(debug, debug|release) : WINDEPLOY_FLAGS += --debug
-#  CONFIG(release, debug|release) : WINDEPLOY_FLAGS += --release
+
+  DEFINES += _USE_MATH_DEFINES
+
+  LIBS += -L$$ATOOLS_LIB_PATH -latools -lz
 }
 
 macx {
@@ -110,6 +125,17 @@ isEmpty(GIT_PATH) {
 }
 
 LIBS += -L$$ATOOLS_LIB_PATH -latools
+
+# Cpptrace ==========================
+!isEqual(ATOOLS_NO_CRASHHANDLER, "true") {
+  DEFINES += CPPTRACE_STATIC_DEFINE
+  win32 : LIBS += -L$$PWD/../cpptrace-$$CONF_TYPE-win64/lib -lcpptrace -ldbghelp -ldwarf -lz -lzstd
+  unix:!macx : LIBS += -L$$PWD/../cpptrace-$$CONF_TYPE/lib -lcpptrace -ldwarf -lz -lzstd
+  CONFIG += force_debug_info
+} else {
+  DEFINES += DISABLE_CRASHHANDLER
+}
+
 PRE_TARGETDEPS += $$ATOOLS_LIB_PATH/libatools.a
 DEPENDPATH += $$ATOOLS_INC_PATH
 INCLUDEPATH += $$PWD/src $$ATOOLS_INC_PATH
@@ -144,6 +170,8 @@ message(GIT_REVISION_FULL: $$GIT_REVISION_FULL)
 message(GIT_PATH: $$GIT_PATH)
 message(ATOOLS_INC_PATH: $$ATOOLS_INC_PATH)
 message(ATOOLS_LIB_PATH: $$ATOOLS_LIB_PATH)
+message(ATOOLS_NO_CRASHHANDLER: $$ATOOLS_NO_CRASHHANDLER)
+message(SIMCONNECT_PATH_WIN64_MSFS_2024: $$SIMCONNECT_PATH_WIN64_MSFS_2024)
 message(DEPLOY_BASE: $$DEPLOY_BASE)
 message(DEFINES: $$DEFINES)
 message(INCLUDEPATH: $$INCLUDEPATH)
@@ -156,6 +184,8 @@ message(QT_INSTALL_TRANSLATIONS: $$[QT_INSTALL_TRANSLATIONS])
 message(QT_INSTALL_BINS: $$[QT_INSTALL_BINS])
 message(CONFIG: $$CONFIG)
 message(QT: $$QT)
+message(OUT_PWD: $$OUT_PWD)
+message(PWD: $$PWD)
 message(-----------------------------------)
 }
 
@@ -173,7 +203,6 @@ OTHER_FILES += \
   $$files(build/*, true) \
   $$files(help/*, true) \
   $$files(config/*, true) \
-  .travis.yml \
   .gitignore \
   BUILD.txt \
   CHANGELOG.txt \
@@ -200,7 +229,7 @@ unix:!macx {
   deploy.commands += mkdir -pv $$DEPLOY_DIR/sqldrivers &&
   deploy.commands += echo $$VERSION_NUMBER > $$DEPLOY_DIR/version.txt &&
   deploy.commands += echo $$GIT_REVISION_FULL > $$DEPLOY_DIR/revision.txt &&
-  deploy.commands += cp -Rvf $$OUT_PWD/navdatareader $$DEPLOY_DIR &&
+  deploy.commands += cp -Rvf $$OUT_PWD/$${TARGET} $$DEPLOY_DIR &&
   deploy.commands += cp -Rvf $$OUT_PWD/help $$DEPLOY_DIR &&
   deploy.commands += cp -Rvf $$PWD/resources/config $$DEPLOY_DIR/config &&
   deploy.commands += cp -vf $$PWD/CHANGELOG.txt $$DEPLOY_DIR &&
@@ -212,26 +241,35 @@ unix:!macx {
   deploy.commands += cp -vfa $$[QT_INSTALL_LIBS]/libicuuc.so*  $$DEPLOY_DIR_LIB &&
   deploy.commands += cp -vfa $$[QT_INSTALL_LIBS]/libQt5Gui.so*  $$DEPLOY_DIR_LIB &&
   deploy.commands += cp -vfa $$[QT_INSTALL_LIBS]/libQt5Core.so*  $$DEPLOY_DIR_LIB &&
-  deploy.commands += cp -vfa $$[QT_INSTALL_LIBS]/libQt5Sql.so*  $$DEPLOY_DIR_LIB
+  deploy.commands += cp -vfa $$[QT_INSTALL_LIBS]/libQt5Sql.so*  $$DEPLOY_DIR_LIB &&
+  deploy.commands += rm -fv $$DEPLOY_DIR_LIB/lib*.so.*.debug $$DEPLOY_DIR_LIB/*/lib*.so.*.debug
 }
 
 # Windows specific deploy target only for release builds
 win32 {
   defineReplace(p){return ($$shell_quote($$shell_path($$1)))}
 
-  deploy.commands = rmdir /s /q $$p($$DEPLOY_BASE/$$TARGET_NAME) &
+  deploy.commands = rmdir /S /Q $$p($$DEPLOY_BASE/$$TARGET_NAME) &
   deploy.commands += mkdir $$p($$DEPLOY_BASE/$$TARGET_NAME/sqldrivers) &&
   deploy.commands += echo $$VERSION_NUMBER > $$p($$DEPLOY_BASE/$$TARGET_NAME/version.txt) &&
   deploy.commands += echo $$GIT_REVISION_FULL > $$p($$DEPLOY_BASE/$$TARGET_NAME/revision.txt) &&
-  deploy.commands += xcopy $$p($$OUT_PWD/navdatareader.exe) $$p($$DEPLOY_BASE/$$TARGET_NAME) &&
-  deploy.commands += xcopy $$p($$PWD/CHANGELOG.txt) $$p($$DEPLOY_BASE/$$TARGET_NAME) &&
-  deploy.commands += xcopy $$p($$PWD/README.txt) $$p($$DEPLOY_BASE/$$TARGET_NAME) &&
-  deploy.commands += xcopy $$p($$PWD/LICENSE.txt) $$p($$DEPLOY_BASE/$$TARGET_NAME) &&
-  deploy.commands += xcopy $$p($$[QT_INSTALL_BINS]/libgcc*.dll) $$p($$DEPLOY_BASE/$$TARGET_NAME) &&
-  deploy.commands += xcopy $$p($$[QT_INSTALL_BINS]/libstdc*.dll) $$p($$DEPLOY_BASE/$$TARGET_NAME) &&
-  deploy.commands += xcopy $$p($$[QT_INSTALL_BINS]/libwinpthread*.dll) $$p($$DEPLOY_BASE/$$TARGET_NAME) &&
-  deploy.commands += xcopy /i /s /e /f /y $$p($$PWD/help) $$p($$DEPLOY_BASE/$$TARGET_NAME/help) &&
-  deploy.commands += xcopy /i /s /e /f /y $$p($$PWD/resources/config) $$p($$DEPLOY_BASE/$$TARGET_NAME/config) &&
+  deploy.commands += xcopy /F $$p($$OUT_PWD/$${TARGET}.exe) $$p($$DEPLOY_BASE/$$TARGET_NAME) &&
+  !isEqual(ATOOLS_NO_CRASHHANDLER, "true") {
+    isEqual(CONF_TYPE, "release") {
+      deploy.commands += xcopy /F $$p($$OUT_PWD/$${TARGET}.debug) $$p($$DEPLOY_BASE/$$TARGET_NAME) &&
+    }
+  }
+  deploy.commands += xcopy /F $$p($$PWD/CHANGELOG.txt) $$p($$DEPLOY_BASE/$$TARGET_NAME) &&
+  deploy.commands += xcopy /F $$p($$PWD/README.txt) $$p($$DEPLOY_BASE/$$TARGET_NAME) &&
+  deploy.commands += xcopy /F $$p($$PWD/LICENSE.txt) $$p($$DEPLOY_BASE/$$TARGET_NAME) &&
+  exists($$SIMCONNECT_PATH_WIN64_MSFS_2024/lib/SimConnect.dll) {
+    deploy.commands += copy /Y $$p($$SIMCONNECT_PATH_WIN64_MSFS_2024/lib/SimConnect.dll) $$p($$DEPLOY_BASE/$$TARGET_NAME/SimConnect_msfs_2024.dll) &&
+  }
+  deploy.commands += xcopy /F $$p($$[QT_INSTALL_BINS]/libgcc*.dll) $$p($$DEPLOY_BASE/$$TARGET_NAME) &&
+  deploy.commands += xcopy /F $$p($$[QT_INSTALL_BINS]/libstdc*.dll) $$p($$DEPLOY_BASE/$$TARGET_NAME) &&
+  deploy.commands += xcopy /F $$p($$[QT_INSTALL_BINS]/libwinpthread*.dll) $$p($$DEPLOY_BASE/$$TARGET_NAME) &&
+  deploy.commands += xcopy /I /S /E /F /Y $$p($$PWD/help) $$p($$DEPLOY_BASE/$$TARGET_NAME/help) &&
+  deploy.commands += xcopy /I /S /E /F /Y $$p($$PWD/resources/config) $$p($$DEPLOY_BASE/$$TARGET_NAME/config) &&
   deploy.commands += $$p($$[QT_INSTALL_BINS]/windeployqt) $$WINDEPLOY_FLAGS $$p($$DEPLOY_BASE/$$TARGET_NAME)
 }
 
@@ -246,3 +284,15 @@ deploy.depends = all
 
 QMAKE_EXTRA_TARGETS += deploy copydata all
 
+!isEqual(ATOOLS_NO_CRASHHANDLER, "true") {
+  isEqual(CONF_TYPE, "release") {
+    # Copy debug executable and strip original
+    win32 {
+      defineReplace(p){return ($$shell_quote($$shell_path($$1)))}
+      QMAKE_POST_LINK = copy $$p($$OUT_PWD/$${TARGET}.exe) $$p($$OUT_PWD/$${TARGET}.debug) && \
+                        strip $$p($$OUT_PWD/$${TARGET}.exe)
+    } else {
+      QMAKE_POST_LINK = cp -avfu $$OUT_PWD/$${TARGET} $$OUT_PWD/$${TARGET}.debug && strip $$OUT_PWD/$${TARGET}
+    }
+  }
+}
