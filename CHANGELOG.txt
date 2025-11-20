@@ -15,6 +15,7 @@ This text is partially Markdown, hence sometimes strange formatting.
   for FHSH (no stock airport available) `kychungdotcom-airport-fhsh-sthelena` showed duplicate
   runways.
 * Clean up error handling for scenery library loader to allow loading to continue after an error.
+* Updated Wiki page https://github.com/albar965/navdatareader/wiki, include PDF manual and README.txt.
 
 ===============================================================================
 
