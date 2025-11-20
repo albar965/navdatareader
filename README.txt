@@ -2,7 +2,7 @@ Navdatareader is a command line tool that uses the atools fs/bgl
 and fs/db modules to store a full flight simulator scenery database into
 Sqlite, a relational database.
 
-It can read flight simulator databases from FSX, Prepar3D, MSFS 2020, MSFS 2024, 
+It can read flight simulator databases from FSX, Prepar3D, MSFS 2020, MSFS 2024,
 X-Plane 11 and the Navigraph DFD format.
 
 Issues can be submitted at https://github.com/albar965/littlenavmap/issues .
@@ -51,5 +51,5 @@ The source code for this application is available at Github:
 https://github.com/albar965/atools
 https://github.com/albar965/navdatareader
 
-Copyright 2015-2023 Alexander Barthel (alex@littlenavmap.org).
+Copyright 2015-2025 Alexander Barthel (alex@littlenavmap.org).
 
