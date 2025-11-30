@@ -6,6 +6,7 @@ This text is partially Markdown, hence sometimes strange formatting.
 
 # Version 1.2.4
 
+* Removed wrong check for path `StreamedPackages` when reading MSFS 2024 data.
 * Fixed issue where all VORTAC were loaded as TACAN in MSFS 2020 resulting in wrong bearings and
   wrong type display.
 * Now omitting channel for VOR, VORDME and DME for all MSFS simulators. Channel applies only to
@@ -14,6 +15,7 @@ This text is partially Markdown, hence sometimes strange formatting.
   for FHSH (no stock airport available) `kychungdotcom-airport-fhsh-sthelena` showed duplicate
   runways.
 * Clean up error handling for scenery library loader to allow loading to continue after an error.
+* Updated Wiki page https://github.com/albar965/navdatareader/wiki, include PDF manual and README.txt.
 
 ===============================================================================
 

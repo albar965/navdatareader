@@ -206,7 +206,11 @@ void NavdataReader::parseArgs()
       basepath = FsPaths::getBasePath(type);
 
     if(!atools::checkDir(Q_FUNC_INFO, basepath))
-      exit(1);
+    {
+      if(type != FsPaths::MSFS_2024)
+        // Warn only for MSFS 2024 - exit for others
+        exit(1);
+    }
     opts.setBasepath(basepath);
   }
 
