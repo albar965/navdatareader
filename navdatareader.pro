@@ -47,7 +47,7 @@ VERSION_NUMBER=1.3.0.develop
 
 QT += sql core
 
-CONFIG += build_all c++14 console
+CONFIG += build_all c++17 console
 CONFIG -= app_bundle gui debug_and_release debug_and_release_target
 
 TARGET = navdatareader
