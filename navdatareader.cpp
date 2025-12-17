@@ -91,7 +91,7 @@ void NavdataReader::run()
   {
     qWarning() << "==================================================================";
     qWarning() << "== FOUND ERRORS ==================================================";
-    for(const atools::fs::SceneryErrors& errs : qAsConst(errors.getSceneryErrors()))
+    for(const atools::fs::SceneryErrors& errs : std::as_const(errors.getSceneryErrors()))
     {
       qWarning() << "Error in scenery" << errs.getScenery();
 
@@ -172,26 +172,26 @@ void NavdataReader::parseArgs()
 
   if(type == FsPaths::NONE)
   {
-    qCritical().noquote().nospace() << "*** ERROR: Unknown type for option -f." << endl;
+    qCritical().noquote().nospace() << "*** ERROR: Unknown type for option -f." << Qt::endl;
     parser.showHelp(1);
   }
 
   // Check required options ===================================================
   if(!parser.isSet(fstypeOpt))
   {
-    qCritical().noquote().nospace() << "*** ERROR: No database type given." << endl;
+    qCritical().noquote().nospace() << "*** ERROR: No database type given." << Qt::endl;
     parser.showHelp(1);
   }
 
   if(FsPaths::isAnyXplane(type) && !parser.isSet(basepathOpt))
   {
-    qCritical().noquote().nospace() << "*** ERROR: No base path for X-Plane given." << endl;
+    qCritical().noquote().nospace() << "*** ERROR: No base path for X-Plane given." << Qt::endl;
     parser.showHelp(1);
   }
 
   if(type == FsPaths::DFD && !parser.isSet(sourceDbOpt))
   {
-    qCritical().noquote().nospace() << "*** ERROR: No DFD database given." << endl;
+    qCritical().noquote().nospace() << "*** ERROR: No DFD database given." << Qt::endl;
     parser.showHelp(1);
   }
 

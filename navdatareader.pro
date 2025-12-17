@@ -50,6 +50,9 @@ QT += sql core
 CONFIG += build_all c++17 console
 CONFIG -= app_bundle gui debug_and_release debug_and_release_target
 
+# https://doc.qt.io/qt-6.5/qtcore5-index.html - needed for QTextCodec
+QT += core5compat
+
 TARGET = navdatareader
 TEMPLATE = app
 
@@ -108,6 +111,8 @@ win32 {
 
   LIBS += -L$$ATOOLS_LIB_PATH -latools -lz
 }
+
+DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x050F00
 
 macx {
   isEmpty(GIT_PATH) : GIT_PATH=git
@@ -239,9 +244,10 @@ unix:!macx {
   deploy.commands += cp -vfa $$[QT_INSTALL_LIBS]/libicudata.so*  $$DEPLOY_DIR_LIB &&
   deploy.commands += cp -vfa $$[QT_INSTALL_LIBS]/libicui18n.so*  $$DEPLOY_DIR_LIB &&
   deploy.commands += cp -vfa $$[QT_INSTALL_LIBS]/libicuuc.so*  $$DEPLOY_DIR_LIB &&
-  deploy.commands += cp -vfa $$[QT_INSTALL_LIBS]/libQt5Gui.so*  $$DEPLOY_DIR_LIB &&
-  deploy.commands += cp -vfa $$[QT_INSTALL_LIBS]/libQt5Core.so*  $$DEPLOY_DIR_LIB &&
-  deploy.commands += cp -vfa $$[QT_INSTALL_LIBS]/libQt5Sql.so*  $$DEPLOY_DIR_LIB &&
+  deploy.commands += cp -vfa $$[QT_INSTALL_LIBS]/libQt6DBus.so*  $$DEPLOY_DIR_LIB &&
+  deploy.commands += cp -vfa $$[QT_INSTALL_LIBS]/libQt6Gui.so*  $$DEPLOY_DIR_LIB &&
+  deploy.commands += cp -vfa $$[QT_INSTALL_LIBS]/libQt6Core.so*  $$DEPLOY_DIR_LIB &&
+  deploy.commands += cp -vfa $$[QT_INSTALL_LIBS]/libQt6Sql.so*  $$DEPLOY_DIR_LIB &&
   deploy.commands += rm -fv $$DEPLOY_DIR_LIB/lib*.so.*.debug $$DEPLOY_DIR_LIB/*/lib*.so.*.debug
 }
 

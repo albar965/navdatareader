@@ -60,8 +60,6 @@ int main(int argc, char *argv[])
 #endif
   atools::fs::FsPaths::intitialize();
 
-  atools::geo::registerMetaTypes();
-
   int retval = 0; // Success is default
   atools::gui::ConsoleApplication app(argc, argv);
   QCoreApplication::setApplicationName("Navdatareader");
@@ -108,7 +106,7 @@ int main(int argc, char *argv[])
   if(retval == 1)
   {
     // Failed - rename output file and add "BROKEN" suffix to avoid accidental use
-    QFileInfo filename = reader.getDatabaseName();
+    QFileInfo filename(reader.getDatabaseName());
     QString newName = filename.absolutePath() + QDir::separator() + filename.baseName() + "_BROKEN." + filename.completeSuffix();
 
     // Create backup copies of broken files
@@ -125,7 +123,6 @@ int main(int argc, char *argv[])
 
   atools::util::crashhandler::deInit();
   qInfo() << "done.";
-  atools::logging::LoggingHandler::shutdown();
 
   return retval;
 }

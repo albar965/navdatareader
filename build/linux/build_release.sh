@@ -29,7 +29,7 @@ export ATOOLS_LIB_PATH=${ATOOLS_LIB_PATH:-"${APROJECTS}/build-atools-${CONF_TYPE
 export ATOOLS_NO_CRASHHANDLER=${ATOOLS_NO_CRASHHANDLER:-"true"}
 
 # Defines the used Qt for all builds
-export QMAKE_SHARED=${QMAKE_SHARED:-"${HOME}/Qt/5.15.2/gcc_64/bin/qmake"}
+export QMAKE_SHARED=${QMAKE_SHARED:-"${HOME}/Qt/6.5.3/gcc_64/bin/qmake"}
 
 # Do not change the DEPLOY_BASE since some scripts depend on it
 export DEPLOY_BASE="${APROJECTS}/deploy"
@@ -42,6 +42,7 @@ export ATOOLS_NO_USERDATA=true
 export ATOOLS_NO_WEATHER=true
 export ATOOLS_NO_WEB=true
 export ATOOLS_NO_NAVSERVER=true
+export ATOOLS_NO_QT5COMPAT=true
 
 # ===========================================================================
 # ========================== navdatareader - shared Qt
