@@ -27,7 +27,7 @@ set ATOOLS_NO_CRASHHANDLER=%ATOOLS_NO_CRASHHANDLER_NAVDATAREADER%
 if defined ATOOLS_NO_CRASHHANDLER ( echo ATOOLS_NO_CRASHHANDLER=%ATOOLS_NO_CRASHHANDLER% ) else ( set ATOOLS_NO_CRASHHANDLER=true)
 
 rem Defines the used Qt for all builds
-if defined QTDIR_SHARED ( echo QTDIR_SHARED=%QTDIR_SHARED% ) else ( set QTDIR_SHARED=C:\Qt\$QT_VERSION\mingw_64)
+if defined QTDIR_SHARED ( echo QTDIR_SHARED=%QTDIR_SHARED% ) else ( set QTDIR_SHARED=C:\Qt\%QT_VERSION%\mingw_64)
 if defined PATH_SHARED ( echo PATH_SHARED=%PATH_SHARED% ) else ( set PATH_SHARED=C:\Qt\Tools\CMake_64\bin;C:\Qt\Tools\mingw1120_64\bin\;%QTDIR_SHARED%\bin)
 
 set ATOOLS_NO_GRIB=true
