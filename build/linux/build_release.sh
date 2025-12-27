@@ -36,13 +36,12 @@ export DEPLOY_BASE="${APROJECTS}/deploy"
 
 export ATOOLS_NO_GRIB=true
 export ATOOLS_NO_GUI=true
+export ATOOLS_NO_NAVSERVER=true
 export ATOOLS_NO_ROUTING=true
 export ATOOLS_NO_TRACK=true
 export ATOOLS_NO_USERDATA=true
 export ATOOLS_NO_WEATHER=true
 export ATOOLS_NO_WEB=true
-export ATOOLS_NO_NAVSERVER=true
-export ATOOLS_NO_QT5COMPAT=true
 
 # ===========================================================================
 # ========================== navdatareader - shared Qt

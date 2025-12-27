@@ -32,12 +32,12 @@ if defined PATH_SHARED ( echo PATH_SHARED=%PATH_SHARED% ) else ( set PATH_SHARED
 
 set ATOOLS_NO_GRIB=true
 set ATOOLS_NO_GUI=true
+set ATOOLS_NO_NAVSERVER=true
 set ATOOLS_NO_ROUTING=true
 set ATOOLS_NO_TRACK=true
 set ATOOLS_NO_USERDATA=true
 set ATOOLS_NO_WEATHER=true
 set ATOOLS_NO_WEB=true
-set ATOOLS_NO_NAVSERVER=true
 
 rem === Build atools and navdatareader =============================
 

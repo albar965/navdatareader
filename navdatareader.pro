@@ -46,6 +46,9 @@
 VERSION_NUMBER=1.3.0.develop
 
 QT += sql core
+QT -= gui
+QT -= widgets
+
 
 CONFIG += build_all c++17 console
 CONFIG -= app_bundle gui debug_and_release debug_and_release_target
@@ -240,14 +243,13 @@ unix:!macx {
   deploy.commands += cp -vf $$PWD/CHANGELOG.txt $$DEPLOY_DIR &&
   deploy.commands += cp -vf $$PWD/README.txt $$DEPLOY_DIR &&
   deploy.commands += cp -vf $$PWD/LICENSE.txt $$DEPLOY_DIR &&
-  deploy.commands += cp -vfa $$[QT_INSTALL_PLUGINS]/sqldrivers/libqsqlite.so*  $$DEPLOY_DIR/sqldrivers &&
-  deploy.commands += cp -vfa $$[QT_INSTALL_LIBS]/libicudata.so*  $$DEPLOY_DIR_LIB &&
-  deploy.commands += cp -vfa $$[QT_INSTALL_LIBS]/libicui18n.so*  $$DEPLOY_DIR_LIB &&
-  deploy.commands += cp -vfa $$[QT_INSTALL_LIBS]/libicuuc.so*  $$DEPLOY_DIR_LIB &&
-  deploy.commands += cp -vfa $$[QT_INSTALL_LIBS]/libQt6DBus.so*  $$DEPLOY_DIR_LIB &&
-  deploy.commands += cp -vfa $$[QT_INSTALL_LIBS]/libQt6Gui.so*  $$DEPLOY_DIR_LIB &&
-  deploy.commands += cp -vfa $$[QT_INSTALL_LIBS]/libQt6Core.so*  $$DEPLOY_DIR_LIB &&
-  deploy.commands += cp -vfa $$[QT_INSTALL_LIBS]/libQt6Sql.so*  $$DEPLOY_DIR_LIB &&
+  deploy.commands += cp -vfa $$[QT_INSTALL_PLUGINS]/sqldrivers/libqsqlite.so* $$DEPLOY_DIR/sqldrivers &&
+  deploy.commands += cp -vfa $$[QT_INSTALL_LIBS]/libicudata.so* $$DEPLOY_DIR_LIB &&
+  deploy.commands += cp -vfa $$[QT_INSTALL_LIBS]/libicui18n.so* $$DEPLOY_DIR_LIB &&
+  deploy.commands += cp -vfa $$[QT_INSTALL_LIBS]/libicuuc.so* $$DEPLOY_DIR_LIB &&
+  deploy.commands += cp -vfa $$[QT_INSTALL_LIBS]/libQt6Core5Compat.so* $$DEPLOY_DIR_LIB &&
+  deploy.commands += cp -vfa $$[QT_INSTALL_LIBS]/libQt6Core.so* $$DEPLOY_DIR_LIB &&
+  deploy.commands += cp -vfa $$[QT_INSTALL_LIBS]/libQt6Sql.so* $$DEPLOY_DIR_LIB &&
   deploy.commands += rm -fv $$DEPLOY_DIR_LIB/lib*.so.*.debug $$DEPLOY_DIR_LIB/*/lib*.so.*.debug
 }
 
