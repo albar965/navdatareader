@@ -50,7 +50,7 @@ QT -= gui
 QT -= widgets
 
 
-CONFIG += build_all c++17 console
+CONFIG += build_all c++20 console
 CONFIG -= app_bundle gui debug_and_release debug_and_release_target
 
 # https://doc.qt.io/qt-6.5/qtcore5-index.html - needed for QTextCodec
