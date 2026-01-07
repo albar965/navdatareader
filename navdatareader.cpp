@@ -1,5 +1,5 @@
 /*****************************************************************************
-* Copyright 2015-2025 Alexander Barthel alex@littlenavmap.org
+* Copyright 2015-2026 Alexander Barthel alex@littlenavmap.org
 *
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -68,7 +68,7 @@ void NavdataReader::run()
 
   qInfo() << opts;
 
-  QStringList DATABASE_PRAGMAS({QString("PRAGMA cache_size=-%1").arg(50000),
+  QStringList DATABASE_PRAGMAS({QStringLiteral("PRAGMA cache_size=-%1").arg(50000),
                                 "PRAGMA synchronous=OFF",
                                 "PRAGMA journal_mode=TRUNCATE",
                                 "PRAGMA page_size=8196"
