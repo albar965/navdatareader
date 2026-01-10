@@ -59,6 +59,11 @@ QT += core5compat
 TARGET = navdatareader
 TEMPLATE = app
 
+!versionAtLeast(QT_VERSION, 6.5) {
+    message("Cannot use Qt $${QT_VERSION}. Need at least Qt 6.5 or newer.")
+    error("Need at least Qt 6.5 or newer")
+}
+
 TARGET_NAME=Navdatareader
 
 # =======================================================================
@@ -115,7 +120,7 @@ win32 {
   LIBS += -L$$ATOOLS_LIB_PATH -latools -lz
 }
 
-DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x050F00
+DEFINES += QT_DISABLE_DEPRECATED_UP_TO=0x060500
 
 macx {
   isEmpty(GIT_PATH) : GIT_PATH=git
