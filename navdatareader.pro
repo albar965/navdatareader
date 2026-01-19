@@ -78,6 +78,9 @@ GIT_PATH=$$(ATOOLS_GIT_PATH)
 DEPLOY_BASE=$$(DEPLOY_BASE)
 QUIET=$$(ATOOLS_QUIET)
 
+!isEqual(ATOOLS_NO_GUI, "true"): QT += svg widgets
+isEqual(ATOOLS_NO_GUI, "true"): QT -= gui
+!isEqual(ATOOLS_NO_GUI, "true"): CONFIG += svg widgets
 
 # =======================================================================
 # Fill defaults for unset
@@ -255,6 +258,10 @@ unix:!macx {
   deploy.commands += cp -vfa $$[QT_INSTALL_LIBS]/libQt6Core5Compat.so* $$DEPLOY_DIR_LIB &&
   deploy.commands += cp -vfa $$[QT_INSTALL_LIBS]/libQt6Core.so* $$DEPLOY_DIR_LIB &&
   deploy.commands += cp -vfa $$[QT_INSTALL_LIBS]/libQt6Sql.so* $$DEPLOY_DIR_LIB &&
+  !isEqual(ATOOLS_NO_GUI, "true") {
+    deploy.commands += cp -vfa $$[QT_INSTALL_LIBS]/libQt6DBus.so*  $$DEPLOY_DIR_LIB &&
+    deploy.commands += cp -vfa $$[QT_INSTALL_LIBS]/libQt6Gui.so*  $$DEPLOY_DIR_LIB &&
+  }
   deploy.commands += rm -fv $$DEPLOY_DIR_LIB/lib*.so.*.debug $$DEPLOY_DIR_LIB/*/lib*.so.*.debug
 }
 
