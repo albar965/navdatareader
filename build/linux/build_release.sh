@@ -54,7 +54,7 @@ mkdir -p ${APROJECTS}/build-atools-${CONF_TYPE}
 cd ${APROJECTS}/build-atools-${CONF_TYPE}
 
 ${QMAKE_SHARED} ${APROJECTS}/atools/atools.pro -spec linux-g++ CONFIG+=${CONF_TYPE}
-make -j4
+make
 
 # ===========================================================================
 # ========================== navdatareader
@@ -63,7 +63,7 @@ mkdir -p ${APROJECTS}/build-navdatareader-${CONF_TYPE}
 cd ${APROJECTS}/build-navdatareader-${CONF_TYPE}
 
 ${QMAKE_SHARED} ${APROJECTS}/navdatareader/navdatareader.pro -spec linux-g++ CONFIG+=${CONF_TYPE}
-make -j4
+nice make
 
 make copydata
 make deploy
