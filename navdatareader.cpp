@@ -81,7 +81,7 @@ void NavdataReader::run()
   context.loadLibrary(SIMCONNECT_LOADER_DLL_NAME);
 
   atools::fs::NavDatabaseErrors errors;
-  atools::fs::NavDatabase navDatabase(&opts, &db, &errors, GIT_REVISION_NAVDATAREADER);
+  atools::fs::NavDatabase navDatabase(opts, db, &errors, GIT_REVISION_NAVDATAREADER);
   navDatabase.setActivationContext(&context, SIMCONNECT_LOADER_DLL_NAME);
 
   resultFlags = navDatabase.compileDatabase();
@@ -254,6 +254,7 @@ void NavdataReader::parseArgs()
 
   opts.loadFromSettings(settings);
   opts.setCallDefaultCallback(true);
+  opts.setTimeZoneDatabase("timezone/timezone21");
 
   // Create database ===================================================
   db = SqlDatabase(settings, "Database");
