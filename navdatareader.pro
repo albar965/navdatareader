@@ -43,7 +43,7 @@
 # =============================================================================
 
 # Define program version here VERSION_NUMBER_TODO
-VERSION_NUMBER=1.3.0.develop
+VERSION_NUMBER=1.4.0.beta
 
 QT += sql core
 QT -= gui
