@@ -55,9 +55,6 @@ int main(int argc, char *argv[])
 {
   // Initialize the resources from atools static library
   Q_INIT_RESOURCE(atools);
-#ifdef SIMCONNECT_BUILD_WIN64
-  Q_INIT_RESOURCE(navdata);
-#endif
   atools::fs::FsPaths::intitialize();
 
   int retval = 0; // Success is default

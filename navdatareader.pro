@@ -223,6 +223,8 @@ OTHER_FILES += \
   $$files(build/*, true) \
   $$files(help/*, true) \
   $$files(timezone/*, true) \
+  $$files(wmm/*, true) \
+  $$files(navdata/*, true) \
   $$files(config/*, true) \
   .gitignore \
   BUILD.txt \
@@ -238,7 +240,8 @@ RESOURCES += \
 # Linux - Copy help and and data
 unix:!macx {
   copydata.commands += cp -avfu $$PWD/help $$OUT_PWD &&
-  copydata.commands += cp -avfu $$PWD/timezone $$OUT_PWD
+  copydata.commands += cp -avfu $$PWD/timezone $$OUT_PWD &&
+  copydata.commands += cp -avfu $$PWD/wmm $$OUT_PWD
 }
 
 # Linux specific deploy target
@@ -254,6 +257,7 @@ unix:!macx {
   deploy.commands += cp -Rvf $$OUT_PWD/$${TARGET} $$DEPLOY_DIR &&
   deploy.commands += cp -Rvf $$OUT_PWD/help $$DEPLOY_DIR &&
   deploy.commands += cp -Rvf $$OUT_PWD/timezone $$DEPLOY_DIR &&
+  deploy.commands += cp -Rvf $$OUT_PWD/wmm $$DEPLOY_DIR &&
   deploy.commands += cp -Rvf $$PWD/resources/config $$DEPLOY_DIR/config &&
   deploy.commands += cp -vf $$PWD/CHANGELOG.txt $$DEPLOY_DIR &&
   deploy.commands += cp -vf $$PWD/README.txt $$DEPLOY_DIR &&
@@ -296,6 +300,8 @@ win32 {
   deploy.commands += xcopy /F $$p($$[QT_INSTALL_BINS]/libstdc*.dll) $$p($$DEPLOY_BASE/$$TARGET_NAME) &&
   deploy.commands += xcopy /F $$p($$[QT_INSTALL_BINS]/libwinpthread*.dll) $$p($$DEPLOY_BASE/$$TARGET_NAME) &&
   deploy.commands += xcopy /I /S /E /F /Y $$p($$PWD/timezone) $$p($$DEPLOY_BASE/$$TARGET_NAME/timezone) &&
+  deploy.commands += xcopy /I /S /E /F /Y $$p($$PWD/wmm) $$p($$DEPLOY_BASE/$$TARGET_NAME/wmm) &&
+  deploy.commands += xcopy /I /S /E /F /Y $$p($$PWD/navdata) $$p($$DEPLOY_BASE/$$TARGET_NAME/navdata) &&
   deploy.commands += xcopy /I /S /E /F /Y $$p($$PWD/help) $$p($$DEPLOY_BASE/$$TARGET_NAME/help) &&
   deploy.commands += xcopy /I /S /E /F /Y $$p($$PWD/resources/config) $$p($$DEPLOY_BASE/$$TARGET_NAME/config) &&
   deploy.commands += $$p($$[QT_INSTALL_BINS]/windeployqt) $$WINDEPLOY_FLAGS $$p($$DEPLOY_BASE/$$TARGET_NAME)
