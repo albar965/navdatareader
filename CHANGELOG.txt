@@ -4,6 +4,38 @@ This text is partially Markdown, hence sometimes strange formatting.
 
 ===============================================================================
 
+# Version 1.4.1.beta
+
+* Updated navaids for MSFS 2024
+* Removed WMM and navdata from resources. Now copied to installation folder.
+* Version 1.4.0.beta
+* Better error handling in build scripts
+* Added time zone managment and country name correction for data compilers
+* Fixed deprecated time functions from Qt 6.10
+* Now relying on MAKEFLAGS for -j option
+* Added options to load runway taxipaths and omit navaids for MSFS 2024 and 2020.
+  NAVAIDS: MSFS 2024 only - disables complete navaid loading. Will skip waypoints, VOR, NDB and ILS
+  to speed up loading. Add "NAVAIDS" to "ExcludeBglObjectFilter" to skip navaid loading.
+  TAXIWAYRUNWAY: MSFS 2024 and MSFS 2020 only - excludes or includes taxiways of type runway. Remove
+  "TAXIWAYRUNWAY" from "ExcludeBglObjectFilter" to include these.
+* Adapted deployment on Linux to ATOOLS_NO_GUI option
+* More Qt 6 porting
+  Disabled all deprecated before qt 6.5 Added version check for Qt version
+* Optimisations
+  Partly added QString with QStringLiteral Removed 32-bit build scripts Updated copyright year
+* Updated to c++20 to allow compilation with Qt 6.10
+* Removed unneeded UI libraries
+* Fixed wrong variable
+* Updated paths in build scripts
+* Adapted to Qt 6
+* Updated to C++17 standard
+* Merge branch 'release/1.2'
+* Version 1.3.0.develop
+* Merge branch 'release/1.2'
+* Update README.txt
+
+===============================================================================
+
 # Version 1.2.4
 
 * Removed wrong check for path `StreamedPackages` when reading MSFS 2024 data.
