@@ -6,33 +6,32 @@ This text is partially Markdown, hence sometimes strange formatting.
 
 # Version 1.4.1.beta
 
-* Updated navaids for MSFS 2024
+* The country field is now set for all airports based on third-party data (the timezone database)
+  when loading the scenery library of MSFS 2024.
+* P3D scenery configuration files `add-on.xml` with broken encoding are not supported anymore due
+  to limitations in Qt 6. Correct the files or contact the add-on author if you see issues with this.
+* Skipping and logging airways without name now to avoid exception in SQL script. #1386
+* Workaround for null waypoint positions in MSFS 2024. These are logged and skipped now.
+* Fixed issue when calculating airways using ambiguous navaids for X-Plane and other simulators.
+  Example: H84 started wrongly at IM/ZM at ZMUB while the correct one is IM/ZM at ZMKD. #1332
+* Fixed issue where helipads and other small airports got a too large bounding rectangle.
+* Corrected airport procedure display. Airport XZ001I/ZSQD (XP12 no Navigraph used) did not show
+  procedures since Qingdao Liuting was wrongly detected. #1337
+* Now correcting all country names which are missing or misspelled. This is applied when loading
+  scenery library data.
+* Updated navaids for MSFS 2024.
 * Removed WMM and navdata from resources. Now copied to installation folder.
-* Version 1.4.0.beta
-* Better error handling in build scripts
-* Added time zone managment and country name correction for data compilers
-* Fixed deprecated time functions from Qt 6.10
-* Now relying on MAKEFLAGS for -j option
+* Now relying on MAKEFLAGS for -j option when building.
 * Added options to load runway taxipaths and omit navaids for MSFS 2024 and 2020.
-  NAVAIDS: MSFS 2024 only - disables complete navaid loading. Will skip waypoints, VOR, NDB and ILS
-  to speed up loading. Add "NAVAIDS" to "ExcludeBglObjectFilter" to skip navaid loading.
-  TAXIWAYRUNWAY: MSFS 2024 and MSFS 2020 only - excludes or includes taxiways of type runway. Remove
-  "TAXIWAYRUNWAY" from "ExcludeBglObjectFilter" to include these.
+  NAVAIDS: MSFS 2024 and MSFS 2020 only - disables complete navaid loading. Will skip waypoints,
+           VOR, NDB and ILS to speed up loading.
+           Add `NAVAIDS` to `ExcludeBglObjectFilter` to skip navaid loading.
+  TAXIWAYRUNWAY: MSFS 2024 and MSFS 2020 only - excludes or includes taxiways of type runway.
+                 Remove `TAXIWAYRUNWAY` from `ExcludeBglObjectFilter` to include these.
 * Adapted deployment on Linux to ATOOLS_NO_GUI option
-* More Qt 6 porting
-  Disabled all deprecated before qt 6.5 Added version check for Qt version
-* Optimisations
-  Partly added QString with QStringLiteral Removed 32-bit build scripts Updated copyright year
+* Adapted to Qt 6
 * Updated to c++20 to allow compilation with Qt 6.10
 * Removed unneeded UI libraries
-* Fixed wrong variable
-* Updated paths in build scripts
-* Adapted to Qt 6
-* Updated to C++17 standard
-* Merge branch 'release/1.2'
-* Version 1.3.0.develop
-* Merge branch 'release/1.2'
-* Update README.txt
 
 ===============================================================================
 
