@@ -239,9 +239,9 @@ RESOURCES += \
 
 # Linux - Copy help and and data
 unix:!macx {
-  copydata.commands += cp -avfu $$PWD/help $$OUT_PWD &&
-  copydata.commands += cp -avfu $$PWD/timezone $$OUT_PWD &&
-  copydata.commands += cp -avfu $$PWD/wmm $$OUT_PWD
+  copydata.commands += cp -avf $$PWD/help $$OUT_PWD &&
+  copydata.commands += cp -avf $$PWD/timezone $$OUT_PWD &&
+  copydata.commands += cp -avf $$PWD/wmm $$OUT_PWD
 }
 
 # Linux specific deploy target
@@ -326,7 +326,7 @@ QMAKE_EXTRA_TARGETS += deploy copydata all
       QMAKE_POST_LINK = copy $$p($$OUT_PWD/$${TARGET}.exe) $$p($$OUT_PWD/$${TARGET}.debug) && \
                         strip $$p($$OUT_PWD/$${TARGET}.exe)
     } else {
-      QMAKE_POST_LINK = cp -avfu $$OUT_PWD/$${TARGET} $$OUT_PWD/$${TARGET}.debug && strip $$OUT_PWD/$${TARGET}
+      QMAKE_POST_LINK = cp -avf $$OUT_PWD/$${TARGET} $$OUT_PWD/$${TARGET}.debug && strip $$OUT_PWD/$${TARGET}
     }
   }
 }
