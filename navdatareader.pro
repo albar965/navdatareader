@@ -281,7 +281,7 @@ win32 {
   defineReplace(p){return ($$shell_quote($$shell_path($$1)))}
 
   deploy.commands = rmdir /S /Q $$p($$DEPLOY_BASE/$$TARGET_NAME) &
-  deploy.commands += mkdir $$p($$DEPLOY_BASE/$$TARGET_NAME/sqldrivers) &&
+  deploy.commands += mkdir $$p($$DEPLOY_BASE/$$TARGET_NAME) &&
   deploy.commands += echo $$VERSION_NUMBER > $$p($$DEPLOY_BASE/$$TARGET_NAME/version.txt) &&
   deploy.commands += echo $$GIT_REVISION_FULL > $$p($$DEPLOY_BASE/$$TARGET_NAME/revision.txt) &&
   deploy.commands += xcopy /F $$p($$OUT_PWD/$${TARGET}.exe) $$p($$DEPLOY_BASE/$$TARGET_NAME) &&
@@ -290,6 +290,11 @@ win32 {
       deploy.commands += xcopy /F $$p($$OUT_PWD/$${TARGET}.debug) $$p($$DEPLOY_BASE/$$TARGET_NAME) &&
     }
   }
+  deploy.commands += xcopy /I /S /E /F /Y $$p($$PWD/timezone) $$p($$DEPLOY_BASE/$$TARGET_NAME/timezone) &&
+  deploy.commands += xcopy /I /S /E /F /Y $$p($$PWD/wmm) $$p($$DEPLOY_BASE/$$TARGET_NAME/wmm) &&
+  deploy.commands += xcopy /I /S /E /F /Y $$p($$PWD/navdata) $$p($$DEPLOY_BASE/$$TARGET_NAME/navdata) &&
+  deploy.commands += xcopy /I /S /E /F /Y $$p($$PWD/help) $$p($$DEPLOY_BASE/$$TARGET_NAME/help) &&
+  deploy.commands += xcopy /I /S /E /F /Y $$p($$PWD/resources/config) $$p($$DEPLOY_BASE/$$TARGET_NAME/config) &&
   deploy.commands += xcopy /F $$p($$PWD/CHANGELOG.txt) $$p($$DEPLOY_BASE/$$TARGET_NAME) &&
   deploy.commands += xcopy /F $$p($$PWD/README.txt) $$p($$DEPLOY_BASE/$$TARGET_NAME) &&
   deploy.commands += xcopy /F $$p($$PWD/LICENSE.txt) $$p($$DEPLOY_BASE/$$TARGET_NAME) &&
@@ -299,12 +304,14 @@ win32 {
   deploy.commands += xcopy /F $$p($$[QT_INSTALL_BINS]/libgcc*.dll) $$p($$DEPLOY_BASE/$$TARGET_NAME) &&
   deploy.commands += xcopy /F $$p($$[QT_INSTALL_BINS]/libstdc*.dll) $$p($$DEPLOY_BASE/$$TARGET_NAME) &&
   deploy.commands += xcopy /F $$p($$[QT_INSTALL_BINS]/libwinpthread*.dll) $$p($$DEPLOY_BASE/$$TARGET_NAME) &&
-  deploy.commands += xcopy /I /S /E /F /Y $$p($$PWD/timezone) $$p($$DEPLOY_BASE/$$TARGET_NAME/timezone) &&
-  deploy.commands += xcopy /I /S /E /F /Y $$p($$PWD/wmm) $$p($$DEPLOY_BASE/$$TARGET_NAME/wmm) &&
-  deploy.commands += xcopy /I /S /E /F /Y $$p($$PWD/navdata) $$p($$DEPLOY_BASE/$$TARGET_NAME/navdata) &&
-  deploy.commands += xcopy /I /S /E /F /Y $$p($$PWD/help) $$p($$DEPLOY_BASE/$$TARGET_NAME/help) &&
-  deploy.commands += xcopy /I /S /E /F /Y $$p($$PWD/resources/config) $$p($$DEPLOY_BASE/$$TARGET_NAME/config) &&
-  deploy.commands += $$p($$[QT_INSTALL_BINS]/windeployqt) $$WINDEPLOY_FLAGS $$p($$DEPLOY_BASE/$$TARGET_NAME)
+  deploy.commands += xcopy /F $$p($$[QT_INSTALL_BINS]/Qt6Core.dll) $$p($$DEPLOY_BASE/$$TARGET_NAME) &&
+  deploy.commands += xcopy /F $$p($$[QT_INSTALL_BINS]/Qt6Core5Compat.dll) $$p($$DEPLOY_BASE/$$TARGET_NAME) &&
+  deploy.commands += xcopy /F $$p($$[QT_INSTALL_BINS]/Qt6Sql.dll) $$p($$DEPLOY_BASE/$$TARGET_NAME) &&
+  deploy.commands += xcopy /F $$p($$[QT_INSTALL_BINS]/Qt6Xml.dll) $$p($$DEPLOY_BASE/$$TARGET_NAME) &&
+  deploy.commands += mkdir $$p($$DEPLOY_BASE/$$TARGET_NAME/platforms) &&
+  deploy.commands += xcopy /F $$p($$[QT_INSTALL_PLUGINS]/platforms/qwindows.dll) $$p($$DEPLOY_BASE/$$TARGET_NAME/platforms) &&
+  deploy.commands += mkdir $$p($$DEPLOY_BASE/$$TARGET_NAME/sqldrivers) &&
+  deploy.commands += xcopy /F $$p($$[QT_INSTALL_PLUGINS]/sqldrivers/qsqlite.dll) $$p($$DEPLOY_BASE/$$TARGET_NAME/sqldrivers)
 }
 
 # =====================================================================
