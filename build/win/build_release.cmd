@@ -17,6 +17,8 @@ rem
 rem Example:
 rem set PATH_SHARED=C:\Qt\5.12.11\mingw73_32\bin;C:\Qt\Tools\mingw730_32\bin
 
+set QTINSTALL=C:\Qt
+
 if defined CONF_TYPE ( echo %CONF_TYPE% ) else ( set CONF_TYPE=release)
 if defined ATOOLS_INC_PATH ( echo %ATOOLS_INC_PATH% ) else ( set ATOOLS_INC_PATH=%APROJECTS%\atools\src)
 if defined ATOOLS_LIB_PATH ( echo %ATOOLS_LIB_PATH% ) else ( set ATOOLS_LIB_PATH=%APROJECTS%\build-atools-%CONF_TYPE%)
@@ -27,8 +29,8 @@ set ATOOLS_NO_CRASHHANDLER=%ATOOLS_NO_CRASHHANDLER_NAVDATAREADER%
 if defined ATOOLS_NO_CRASHHANDLER ( echo ATOOLS_NO_CRASHHANDLER=%ATOOLS_NO_CRASHHANDLER% ) else ( set ATOOLS_NO_CRASHHANDLER=true)
 
 rem Defines the used Qt for all builds
-if defined QTDIR_SHARED ( echo QTDIR_SHARED=%QTDIR_SHARED% ) else ( set QTDIR_SHARED=C:\Qt\%QT_VERSION%\mingw_64)
-if defined PATH_SHARED ( echo PATH_SHARED=%PATH_SHARED% ) else ( set PATH_SHARED=C:\Qt\Tools\CMake_64\bin;C:\Qt\Tools\mingw1120_64\bin\;%QTDIR_SHARED%\bin)
+if defined QTDIR_SHARED ( echo QTDIR_SHARED=%QTDIR_SHARED% ) else ( set QTDIR_SHARED=%QTINSTALL%\%QT_VERSION%\mingw_64)
+if defined PATH_SHARED ( echo PATH_SHARED=%PATH_SHARED% ) else ( set PATH_SHARED=%QTINSTALL%\Tools\CMake_64\bin;%QTINSTALL%\Tools\mingw1510_64\bin\;%QTDIR_SHARED%\bin)
 
 set ATOOLS_NO_GRIB=true
 set ATOOLS_NO_GUI=true
